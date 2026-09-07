@@ -40,3 +40,26 @@
       <p class="tk-card__meta">{{ terim }}</p>
 {%- endif -%}
 {%- endmacro -%}
+
+
+{#
+  KUPA IKONU  --  sertifika / odul kartlarinin basindaki simge.
+
+  Suslemedir, metni tekrar etmez: kartin basligi zaten neyin odulu
+  oldugunu soyluyor. Bu yuzden ekran okuyucuya aria-hidden ile
+  kapatiliyor.
+
+  Rengi CSS'ten gelir (currentColor); ayri bir ikon kutuphanesi ya da
+  gorsel dosyasi gerektirmez.
+#}
+{%- macro kupa_ikonu(sinif='') -%}
+<svg{% if sinif %} class="{{ sinif }}"{% endif %} viewBox="0 0 24 24" fill="none"
+     stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+     stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <path d="M7 4h10v6a5 5 0 0 1-10 0V4z"/>
+  <path d="M7 6H4a1 1 0 0 0-1 1 4 4 0 0 0 4 4"/>
+  <path d="M17 6h3a1 1 0 0 1 1 1 4 4 0 0 1-4 4"/>
+  <path d="M12 15v4"/>
+  <path d="M8 21h8"/>
+</svg>
+{%- endmacro -%}

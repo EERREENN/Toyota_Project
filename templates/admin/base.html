@@ -1,0 +1,73 @@
+{#
+  Panel kabugu. Sitenin base.html'inden TAMAMEN AYRI: panelin gorunumu
+  degisirse site etkilenmesin, sitenin CSS'i bolunurse panel kirilmasin.
+
+  BICIMLENDIRICI UYARISI
+  ----------------------
+  Etiketin ICINDE {% if ... %} kullanma. HTML bicimlendiricileri
+  bunu satirlara boluyor. Kosulu TIRNAK ICINDE tut:
+
+      class="{{ 'etkin' if aktif == 'haberler' }}"
+#}
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="referrer" content="no-referrer" />
+    <title>{% block title %}Yönetim{% endblock %} · Toyota</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/admin.css') }}"
+    />
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    {% if oturum_acik %}
+    <header class="yn-bar">
+      <div class="yn-bar__ic">
+        <a href="{{ url_for('admin.news_list') }}" class="yn-bar__logo"
+          >TOYOTA <span>yönetim</span></a
+        >
+        <nav class="yn-bar__menu">
+          <a
+            href="{{ url_for('admin.news_list') }}"
+            class="{{ 'etkin' if aktif == 'haberler' }}"
+            >Haberler</a
+          >
+          <a
+            href="{{ url_for('admin.change_password') }}"
+            class="{{ 'etkin' if aktif == 'sifre' }}"
+            >Şifre</a
+          >
+          <a href="/" target="_blank" rel="noopener">Siteyi gör ↗</a>
+        </nav>
+        <form
+          method="post"
+          action="{{ url_for('admin.logout') }}"
+          class="yn-bar__cikis"
+        >
+          <input type="hidden" name="_csrf" value="{{ csrf }}" />
+          <button type="submit" class="yn-dugme yn-dugme--sade">Çıkış</button>
+        </form>
+      </div>
+    </header>
+    {% endif %}
+
+    <main class="yn-govde{% if not oturum_acik %} yn-govde--dar{% endif %}">
+      {% with mesajlar = get_flashed_messages(with_categories=true) %}
+      {% if mesajlar %}
+      <div class="yn-mesajlar">
+        {% for tur, metin in mesajlar %}
+        <p class="yn-mesaj yn-mesaj--{{ tur }}">{{ metin }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

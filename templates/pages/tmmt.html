@@ -8,6 +8,7 @@
   app/ceviri.py dosyasinda.
 #}
 {% extends "base.html" %}
+{% import "components/macros.html" as c %}
 
 {#- Bu sayfanin yukledigi stil dosyalari, sirasiyla. Tema en sonda:
     ortak kurallari ezebilsin diye. -#}
@@ -351,24 +352,31 @@
 
 <section class="tk-block">
   <h2>{{ _('Sertifikalar ve ödüller') }}</h2>
+  {#- Dort esit kart: ikon ustte, altinda baslik. Kartlar ayni satirda
+      ayni boyda durur; dar ekranda 2, telefonda 1 sutuna duser
+      (bkz. components/badge-strip.css). -#}
   <ul class="tk-badge-strip">
     <li class="tk-badge-strip__badge">
+      {{ c.kupa_ikonu('tk-badge-strip__ikon') }}
       <span class="tk-badge-strip__metin">
         <span class="tk-badge-strip__baslik">{{ _('ISO 14001 Çevre Yönetim Sistemi') }}</span>
         <span class="tk-badge-strip__aciklama">{{ _('1999\'dan bu yana') }}</span>
       </span>
     </li>
     <li class="tk-badge-strip__badge">
+      {{ c.kupa_ikonu('tk-badge-strip__ikon') }}
       <span class="tk-badge-strip__metin">
         <span class="tk-badge-strip__baslik">{{ _('TİM İhracat Ödülü') }}</span>
       </span>
     </li>
     <li class="tk-badge-strip__badge">
+      {{ c.kupa_ikonu('tk-badge-strip__ikon') }}
       <span class="tk-badge-strip__metin">
         <span class="tk-badge-strip__baslik">{{ _('Toyota Avrupa\'nın en yüksek hacimli fabrikası') }}</span>
       </span>
     </li>
     <li class="tk-badge-strip__badge">
+      {{ c.kupa_ikonu('tk-badge-strip__ikon') }}
       <span class="tk-badge-strip__metin">
         <span class="tk-badge-strip__baslik">{{ _('Toyota iç değerlendirmesinde en üst “lider fabrika” seviyesi') }}</span>
       </span>

@@ -1,0 +1,46 @@
+{#
+  HABER KARTI  --  haber listesindeki tek kutu.
+
+  Dongu icinden cagrilir; `haber` degiskenini dongudan alir:
+
+      {% for haber in haberler %}
+      {% include "components/news_card.html" %}
+      {% endfor %}
+
+  TIKLAMA ALANI: kartin tamami tiklanabilir ama sayfada TEK gercek
+  baglanti var -- basliktaki. Kartin geri kalanini o baglantinin
+  ::after katmani kapliyor (bkz. news.css). Boylece fare icin butun
+  kart, ekran okuyucu icin tek ve anlamli bir baglanti oluyor;
+  "Haberi İncele" yazisi gorsel bir isaret oldugu icin
+  aria-hidden ile okunmuyor.
+#}
+    <article class="tk-news-card">
+      <div class="tk-news-card__media">
+        {%- if haber.image %}
+        <img class="tk-news-card__image"
+             src="{{ url_for('static', filename=haber.image) }}"
+             alt="" loading="lazy" decoding="async">
+        {%- else %}
+        {#- Gorseli girilmemis haber: bos beyazlik yerine markanin
+            kendi yuzeyi. Ekran okuyucuya bir sey soylemez. -#}
+        <div class="tk-news-card__placeholder" aria-hidden="true">TOYOTA</div>
+        {%- endif %}
+      </div>
+
+      <div class="tk-news-card__body">
+        <p class="tk-news-card__meta">
+          <span class="tk-news-card__category">{{ haber.category }}</span>
+          <time class="tk-news-card__date" datetime="{{ haber.date }}">{{ tarih(haber.date) }}</time>
+        </p>
+
+        <h3 class="tk-news-card__title">
+          <a href="{{ url_for('public.news_detail', slug=haber.slug) }}">{{ haber.title }}</a>
+        </h3>
+
+        {%- if haber.summary %}
+        <p class="tk-news-card__summary">{{ haber.summary }}</p>
+        {%- endif %}
+
+        <span class="tk-news-card__cta" aria-hidden="true">{{ _('Haberi İncele') }}</span>
+      </div>
+    </article>

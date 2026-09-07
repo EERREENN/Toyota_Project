@@ -206,3 +206,12 @@
   }
   .lang-switch .lang-pill { width: 40px; }
 }
+
+/* Bes baglantiyla dar masaustunde ust bar tasmasin.
+   861-1023px arasinda bosluklar ve yazi bir tik kuculur; 1024px ve
+   ustunde olculer yukaridaki gibi kalir (bugunku gorunum degismez). */
+@media (min-width: 861px) and (max-width: 1023.98px) {
+  .nav-menu { gap: 18px; }
+  .nav-links { gap: 18px; }
+  .nav-links a { font-size: 0.9rem; }
+}

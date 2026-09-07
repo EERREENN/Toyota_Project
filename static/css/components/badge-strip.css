@@ -1,41 +1,54 @@
 /* ============================================================
-   ROZET SERIDI  (badge_strip)
+   SERTIFIKA / ODUL KARTLARI  (badge_strip)
 
-   Sertifika ve odul etiketleri. Renk paleti degismiyor: beyaz
-   yuzey + kirmizi vurgu (sol kenar cizgisi), chip_groups'taki
-   etiketlerle ayni ailedendir.
+   Dort esit kart. Yuzey sitenin geri kalaniyla ayni dili konusuyor:
+   beyaz zemin, ince cerceve, ustte 3px kirmizi vurgu (bkz. card.css).
+   Basta kupa simgesi durur -- suslemedir, ekran okuyucuya kapali
+   (bkz. templates/components/macros.html -> kupa_ikonu).
 
-   Serit akiskan: sigmayan rozet alt satira gecer, sayfayi
-   yatay tasirmaz.
+   Kirilim noktalari .tk-grid--4 ile AYNI: telefonda 1, tablette 2,
+   masaustunde 4 sutun. Ayni satirdaki kartlar ayni boyda durur --
+   metin uzunlugu farkli olsa da alt kenarlari hizali kalir.
    ============================================================ */
 .tk-badge-strip {
   list-style: none;
   margin: clamp(20px, 5vw, 28px) 0 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(10px, 2vw, 14px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(12px, 2.5vw, 18px);
+}
+
+@media (min-width: 560px) {
+  .tk-badge-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 900px) {
+  .tk-badge-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 .tk-badge-strip__badge {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  max-width: 100%;
-  padding: 10px clamp(14px, 2vw, 18px);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  padding: clamp(16px, 3vw, 20px);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
+  border-top: 3px solid var(--accent);
   border-radius: 4px;
 }
 
-.tk-badge-strip__logo {
+/* ---------- Kupa simgesi ---------- */
+.tk-badge-strip__ikon {
   flex: none;
-  width: auto;
-  height: 28px;
-  object-fit: contain;
+  width: 30px;
+  height: 30px;
+  color: var(--accent);
 }
 
+/* ---------- Metin ---------- */
 .tk-badge-strip__metin {
   display: flex;
   flex-direction: column;
@@ -51,7 +64,16 @@
 }
 
 .tk-badge-strip__aciklama {
+  margin-top: 4px;
   font-size: 0.78rem;
   line-height: 1.35;
   color: var(--muted);
+}
+
+/* Istege bagli kurum logosu (varsayilan: yok) */
+.tk-badge-strip__logo {
+  flex: none;
+  width: auto;
+  height: 28px;
+  object-fit: contain;
 }

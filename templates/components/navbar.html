@@ -4,7 +4,7 @@
   Her sayfada aynidir; hangi baglantinin vurgulanacagini sayfa sablonundaki
   `{% set aktif = '...' %}` belirler (bkz. templates/pages/*.html).
 
-  Menu dort sabit baglantidan olusuyor -- veritabanindan ya da bir listeden
+  Menu bes sabit baglantidan olusuyor -- veritabanindan ya da bir listeden
   uretilmiyor. Sayfa eklendiginde buraya bir satir eklenir.
 #}
   <header class="navbar">
@@ -25,6 +25,7 @@
           <a href="{{ url_for('public.global_toyota') }}" class="{{ 'active' if aktif == 'global-toyota' }}">Global Toyota</a>
           <a href="{{ url_for('public.uretim_sistemi') }}" class="{{ 'active' if aktif == 'uretim-sistemi' }}">Toyota Production System</a>
           <a href="{{ url_for('public.cevre') }}" class="{{ 'active' if aktif == 'cevre' }}">{{ _('Toyota ve Çevre') }}</a>
+          <a href="{{ url_for('public.news') }}" class="{{ 'active' if aktif == 'haberler' }}">{{ _('Haberler') }}</a>
         </nav>
         {# ---------- Dil secici ---------- #}
         <div class="lang-switch" role="group" aria-label="{{ _('Dil seçimi') }}">

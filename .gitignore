@@ -5,6 +5,10 @@
 # app/icerik/ altinda. Elindeki kopya yedek olarak duruyor.
 instance/
 
+# Panelden yuklenen haber gorselleri
+static/uploads/news/*
+!static/uploads/news/.gitkeep
+
 # --- python ---
 __pycache__/
 *.py[cod]

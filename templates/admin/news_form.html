@@ -1,0 +1,130 @@
+{% extends "admin/base.html" %}
+{% set duzenleme = kayit is not none %}
+{% block title %}{{ 'Haberi düzenle' if duzenleme else 'Yeni haber' }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin-news.css') }}">
+{% endblock %}
+
+{% block content %}
+<p class="yn-yol">
+  <a href="{{ url_for('admin.news_list') }}">Haberler</a>
+  · {{ 'Düzenle' if duzenleme else 'Yeni haber' }}
+</p>
+<h1 class="yn-baslik">{{ 'Haberi düzenle' if duzenleme else 'Yeni haber' }}</h1>
+<p class="yn-aciklama">
+  İngilizce alanlar isteğe bağlıdır; boş bırakılırsa sitede Türkçesi görünür.
+  İçerik düz metindir: boş satır yeni paragraf başlatır.
+</p>
+
+<form method="post" enctype="multipart/form-data" class="yn-form">
+  <input type="hidden" name="_csrf" value="{{ csrf }}">
+  <input type="hidden" name="mevcut_gorsel" value="{{ deger.image }}">
+
+  <div class="yn-kart">
+    <h2 class="yn-kart__baslik">Metin</h2>
+
+    <div class="yn-alan">
+      <label for="title_tr">Başlık (Türkçe)</label>
+      <input type="text" id="title_tr" name="title_tr" required
+             value="{{ deger.title_tr }}">
+    </div>
+    <div class="yn-alan">
+      <label for="title_en">Başlık (İngilizce)</label>
+      <input type="text" id="title_en" name="title_en"
+             value="{{ deger.title_en }}">
+    </div>
+
+    <div class="yn-alan">
+      <label for="slug">Slug</label>
+      <input type="text" id="slug" name="slug" value="{{ deger.slug }}"
+             placeholder="bos-birakilirsa-basliktan-uretilir">
+      <small>Adres parçası: /news/<em>slug</em>. Boşsa başlıktan üretilir.</small>
+    </div>
+
+    <div class="yn-ikili">
+      <div class="yn-alan">
+        <label for="category_tr">Kategori (Türkçe)</label>
+        <input type="text" id="category_tr" name="category_tr"
+               value="{{ deger.category_tr }}">
+      </div>
+      <div class="yn-alan">
+        <label for="category_en">Kategori (İngilizce)</label>
+        <input type="text" id="category_en" name="category_en"
+               value="{{ deger.category_en }}">
+      </div>
+    </div>
+
+    <div class="yn-alan">
+      <label for="summary_tr">Kısa özet (Türkçe)</label>
+      <textarea id="summary_tr" name="summary_tr" rows="3">{{ deger.summary_tr }}</textarea>
+    </div>
+    <div class="yn-alan">
+      <label for="summary_en">Kısa özet (İngilizce)</label>
+      <textarea id="summary_en" name="summary_en" rows="3">{{ deger.summary_en }}</textarea>
+    </div>
+
+    <div class="yn-alan">
+      <label for="content_tr">İçerik (Türkçe)</label>
+      <textarea id="content_tr" name="content_tr" class="yn-alan__icerik"
+                rows="12">{{ deger.content_tr }}</textarea>
+      <small>Boş satır yeni paragraf demektir. HTML yazma; sitede kaçışlanır.</small>
+    </div>
+    <div class="yn-alan">
+      <label for="content_en">İçerik (İngilizce)</label>
+      <textarea id="content_en" name="content_en" class="yn-alan__icerik"
+                rows="8">{{ deger.content_en }}</textarea>
+    </div>
+  </div>
+
+  <div class="yn-kart">
+    <h2 class="yn-kart__baslik">Yayın</h2>
+    <div class="yn-ikili">
+      <div class="yn-alan">
+        <label for="date">Tarih</label>
+        <input type="date" id="date" name="date" required value="{{ deger.date }}">
+      </div>
+      <div class="yn-alan">
+        <label for="is_published">Yayın durumu</label>
+        <select id="is_published" name="is_published">
+          <option value="1" {{ 'selected' if deger.is_published == '1' }}>Yayında</option>
+          <option value="0" {{ 'selected' if deger.is_published == '0' }}>Taslak</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="yn-alan">
+      <label for="gorsel">Görsel</label>
+      <input type="file" id="gorsel" name="gorsel" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+      <small>jpg, jpeg, png veya webp. Yüklenmezse sitede varsayılan yer tutucu görünür.</small>
+      {%- if deger.image %}
+      <img id="gorsel-onizleme" class="yn-form__onizleme"
+           src="{{ url_for('static', filename=deger.image) }}" alt="">
+      {%- else %}
+      <img id="gorsel-onizleme" class="yn-form__onizleme" alt="" hidden>
+      {%- endif %}
+    </div>
+  </div>
+
+  <div class="yn-eylemler">
+    <button type="submit" class="yn-dugme yn-dugme--birincil">Kaydet</button>
+    <a href="{{ url_for('admin.news_list') }}" class="yn-dugme">Vazgeç</a>
+  </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var girdi = document.getElementById("gorsel");
+    var onizleme = document.getElementById("gorsel-onizleme");
+    if (!girdi || !onizleme) return;
+    girdi.addEventListener("change", function () {
+      var dosya = girdi.files && girdi.files[0];
+      if (!dosya) return;
+      onizleme.src = URL.createObjectURL(dosya);
+      onizleme.hidden = false;
+    });
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,54 @@
+/* ============================================================
+   TEMA: HABERLER
+
+   Haber sayfasi tanitim sayfalarindan kopuk gorunmesin diye ayni
+   arka plan dilini kullaniyor: TMMT fabrika fotografi + ustunde
+   acik peçe. Kendi fotografi geldiginde yalnizca asagidaki url()
+   degisir.
+   ============================================================ */
+.tk-bg--haber {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #dfe4e6 url("../../img/tmmt-bg.jpg") center center / cover no-repeat;
+}
+.tk-bg--haber::after {
+  /* Haber kartlari sayfanin her yerine yayildigi icin pece TMMT'ye
+     gore biraz daha yogun: kart kenarlari zeminden ayrilsin. */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(135% 115% at 50% 40%,
+    rgba(244, 246, 248, 0.95) 0%,
+    rgba(244, 246, 248, 0.92) 50%,
+    rgba(244, 246, 248, 0.72) 100%);
+}
+
+/* Zemin uzerindeki metin net kalsin (page-tmmt ile ayni olcu) */
+.page-haber .tk-block h1,
+.page-haber .tk-block h2 {
+  color: #14202b;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+}
+.page-haber .tk-block > p {
+  color: #23292f;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.65);
+}
+
+/* Kartlar: beyaz + mavi-gri golge, tanitim sayfalarindaki gibi */
+.page-haber .tk-news-card {
+  border-color: #dfe4e8;
+  box-shadow: 0 14px 34px rgba(20, 40, 60, 0.14);
+}
+.page-haber .tk-news-card:hover {
+  box-shadow: 0 22px 46px rgba(20, 40, 60, 0.22);
+}
+
+/* Detay sayfasinda metin bloklari zemin uzerinde okunakli kalsin */
+.page-haber .tk-news-article__body p,
+.page-haber .tk-news-article__meta {
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+.page-haber .tk-news-article__figure {
+  box-shadow: 0 14px 34px rgba(20, 40, 60, 0.14);
+}

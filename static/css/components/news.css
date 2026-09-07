@@ -1,0 +1,242 @@
+/* ============================================================
+   HABER LISTESI  --  ikili kart izgarasi
+
+   Kart yuzeyi sitenin geri kalaniyla ayni dili konusuyor: beyaz
+   zemin, ince cerceve, ustte 3px kirmizi vurgu (bkz. card.css).
+   Buradaki fark yalnizca ic yerlesim -- gorsel kartin tepesinde
+   kenardan kenara oturuyor, o yuzden dolgu govdeye veriliyor.
+   ============================================================ */
+
+/* ---------- Izgara: mobil 1, tablet ve ustu 2 sutun ---------- */
+.tk-news-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 3.5vw, 24px);
+  margin-top: clamp(24px, 6vw, 36px);
+}
+
+@media (min-width: 720px) {
+  .tk-news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- Kart ---------- */
+.tk-news-card {
+  position: relative;          /* basliktaki baglantinin tiklama katmani icin */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;            /* gorsel yakinlasirken cerceveden tasmasin */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* ---------- Gorsel alani ---------- */
+.tk-news-card__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.tk-news-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+/* Gorseli girilmemis haber: bos beyazlik yerine marka yuzeyi. */
+.tk-news-card__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: var(--graphite);
+  color: rgba(255, 255, 255, 0.28);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
+  letter-spacing: 0.18em;
+}
+
+/* ---------- Govde ---------- */
+.tk-news-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;                     /* kartlar esit boyda kalsin */
+  padding: clamp(18px, 4vw, 24px);
+}
+
+/* Kategori + tarih satiri. Dar ekranda alt alta dusebilsin diye
+   sarmalayici flex; ayirici cizgi yalnizca yan yanayken anlamli
+   oldugu icin kullanilmiyor. */
+.tk-news-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin: 0 0 10px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tk-news-card__category { color: var(--accent); }
+.tk-news-card__date { color: var(--muted); }
+
+.tk-news-card__title {
+  margin: 0 0 8px;
+  font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+  line-height: 1.35;
+}
+
+.tk-news-card__title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* TIKLAMA KATMANI: kartin tamamini bu gorunmez katman kapliyor.
+   Boylece fareyle her yere tiklanabiliyor ama sayfada tek bir
+   gercek baglanti kaliyor (ekran okuyucu icin de tek hedef). */
+.tk-news-card__title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.tk-news-card__summary {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 0.93rem;
+}
+
+/* "Haberi İncele" -- gorsel isaret; gercek baglanti basliktaki.
+   Kart farkli uzunlukta ozet tasisa da hep en altta hizali dursun. */
+.tk-news-card__cta {
+  margin-top: auto;
+  align-self: flex-start;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.88rem;
+  color: var(--accent);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.tk-news-card__cta::after {
+  content: " →";
+  white-space: pre;
+}
+
+/* ---------- Etkilesim ----------
+   Olculu tutuldu: hafif yukselme, golge ve gorselde cok az
+   yakinlasma. Hareketi azaltilmis kullanicilarda base.css bu
+   gecisleri zaten kapatiyor. */
+.tk-news-card:hover {
+  transform: translateY(-3px);
+}
+
+.tk-news-card:hover .tk-news-card__image {
+  transform: scale(1.04);
+}
+
+.tk-news-card:hover .tk-news-card__cta {
+  border-bottom-color: var(--accent);
+}
+
+.tk-news-card:hover .tk-news-card__title a {
+  color: var(--accent);
+}
+
+/* Klavyeyle gezerken odak kartin tamaminda gorunsun -- gorunmez
+   tiklama katmani yuzunden baglantinin kendi cercevesi kartin
+   arkasinda kalirdi. */
+.tk-news-card:focus-within {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.tk-news-card__title a:focus-visible {
+  outline: none;
+}
+
+
+/* ============================================================
+   SAYFA CUBUGU
+
+   Yeni renk ya da yazi tipi getirmiyor: numaralar .tk-card
+   yuzeyinin kucultulmus hali, "Onceki / Sonraki" ise sitedeki
+   diger metin baglantilariyla ayni kirmizi vurgu.
+   Dokunma hedefleri 44px.
+   ============================================================ */
+.tk-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px clamp(10px, 3vw, 18px);
+  margin-top: clamp(28px, 6vw, 40px);
+  padding-top: clamp(18px, 4vw, 24px);
+  border-top: 1px solid var(--border);
+}
+
+.tk-pager__pages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.tk-pager__page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.tk-pager__page:hover,
+.tk-pager__page:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Bulunulan sayfa: baglanti degil, isaretli kutu. */
+.tk-pager__page.is-current {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.tk-pager__step {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.tk-pager__step:hover,
+.tk-pager__step:focus-visible {
+  border-bottom-color: var(--accent);
+}

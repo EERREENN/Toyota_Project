@@ -1205,6 +1205,20 @@ EN: dict[str, str] = {
     "Raporu görüntüle": "View report",
 
     # ----------------------------------------------------------
+    #  Haberler sayfasi
+    # ----------------------------------------------------------
+    "Haberler": "News",
+    "Toyota Otomotiv Sanayi Türkiye'den güncel haberler, gelişmeler ve duyurular.":
+        "News, developments and announcements from Toyota Motor Manufacturing Türkiye.",
+    "Haberi İncele": "Read the article",
+    "Tüm Haberlere Dön": "Back to all news",
+    "Henüz haber bulunmuyor.": "There are no news articles yet.",
+    "Sayfalar": "Pages",
+    "Sayfa": "Page",
+    "Önceki": "Previous",
+    "Sonraki": "Next",
+
+    # ----------------------------------------------------------
     #  Sablon arayuz metinleri
     # ----------------------------------------------------------
     "Aradığınız sayfa bulunamadı.":

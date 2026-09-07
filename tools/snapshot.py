@@ -35,6 +35,12 @@ PAGES = [
     ("global", "/global-toyota"),
     ("uretim", "/uretim-sistemi"),
     ("cevre", "/cevre"),
+    ("haberler", "/news"),
+    # Detay sablonu da kapsama girsin. Adres SU ANKI ornek habere bagli
+    # (tools/seed_news.py); ornekler gercek haberlerle degistirilirken
+    # burayi da guncelle -- yoksa anlik goruntu 404 sayfasini kaydeder,
+    # betik bunu "!! 404" diye yazar.
+    ("haber-detay", "/news/ornek-haber-basligi-uretim"),
 ]
 LANGS = ["tr", "en"]
 

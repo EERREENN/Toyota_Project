@@ -1,0 +1,87 @@
+{#
+  HABERLER SAYFASI  --  /news
+
+  Haber listesi. Dort tanitim sayfasindan farkli olarak icerigi
+  sablonda degil veritabaninda: liste degisken uzunlukta ve editorden
+  geliyor. Sablon yalnizca rotanin verdigi `haberler` (bir sayfalik
+  haber) ve `sayfalama` degiskenlerine bakiyor.
+
+  Cevrilebilir SABIT metinler {{ _('...') }} icinde; karsiliklari
+  app/ceviri.py dosyasinda. Haber metinlerinin cevirisi ise haberin
+  kendi satirinda, _tr / _en sutunlarinda (bkz. app/models.py).
+#}
+{% extends "base.html" %}
+
+{#- Bu sayfanin yukledigi stil dosyalari, sirasiyla. Tema en sonda:
+    ortak kurallari ezebilsin diye. -#}
+{% set css_files = [
+  "tokens.css",
+  "base.css",
+  "layout.css",
+  "components/card.css",
+  "components/news.css",
+  "themes/haber.css",
+] %}
+{% set aktif = 'haberler' %}
+
+{% block title %}{{ _('Haberler') }}{% endblock %}
+{% block body_class %}page-haber{% endblock %}
+
+{% block extra_head %}{#- Harici kutuphane yok. #}
+{% endblock %}
+
+{% block background %}
+{# Arka plan gorseli tema CSS'inde de tanimli; buradaki satir ici stil onu ezer. #}
+<div class="tk-bg--haber" style="background-image:url('{{ url_for('static', filename='img/tmmt-bg.jpg') }}')"
+     aria-hidden="true"></div>
+{% endblock %}
+
+{% block content %}
+<section class="tk-block">
+  <h1>{{ _('Haberler') }}</h1>
+  <p>{{ _('Toyota Otomotiv Sanayi Türkiye\'den güncel haberler, gelişmeler ve duyurular.') }}</p>
+</section>
+
+{%- if haberler %}
+<section class="tk-block">
+  <div class="tk-news-grid">
+    {%- for haber in haberler %}
+    {% include "components/news_card.html" %}
+    {%- endfor %}
+  </div>
+
+  {#- Sayfa cubugu yalnizca birden fazla sayfa varsa basilir. -#}
+  {%- if sayfalama.gerekli %}
+  <nav class="tk-pager" aria-label="{{ _('Sayfalar') }}">
+    {%- if sayfalama.onceki %}
+    <a class="tk-pager__step" rel="prev"
+       href="{{ url_for('public.news', page=sayfalama.onceki) if sayfalama.onceki > 1 else url_for('public.news') }}">&larr; {{ _('Önceki') }}</a>
+    {%- endif %}
+
+    <span class="tk-pager__pages">
+      {%- for no in sayfalama.numaralar %}
+      {%- if no == sayfalama.sayfa %}
+      <span class="tk-pager__page is-current" aria-current="page">{{ no }}</span>
+      {%- else %}
+      <a class="tk-pager__page" aria-label="{{ _('Sayfa') }} {{ no }}"
+         href="{{ url_for('public.news', page=no) if no > 1 else url_for('public.news') }}">{{ no }}</a>
+      {%- endif %}
+      {%- endfor %}
+    </span>
+
+    {%- if sayfalama.sonraki %}
+    <a class="tk-pager__step" rel="next"
+       href="{{ url_for('public.news', page=sayfalama.sonraki) }}">{{ _('Sonraki') }} &rarr;</a>
+    {%- endif %}
+  </nav>
+  {%- endif %}
+</section>
+{%- else %}
+<section class="tk-block">
+  <p class="tk-note">{{ _('Henüz haber bulunmuyor.') }}</p>
+</section>
+{%- endif %}
+{% endblock %}
+
+{% block vendor_scripts %}{#- Harici kutuphane yok. #}
+{% endblock %}

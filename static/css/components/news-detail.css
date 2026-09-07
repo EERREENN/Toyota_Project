@@ -1,0 +1,112 @@
+/* ============================================================
+   HABER DETAY SAYFASI
+
+   Tek sutunlu okuma duzeni. Yeni renk ya da yazi tipi getirmiyor;
+   olculer sayfanin geri kalaniyla ayni degiskenlerden geliyor.
+   ============================================================ */
+.tk-news-article {
+  max-width: 760px;            /* uzun metin satiri okunakli kalsin */
+}
+
+/* ---------- Ust kirinti: "Haberler" ---------- */
+.tk-news-article__breadcrumb {
+  margin: 0 0 clamp(14px, 3vw, 20px);
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tk-news-article__breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.tk-news-article__breadcrumb a:hover,
+.tk-news-article__breadcrumb a:focus-visible {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ---------- Kategori + tarih ---------- */
+.tk-news-article__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin: 0 0 10px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tk-news-article__category { color: var(--accent); }
+.tk-news-article__date { color: var(--muted); }
+
+/* ---------- Baslik ---------- */
+.tk-news-article__title {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  margin: 0 0 clamp(18px, 4vw, 26px);
+}
+
+/* ---------- Buyuk gorsel ---------- */
+.tk-news-article__figure {
+  margin: 0 0 clamp(20px, 5vw, 30px);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.tk-news-article__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- Metin ---------- */
+/* white-space: pre-line -> paragraf ICINDEKI tek satir sonlari
+   ekranda satir sonu olarak gorunur. Bos satirlar zaten sunucuda
+   ayri paragraflara bolunuyor (app/haberler.py -> _paragraflar).
+   Boylece haber metni HTML olarak degil DUZ METIN olarak basiliyor;
+   icerige etiket sizmasi mumkun degil. */
+.tk-news-article__body p {
+  margin: 0 0 1em;
+  max-width: 68ch;
+  white-space: pre-line;
+}
+
+.tk-news-article__body p:last-child { margin-bottom: 0; }
+
+/* Ozet: metnin girisi -- bir tik buyuk ve koyu. */
+.tk-news-article__lede {
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+/* ---------- Geri donus ---------- */
+.tk-news-article__back {
+  margin: clamp(28px, 6vw, 40px) 0 0;
+  padding-top: clamp(18px, 4vw, 24px);
+  border-top: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+
+.tk-news-article__back a {
+  display: inline-block;
+  min-height: 44px;            /* dokunma hedefi */
+  line-height: 44px;
+  font-family: var(--display);
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.tk-news-article__back a:hover,
+.tk-news-article__back a:focus-visible {
+  border-bottom-color: var(--accent);
+}

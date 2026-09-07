@@ -1,4 +1,7 @@
 Flask>=3.0
 python-dotenv>=1.0
+# Haberler icin (dort tanitim sayfasi veritabani kullanmaz):
+Flask-SQLAlchemy>=3.1
+SQLAlchemy>=2.0
 # Yayin icin (Windows'ta waitress, Linux'ta gunicorn):
 waitress>=3.0

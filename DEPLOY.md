@@ -3,8 +3,9 @@
 Siteyi kendi bilgisayarından çıkarıp internete koyarken sırayla bunları yap.
 Atlanması en tehlikeli olanlar **kalın** yazıldı.
 
-Site statik içerikle çalışır: **veritabanı yok, yönetim paneli yok, kurulum
-adımı yok.** Kod neyse yayındaki site odur.
+Dört tanıtım sayfası statik içerikle çalışır: **veritabanı gerektirmez.**
+Yalnızca haberler bir SQLite dosyasından gelir; o dosya yoksa uygulama ilk
+açılışta kendisi oluşturur, ayrı bir kurulum adımı yoktur.
 
 ---
 
@@ -17,9 +18,16 @@ python -m venv venv
 venv/bin/pip install -r requirements.txt
 ```
 
-Bu kadar. Ayrıca içerik oluşturmak, veritabanı taşımak ya da bir betik
-çalıştırmak gerekmez — sayfaların tamamı `templates/pages/` altındaki
-Jinja şablonlarında.
+Tanıtım sayfaları için başka bir şey gerekmez — içerikleri
+`templates/pages/` altındaki Jinja şablonlarında.
+
+Haber veritabanı (`instance/news.db`) **git'e girmez**. Sunucuda ilk kez
+kuruyorsan ya kendi bilgisayarındaki dosyayı kopyala ya da örnek
+haberlerle başlat:
+
+```bash
+venv/bin/python tools/seed_news.py
+```
 
 ---
 
@@ -80,8 +88,9 @@ venv/bin/gunicorn -b 127.0.0.1:8000 "app:create_app()"
 venv\Scripts\waitress-serve --port=8000 "app:create_app()"
 ```
 
-Yazılacak bir durum olmadığı için işçi sayısı serbesttir; birden fazla işçi
-çalıştırabilirsin.
+Şu an çalışma zamanında veritabanına yazan bir şey yok (haberler yalnızca
+okunuyor), bu yüzden işçi sayısı serbest. Yönetim paneli eklendiğinde
+SQLite'ın tek yazıcı kuralı yüzünden `-w 1`'e dönmek gerekecek.
 
 Sistem servisi olarak kur (systemd örneği):
 
@@ -104,8 +113,17 @@ WantedBy=multi-user.target
 
 ## 5. Yedekleme
 
-Yedeklenecek ayrı bir veri yok: içerik ve görseller depoda duruyor, dolayısıyla
-**git deposunun kendisi yedektir.**
+Tanıtım sayfalarının içeriği ve görseller depoda duruyor — orası için
+**git deposunun kendisi yedektir.** Depoda olmayan tek şey haber
+veritabanı:
+
+```
+instance/news.db     ← haberler
+```
+
+```bash
+0 3 * * * cd /srv/toyota_project && cp instance/news.db /yedek/news-$(date +\%F).db
+```
 
 `FLASK_SECRET_KEY`'i bir yere not et — değişirse ziyaretçilerin seçtiği dil
 sıfırlanır (kalıcı `lang` çerezi yine de tutar).
@@ -119,7 +137,8 @@ curl -I https://toyota.example.com/                    # 200, HTTPS
 curl     https://toyota.example.com/robots.txt
 ```
 
-- Dört sayfa da açılıyor: `/tmmt`, `/global-toyota`, `/uretim-sistemi`, `/cevre`
+- Beş sayfa da açılıyor: `/tmmt`, `/global-toyota`, `/uretim-sistemi`,
+  `/cevre`, `/news`
 - TR/EN geçişi çalışıyor, sayfayı yenileyince seçim korunuyor
 - Harita, CO2 hesaplayıcı ve sözlük araması çalışıyor
 - Dar pencerede hamburger menü açılıyor
@@ -140,5 +159,6 @@ karşılığını oraya da yaz, yoksa İngilizce sayfada Türkçe görünür.
 |---|---|
 | Metin/rakam güncellemesi | İlgili `templates/pages/*.html` dosyasını düzenle |
 | Yeni İngilizce karşılık | `app/ceviri.py` içine ekle |
+| Haberleri görme | `python tools/seed_news.py --liste` |
 | Değişiklik sonrası kontrol | `python tools/kontrol.py` |
 | Sayfa çıktısı karşılaştırma | `python tools/snapshot.py before` → değiştir → `... diff` |

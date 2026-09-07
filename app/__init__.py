@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Toyota tanitim sitesi -- 4 sayfa, statik icerik, veritabani yok."""
+"""Toyota tanitim sitesi."""
 
 from __future__ import annotations
 

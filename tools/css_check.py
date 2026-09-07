@@ -155,7 +155,7 @@ def bildirim_donustur(bildirim: str) -> str:
 # Panelin CSS'i sitenin degil: anlik goruntulerde panel HTML'i yok,
 # o yuzden kapsam kontrolunde disarida tutulur (yoksa butun yn-*
 # siniflari "kullanilmiyor" gorunur).
-PANEL_CSS = {"admin.css"}
+PANEL_CSS = {"admin.css", "admin-news.css"}
 
 
 def yeni_dosyalar(panel_dahil: bool = True) -> list[Path]:

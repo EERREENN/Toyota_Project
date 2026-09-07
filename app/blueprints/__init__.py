@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-"""Rotalar. Tek blueprint var: public (sitenin kendisi)."""
+"""Rotalar: public (site) ve admin (panel)."""

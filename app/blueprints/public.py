@@ -9,6 +9,8 @@ sorgusu ya da blok cozumleme yok:
     /global-toyota    -> pages/global.html
     /uretim-sistemi   -> pages/tps.html
     /cevre            -> pages/cevre.html
+    /news             -> pages/news.html          (haber listesi, ?page=N)
+    /news/<slug>      -> pages/news_detail.html   (haber detayi)
 
 Sayfanin basligi, stil dosyalari ve icerigi sablonun kendi icinde
 tanimli; buraya yalnizca adres bilgisi dusuyor.
@@ -19,6 +21,7 @@ from __future__ import annotations
 from flask import (
     Blueprint,
     Response,
+    abort,
     current_app,
     make_response,
     redirect,
@@ -28,7 +31,9 @@ from flask import (
     url_for,
 )
 
+from .. import haberler
 from ..i18n import get_locale
+from ..metin import tarih_metni
 
 bp = Blueprint("public", __name__)
 
@@ -70,6 +75,43 @@ def uretim_sistemi():
 @bp.route("/cevre")
 def cevre():
     return render_template("pages/cevre.html")
+
+
+# ------------------------------------------------------------
+#  Haberler
+#
+#  Dort tanitim sayfasindan farkli olarak icerik sablonda degil
+#  veritabaninda; cunku haber listesi degisken uzunlukta ve
+#  editorden geliyor. Sorgular app/haberler.py icinde; buradaki
+#  rotalar veritabanini dogrudan gormez.
+# ------------------------------------------------------------
+@bp.route("/news")
+def news():
+    dil = get_locale()
+    # Olmayan bir sayfa numarasi istendiginde bos liste yerine 404:
+    # /news?page=99 gecerli bir adres degil.
+    sayfalama = haberler.sayfa_getir(dil, request.args.get("page"))
+    if sayfalama is None:
+        abort(404)
+    return render_template(
+        "pages/news.html",
+        sayfalama=sayfalama,
+        haberler=sayfalama.haberler,
+        tarih=lambda iso: tarih_metni(iso, dil),
+    )
+
+
+@bp.route("/news/<slug>")
+def news_detail(slug: str):
+    dil = get_locale()
+    haber = haberler.bul(slug, dil)
+    if haber is None:
+        abort(404)
+    return render_template(
+        "pages/news_detail.html",
+        haber=haber,
+        tarih=lambda iso: tarih_metni(iso, dil),
+    )
 
 
 # ------------------------------------------------------------

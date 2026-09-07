@@ -1,0 +1,75 @@
+{% extends "admin/base.html" %}
+{% block title %}Haberler{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin-news.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1 class="yn-baslik">Haberler</h1>
+<p class="yn-aciklama">
+  Sitede yalnızca <strong>yayında</strong> olanlar görünür. Taslaklar
+  listede kalır, ziyaretçi görmez.
+</p>
+
+<div class="yn-eylemler">
+  <a href="{{ url_for('admin.news_new') }}" class="yn-dugme yn-dugme--birincil">Yeni Haber Ekle</a>
+</div>
+
+{%- if haberler %}
+<div class="yn-tablo-sarici">
+  <table class="yn-tablo">
+    <thead>
+      <tr>
+        <th>Görsel</th>
+        <th>Başlık</th>
+        <th>Kategori</th>
+        <th>Tarih</th>
+        <th>Durum</th>
+        <th>İşlemler</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for haber in haberler %}
+      <tr class="{{ 'yn-satir--taslak' if not haber.is_published }}">
+        <td>
+          {%- if haber.image %}
+          <img class="yn-tablo__gorsel"
+               src="{{ url_for('static', filename=haber.image) }}"
+               alt="">
+          {%- else %}
+          <span class="yn-tablo__placeholder">TOYOTA</span>
+          {%- endif %}
+        </td>
+        <td class="yn-tablo__baslik">{{ haber.title_tr }}</td>
+        <td>{{ haber.category_tr or "—" }}</td>
+        <td>
+          <time datetime="{{ haber.date.isoformat() }}">{{ tarih(haber.date.isoformat()) }}</time>
+        </td>
+        <td>
+          {%- if haber.is_published %}
+          <span class="yn-rozet yn-rozet--yayinda">Yayında</span>
+          {%- else %}
+          <span class="yn-rozet yn-rozet--taslak">Taslak</span>
+          {%- endif %}
+        </td>
+        <td>
+          <div class="yn-tablo__islem">
+            <a class="yn-dugme" href="{{ url_for('admin.news_edit', haber_id=haber.id) }}">Düzenle</a>
+            <form method="post"
+                  action="{{ url_for('admin.news_delete', haber_id=haber.id) }}"
+                  onsubmit="return confirm('Bu haber silinsin mi? Bu işlem geri alınamaz.');">
+              <input type="hidden" name="_csrf" value="{{ csrf }}">
+              <button type="submit" class="yn-dugme yn-dugme--tehlike">Sil</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</div>
+{%- else %}
+<p class="yn-bos">Henüz haber yok. Yeni Haber Ekle ile ilkini oluştur.</p>
+{%- endif %}
+{% endblock %}
