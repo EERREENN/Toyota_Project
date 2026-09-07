@@ -37,6 +37,14 @@
           >TOYOTA <span>yönetim</span></a
         >
         <nav class="yn-bar__menu">
+          {# Panelden duzenlenen tek sey haber bultenleri; menunun ilk
+          girisi dogrudan oraya gitsin, editor sayfa agacinda blok
+          aramasin. Rota: admin.news -> ilk acik news_list blogu. #}
+          <a
+            href="{{ url_for('admin.news') }}"
+            class="{{ 'etkin' if aktif == 'haberler' }}"
+            >Haberler</a
+          >
           <a
             href="{{ url_for('admin.pages') }}"
             class="{{ 'etkin' if aktif == 'sayfalar' }}"

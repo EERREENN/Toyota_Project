@@ -1,10 +1,13 @@
 {% extends "admin/base.html" %}
+{% import "admin/_parts.html" as p %}
 {% block title %}Sayfalar{% endblock %}
 
 {% block content %}
 <h1 class="yn-baslik">Sayfalar</h1>
 <p class="yn-aciklama">
-  Düzenlemek istediğin sayfayı seç. Yeni sayfa eklenemez, mevcut sayfalar silinemez.
+  Sayfa yapısı ve blok düzeni <strong>kilitli</strong> — buradan yalnızca
+  içeriğin ne olduğunu görebilirsin. Düzenlenebilen tek bölüm haber
+  bültenleri: <a href="{{ url_for('admin.news') }}">Haberler →</a>
 </p>
 
 <ul class="yn-liste">
@@ -14,7 +17,12 @@
       {{ sayfa.nav_label }}
       {% if not sayfa.is_published %}<span class="yn-rozet yn-rozet--pasif">yayında değil</span>{% endif %}
     </a>
-    <span class="yn-liste__bilgi">{{ sayfa.url }} · {{ sayfa.blocks|length }} blok</span>
+    {%- set acik = sayfa.blocks|rejectattr('is_locked')|list|length %}
+    <span class="yn-liste__bilgi">
+      {{ sayfa.url }} · {{ sayfa.blocks|length }} blok
+      {%- if acik %} · {{ acik }} tanesi düzenlenebilir
+      {%- else %} · {{ p.kilit_rozet() }}{% endif %}
+    </span>
     <a href="{{ sayfa.url }}" target="_blank" rel="noopener" class="yn-dugme">Gör ↗</a>
   </li>
   {% endfor %}

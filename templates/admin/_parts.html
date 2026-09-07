@@ -166,3 +166,43 @@
 {%- macro ayar_gorsel(yol, etiket, secili_id, gorseller, ipucu='') -%}
 {{ gorsel_secici('ayar__' ~ yol|replace('.', '__'), etiket, secili_id, gorseller, ipucu) }}
 {%- endmacro -%}
+
+{# ============================================================
+   PANEL KILIDI
+   Yalnizca `is_locked = False` olan bloklar duzenlenebilir.
+   Buradaki her sey GORSEL; gercek kapi app/security.py ->
+   kilit_kontrol(). Elle POST atan biri buradan degil oradan doner.
+   ============================================================ #}
+
+{# Kilitli ekranin en ustundeki aciklama bandi. #}
+{%- macro kilit_bandi(mesaj='') -%}
+<div class="yn-uyari">
+  <strong>🔒 Bu bölüm kilitli.</strong>
+  {{ mesaj or 'İçeriği görebilirsin ama değiştiremezsin. Değişiklik için geliştiriciye başvurun.' }}
+</div>
+{%- endmacro -%}
+
+{# Liste satirlarinda kucuk kilit isareti. #}
+{%- macro kilit_rozet() -%}
+<span class="yn-rozet yn-rozet--pasif" title="Bu blok panelden düzenlenemez">🔒 kilitli</span>
+{%- endmacro -%}
+
+{#
+  Salt okunur sarmalayici:  {{ p.kilit_bas(salt_okunur) }} ... {{ p.kilit_bit(salt_okunur) }}
+
+  <fieldset disabled> icindeki TUM form alanlarini tarayici duzeyinde
+  kapatir. Boylece templates/admin/fields/ altindaki 25 form ekraninin
+  tek birine bile dokunmak gerekmedi -- hepsi yerinde duruyor.
+
+  Satir ici stil: fieldset'in varsayilan cercevesi ve bosluklari panel
+  duzenini bozuyor, admin.css'e dokunmamak icin burada sifirlaniyor.
+  `min-width:0` sart -- fieldset'in varsayilan ic genislik kurali
+  izgaralari tasirir.
+#}
+{%- macro kilit_bas(acik) -%}
+{%- if acik %}<fieldset disabled style="border:0;padding:0;margin:0;min-width:0">{% endif -%}
+{%- endmacro -%}
+
+{%- macro kilit_bit(acik) -%}
+{%- if acik %}</fieldset>{% endif -%}
+{%- endmacro -%}

@@ -11,6 +11,17 @@ bozar -- ve bu test onu yakalar.
 
     python tools/panel_roundtrip.py            # tum bloklar
     python tools/panel_roundtrip.py --tip map  # sadece bir tip
+
+PANEL KILIDI
+------------
+Bloklarin cogu artik `is_locked = True` ile kapali ve kaydetme rotasi
+403 donuyor. Bu test tam olarak "kaydetmek veriyi bozuyor mu" sorusunu
+yanitladigi icin kilit onu koru koru gecersiz kilardi -- 60 blok
+denenmeden 403 alirdi ve tek regresyon guvencemiz sessizce olurdu.
+
+Bu yuzden test SURESINCE tum kilitler indirilir, bitince -- hata
+alinsa da, Ctrl+C ile kesilse de (try/finally) -- oldugu gibi geri
+konur. Testin kapsami daralmiyor: 61 blogun tamami hala deneniyor.
 """
 
 from __future__ import annotations
@@ -32,6 +43,32 @@ from app.extensions import db                      # noqa: E402
 from app.models import Block, LoginAttempt         # noqa: E402
 
 SAYFALAR = ["/", "/global-toyota", "/uretim-sistemi", "/cevre"]
+
+
+def kilitleri_indir(app) -> dict[int, bool]:
+    """Tum bloklarin kilidini gecici olarak acar; eski durumu dondurur."""
+    with app.app_context():
+        onceki = {b.id: b.is_locked for b in db.session.query(Block).all()}
+        db.session.query(Block).update({Block.is_locked: False})
+        db.session.commit()
+    kilitli = sum(1 for v in onceki.values() if v)
+    print(f"  [kilit] {kilitli} blogun kilidi test suresince indirildi")
+    return onceki
+
+
+def kilitleri_geri_al(app, onceki: dict[int, bool]) -> None:
+    """Kilitleri testten onceki haline dondurur.
+
+    finally icinden cagriliyor: test cokse de, Ctrl+C ile kesilse de
+    veritabani kilitsiz kalmamali.
+    """
+    with app.app_context():
+        for blok in db.session.query(Block).all():
+            if blok.id in onceki:
+                blok.is_locked = onceki[blok.id]
+        db.session.commit()
+    kilitli = sum(1 for v in onceki.values() if v)
+    print(f"  [kilit] {kilitli} blogun kilidi geri kondu")
 
 
 def form_verisi(html: str, form_id: str) -> list[tuple[str, str]]:
@@ -91,6 +128,17 @@ def main() -> int:
     a = ayrist.parse_args()
 
     app = create_app()
+
+    # Kilit testin kendisini engellemesin (bkz. modul aciklamasi).
+    onceki_kilitler = kilitleri_indir(app)
+    try:
+        return _gidis_donus(app, a)
+    finally:
+        kilitleri_geri_al(app, onceki_kilitler)
+
+
+def _gidis_donus(app, a) -> int:
+    """Asil test: her blogu ac, degistirmeden kaydet, ciktiyi karsilastir."""
     yol_onek = app.config["ADMIN_PATH"]
 
     # ceviri icin aga cikma -- deterministik olsun

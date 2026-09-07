@@ -67,6 +67,17 @@ SITE_AYARLARI = {
 
 
 # ============================================================
+#  PANELDEN DUZENLENEBILIR BLOK TIPLERI
+#
+#  Buranin disindaki her tip `is_locked=True` ile kurulur ve panelde
+#  salt okunur gorunur. Yeni bir tipi acmak = bu listeye eklemek.
+#  Ayni liste tools/kilit_ekle.py icinde de var (ACIK_TIPLER); mevcut
+#  bir veritabanini gocuren betik odur.
+# ============================================================
+ACIK_BLOK_TIPLERI = ("news_list",)
+
+
+# ============================================================
 #  GORSELLER  (static/img/ -- projeyle gelen, panelden silinemez)
 # ============================================================
 GORSELLER = [
@@ -2282,6 +2293,11 @@ class Yazici:
             position=sira,
             type=tip,
             is_visible=veri.get("is_visible", True),
+            # PANEL KILIDI -- sifirdan kurulan veritabani da dogru
+            # durumda gelsin diye. Yalnizca haber bloklari panelden
+            # duzenlenebilir; digerleri salt okunur.
+            # (Mevcut veritabanina uygulamak icin: tools/kilit_ekle.py)
+            is_locked=(tip not in ACIK_BLOK_TIPLERI),
             anchor=veri.get("anchor"),
             heading=veri.get("heading"),
             heading_level=veri.get("heading_level", 2),

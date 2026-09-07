@@ -157,6 +157,21 @@ def dom_normalize(kaynak: str) -> list[str]:
     return satirlar
 
 
+def yazdirilabilir(metin: str) -> str:
+    """Konsolun kaldiramadigi karakterleri temizler.
+
+    Windows konsolu cp1254 ile aciliyor; sayfa metninde ise ok
+    isareti (U+2192) gibi karakterler var. Farki dogrudan print
+    etmek UnicodeEncodeError veriyordu -- yani FARK BULUNAN her
+    calistirmada betik, farki gostermek yerine cokuyordu. Rapor
+    okunabilir kalsin diye konsolun kodlamasina indirgiyoruz.
+    """
+    kodlama = sys.stdout.encoding or "utf-8"
+    return metin.encode(kodlama, errors="replace").decode(
+        kodlama, errors="replace"
+    )
+
+
 def diff(sadece_metin: bool, dom: bool = False) -> int:
     onceki, sonraki = SNAP_DIR / "before", SNAP_DIR / "after"
     if not onceki.exists() or not sonraki.exists():
@@ -184,7 +199,7 @@ def diff(sadece_metin: bool, dom: bool = False) -> int:
             fark = list(difflib.unified_diff(a, b, f"before/{dosya}", f"after/{dosya}", lineterm=""))
             if fark:
                 toplam_fark += 1
-                print("\n".join(fark))
+                print(yazdirilabilir("\n".join(fark)))
                 print()
             else:
                 print(f"[ayni] {dosya}")

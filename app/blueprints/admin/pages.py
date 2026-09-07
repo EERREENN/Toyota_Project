@@ -7,7 +7,7 @@ mevcut 4 sayfanin ayarlari ve blok listesi var.
 
 from __future__ import annotations
 
-from flask import flash, redirect, render_template, request, url_for
+from flask import abort, flash, redirect, render_template, request, url_for
 from sqlalchemy import select
 
 from ... import media, security, translation_sync
@@ -44,6 +44,14 @@ def page_edit(sayfa_id: int):
         return redirect(url_for("admin.pages"))
 
     if request.method == "POST":
+        # KAPALI. Sayfa basligi, menu adi, sirasi, arka plani ve yayin
+        # durumu sitenin genel duzenidir -- kilidin amaci tam olarak
+        # bunlarin kazayla degismesini engellemek.
+        # GET acik kalir: editor ayarlari GOREBILIR, degistiremez.
+        # Asagidaki kod BILEREK duruyor; yeniden acmak bu satiri
+        # silmekten ibaret olsun diye.
+        abort(403)
+
         security.csrf_dogrula()
         baslik = _oku(request.form, "title", METIN)
         menu = _oku(request.form, "nav_label", METIN)
@@ -69,6 +77,9 @@ def page_edit(sayfa_id: int):
         "admin/page_edit.html",
         sayfa=sayfa,
         gorseller=media.listele(),
+        # Sayfa ayarlari ve blok duzeni tamamen kapali; ekran yalnizca
+        # gorunturler. Bloklarin kendi kilidi `blok.is_locked`.
+        salt_okunur=True,
         tip_adi={t: v["label"] for t, v in BLOCK_TYPES.items()},
         aktif="sayfalar",
         oturum_acik=True,

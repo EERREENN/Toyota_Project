@@ -167,6 +167,21 @@ class Block(db.Model):
     type: Mapped[str] = mapped_column(String(32), nullable=False)
     is_visible: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
 
+    # PANEL KILIDI
+    #   True  -> panelden duzenlenemez, salt okunur gosterilir
+    #   False -> panelden duzenlenebilir
+    #
+    # Varsayilan True: yeni bir blok tipi eklendiginde otomatik olarak
+    # KAPALI gelir. Acmak bilincli bir karar olmali.
+    #
+    # Bu kilit KOTU NIYETE degil KAZAYA karsi. Panelin tek ortak sifresini
+    # bilen kisi zaten veritabanina da erisebilir; amac iyi niyetli bir
+    # editorun yanlislikla TPS diyagramini ya da hesaplayici katsayilarini
+    # bozmasini engellemek.
+    #
+    # Tek blogu acmak icin:  UPDATE block SET is_locked = 0 WHERE id = ?
+    is_locked: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+
     # --- her blokta ortak alanlar ---
     anchor: Mapped[str | None] = mapped_column(String(64))
     heading: Mapped[str | None] = mapped_column(String(255))

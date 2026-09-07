@@ -11,11 +11,17 @@
 <h1 class="yn-baslik">{{ tip.label }}</h1>
 <p class="yn-aciklama">{{ tip.description }}</p>
 
+{% if salt_okunur %}
+{{ p.kilit_bandi('Bu blok panelden düzenlenemiyor; aşağıdaki alanlar yalnızca
+   içeriğin ne olduğunu göstermek için burada. Değişiklik için geliştiriciye
+   başvurun.') }}
+{% else %}
 <div class="yn-uyari">
   Burada <strong>Türkçe</strong> içeriği düzenliyorsun. Kaydettiğinde
   İngilizcesi otomatik üretilir; elle düzelttiğin çeviriler korunur.
   <a href="{{ url_for('admin.block_translations', blok_id=blok.id) }}">İngilizce çevirileri gözden geçir →</a>
 </div>
+{% endif %}
 
 {% if blok.settings.get('panel_note') %}
 <div class="yn-uyari">
@@ -25,6 +31,9 @@
 
 <form method="post" class="yn-form" id="blok-form">
   <input type="hidden" name="_csrf" value="{{ csrf }}">
+  {#- Kilitliyse formun TAMAMI tarayici duzeyinde kapanir; tipe ozel
+      25 alan sablonunun hicbirine dokunmak gerekmedi. -#}
+  {{ p.kilit_bas(salt_okunur) }}
 
   {# ---------- Her blokta ortak alanlar ---------- #}
   {% if tip.uses_heading %}
@@ -90,21 +99,28 @@
     </div>
   </div>
 
+  {{ p.kilit_bit(salt_okunur) }}
+
   <div class="yn-eylemler">
+    {% if not salt_okunur %}
     <button type="submit" class="yn-dugme yn-dugme--birincil">Kaydet</button>
+    {% endif %}
     <a href="{{ url_for('admin.block_translations', blok_id=blok.id) }}" class="yn-dugme">İngilizce çeviriler</a>
     <a href="{{ url_for('admin.page_edit', sayfa_id=sayfa.id) }}" class="yn-dugme">Vazgeç</a>
     <a href="{{ sayfa.url }}" target="_blank" rel="noopener" class="yn-dugme">Sayfayı gör ↗</a>
   </div>
 </form>
 
-{# Silme ayri form: kaydet dugmesiyle karismasin #}
+{# Silme ayri form: kaydet dugmesiyle karismasin.
+   Kilitli blokta hic basilmaz -- rota da zaten 403 doner. #}
+{% if not salt_okunur %}
 <form method="post" action="{{ url_for('admin.block_delete', blok_id=blok.id) }}"
       class="yn-sil-form"
       onsubmit="return confirm('Bu blok ve içindeki her şey silinecek. Emin misin?');">
   <input type="hidden" name="_csrf" value="{{ csrf }}">
   <button type="submit" class="yn-dugme yn-dugme--tehlike">Bu bloğu sil</button>
 </form>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}

@@ -1,9 +1,18 @@
 # -*- coding: utf-8 -*-
-"""Gorsel kutuphanesi ekrani."""
+"""Gorsel kutuphanesi ekrani.
+
+TUM YAZMA ROTALARI KAPALI. Panelden duzenlenen tek sey haber
+bultenleridir ve bultenlerde gorsel yok; dolayisiyla yukleme, silme ve
+alt metni degistirme gerekmiyor. Ekranin kendisi (GET) acik kalir --
+editor kutuphanede ne oldugunu gorebilir.
+
+Kodun tamami BILEREK duruyor: yeniden acmak, ilgili rotanin basindaki
+tek `abort(403)` satirini silmekten ibaret olsun diye.
+"""
 
 from __future__ import annotations
 
-from flask import flash, redirect, render_template, request, url_for
+from flask import abort, flash, redirect, render_template, request, url_for
 
 from ... import media, security, translation_sync
 from ...extensions import db
@@ -15,6 +24,8 @@ from . import bp
 @security.admin_gerekli
 def media_library():
     if request.method == "POST":
+        abort(403)                      # KAPALI -- bkz. modul aciklamasi
+
         security.csrf_dogrula()
         try:
             varlik = media.yukle(
@@ -34,6 +45,7 @@ def media_library():
     return render_template(
         "admin/media.html",
         gorseller=gorseller,
+        salt_okunur=True,
         kullanim={g.id: media.kullanim_sayisi(g) for g in gorseller},
         boyut=media.boyut_metni,
         aktif="gorseller",
@@ -45,6 +57,8 @@ def media_library():
 @bp.route("/gorsel/<int:gorsel_id>/sil", methods=["POST"])
 @security.admin_gerekli
 def media_delete(gorsel_id: int):
+    abort(403)                          # KAPALI -- bkz. modul aciklamasi
+
     security.csrf_dogrula()
     varlik = db.session.get(MediaAsset, gorsel_id)
     if varlik is None:
@@ -65,6 +79,8 @@ def media_delete(gorsel_id: int):
 @security.admin_gerekli
 def media_alt(gorsel_id: int):
     """Gorsel aciklamasini (alt metni) guncelle."""
+    abort(403)                          # KAPALI -- bkz. modul aciklamasi
+
     security.csrf_dogrula()
     varlik = db.session.get(MediaAsset, gorsel_id)
     if varlik is None:

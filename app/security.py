@@ -26,7 +26,7 @@ from flask import abort, current_app, redirect, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .extensions import db
-from .models import LoginAttempt, SiteSetting, utcnow
+from .models import Block, LoginAttempt, SiteSetting, utcnow
 
 OTURUM_ANAHTARI = "admin"
 OTURUM_ZAMANI = "admin_since"
@@ -131,6 +131,27 @@ def csrf_dogrula() -> None:
     gelen = request.form.get("_csrf", "")
     if not beklenen or not hmac.compare_digest(str(beklenen), str(gelen)):
         abort(400, "Form dogrulamasi basarisiz. Sayfayi yenileyip tekrar dene.")
+
+
+# ============================================================
+#  BLOK KILIDI
+#
+#  Panel 25 blok tipini de duzenlemeye aciyordu; bu genis bir hata
+#  yuzeyiydi. Artik yalnizca `is_locked = False` olan bloklar
+#  yazilabilir (bugun: haber bloklari).
+#
+#  BU FONKSIYON GERCEK KAPIDIR. Sablon tarafinda dugmeyi gizlemek
+#  yalnizca gorseldir -- gecerli oturum ve gecerli CSRF token'i ile
+#  elle POST atan biri onu asar, burayi asamaz. Bu yuzden kontrol
+#  HER YAZMA ROTASININ ICINDE olmali.
+#
+#  Kilit kotu niyete degil KAZAYA karsi: sifreyi bilen zaten
+#  veritabanina da erisebilir.
+# ============================================================
+def kilit_kontrol(blok: Block) -> None:
+    """Kilitli bloga yazma girisimini 403 ile reddeder."""
+    if blok.is_locked:
+        abort(403)
 
 
 # ============================================================

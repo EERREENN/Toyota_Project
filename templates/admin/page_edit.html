@@ -10,10 +10,17 @@
   <a href="{{ sayfa.url }}" target="_blank" rel="noopener">Sayfayı gör ↗</a>
 </p>
 
+{% if salt_okunur %}
+{{ p.kilit_bandi('Sayfa ayarları ve blok düzeni panelden değiştirilemiyor.
+   Düzenlenebilen tek şey haber bültenleri — üst menüdeki
+   “Haberler”den ulaşabilirsin.') }}
+{% endif %}
+
 <div class="yn-kart">
   <h2 class="yn-kart__baslik">Sayfa ayarları</h2>
   <form method="post" class="yn-form">
     <input type="hidden" name="_csrf" value="{{ csrf }}">
+    {{ p.kilit_bas(salt_okunur) }}
     <div class="yn-alan">
       <label for="title">Tarayıcı sekmesinde görünen başlık</label>
       <input type="text" id="title" name="title" value="{{ sayfa.title }}" required>
@@ -37,20 +44,32 @@
       </label>
       <small>İşareti kaldırırsan sayfa siteden ve menüden kalkar.</small>
     </div>
+    {{ p.kilit_bit(salt_okunur) }}
+    {% if not salt_okunur %}
     <button type="submit" class="yn-dugme yn-dugme--birincil">Kaydet</button>
+    {% endif %}
   </form>
 </div>
 
 <div class="yn-kart">
   <div class="yn-kart__ust">
     <h2 class="yn-kart__baslik">Bloklar</h2>
+    {% if not salt_okunur %}
     <a href="{{ url_for('admin.block_new', sayfa_id=sayfa.id) }}"
        class="yn-dugme yn-dugme--birincil">+ Blok ekle</a>
+    {% endif %}
   </div>
+  {% if salt_okunur %}
+  <p class="yn-tekrar__aciklama">
+    Blok eklemek, silmek ve sıralamak kapalı. Kilitli olmayan blokları
+    “Düzenle” ile açabilirsin.
+  </p>
+  {% else %}
   <p class="yn-tekrar__aciklama">
     Sıralamayı değiştirmek için satırı ⠿ tutamağından sürükle, sonra
     “Sırayı kaydet”e bas.
   </p>
+  {% endif %}
 
   <form method="post" action="{{ url_for('admin.block_reorder', sayfa_id=sayfa.id) }}"
         class="yn-bloklar" id="blok-sira-form">
@@ -60,11 +79,14 @@
     <div class="yn-bloklar__liste" id="blok-liste">
       {% for blok in sayfa.blocks %}
       <div class="yn-blok" data-id="{{ blok.id }}">
+        {% if not salt_okunur %}
         <span class="yn-blok__tut" draggable="true" title="Sürükleyerek sırala">⠿</span>
+        {% endif %}
         <span class="yn-blok__no">{{ loop.index }}</span>
         <span class="yn-blok__ad">
           {{ tip_adi.get(blok.type, blok.type) }}
           {% if not blok.is_visible %}<span class="yn-rozet yn-rozet--pasif">gizli</span>{% endif %}
+          {% if blok.is_locked %}{{ p.kilit_rozet() }}{% endif %}
         </span>
         <span class="yn-blok__baslik">{{ blok.heading or '—' }}</span>
         <a href="{{ url_for('admin.block_edit', blok_id=blok.id) }}" class="yn-dugme">Düzenle</a>
@@ -75,7 +97,7 @@
       {% endfor %}
     </div>
 
-    {% if sayfa.blocks %}
+    {% if sayfa.blocks and not salt_okunur %}
     <button type="submit" class="yn-dugme">Sırayı kaydet</button>
     {% endif %}
   </form>

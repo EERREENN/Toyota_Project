@@ -35,6 +35,20 @@ ADIMLAR = [
 ]
 
 
+def yazdirilabilir(satir: str) -> str:
+    """Konsolun kaldiramadigi karakterleri temizler.
+
+    Windows konsolu cp1254 ile aciliyor; alt betiklerin ciktisi ise
+    UTF-8 okunup errors="replace" ile yakalandigi icin icinde U+FFFD
+    bulunabiliyor. Bunu dogrudan print etmek UnicodeEncodeError veriyor
+    ve BASARISIZ bir adimin raporu, sorunun kendisi yerine bir
+    traceback'e donusuyordu. Rapor okunabilir kalsin diye burada
+    konsolun kodlamasina indirgiyoruz.
+    """
+    kodlama = sys.stdout.encoding or "utf-8"
+    return satir.encode(kodlama, errors="replace").decode(kodlama, errors="replace")
+
+
 def calistir(betik: list[str]) -> tuple[int, str]:
     sonuc = subprocess.run(
         [PY] + betik,
@@ -69,13 +83,13 @@ def main() -> int:
         if kod == 0:
             ozet = [s for s in cikti.splitlines() if "SONUC" in s or "farki olan" in s]
             for s in ozet[-2:]:
-                print(f"        {s.strip()}")
+                print(f"        {yazdirilabilir(s.strip())}")
             print("        >> GECTI")
         else:
             basarisiz.append(ad)
             print("        >> BASARISIZ")
             for s in cikti.splitlines()[-25:]:
-                print(f"        | {s}")
+                print(f"        | {yazdirilabilir(s)}")
 
     print()
     print("=" * 64)

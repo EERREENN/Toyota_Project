@@ -278,7 +278,12 @@ def _ekran(blok: Block, **ekstra):
         sayfa=blok.page,
         tip=BLOCK_TYPES[blok.type],
         gorseller=media.listele(),
-        aktif="sayfalar",
+        # Kilitli blok GORUNUR ama YAZILAMAZ: editor icerigin ne
+        # oldugunu gorebilsin, degistiremesin. Sablon bu bayrakla
+        # formu <fieldset disabled> icine alip Kaydet'i gizler --
+        # ama asil kapi security.kilit_kontrol().
+        salt_okunur=blok.is_locked,
+        aktif="haberler" if blok.type == "news_list" else "sayfalar",
         oturum_acik=True,
         csrf=security.csrf_token(),
         **ekstra,
@@ -295,6 +300,9 @@ def block_edit(blok_id: int):
 
     if request.method == "POST":
         security.csrf_dogrula()
+        # Kilitli bloga yazilamaz. Kontrol BURADA, cunku sablondaki
+        # gizleme elle POST atan birini durdurmaz.
+        security.kilit_kontrol(blok)
         kayit = KAYIT.get(blok.type, {"ayarlar": [], "gruplar": []})
 
         ortak_alanlari_kaydet(blok, request.form)
@@ -333,6 +341,12 @@ def block_edit(blok_id: int):
 @bp.route("/sayfa/<int:sayfa_id>/blok-ekle", methods=["GET", "POST"])
 @security.admin_gerekli
 def block_new(sayfa_id: int):
+    # KAPALI. Editor artik yeni blok EKLEYEMEZ: sayfa duzeni sabit,
+    # duzenlenen tek sey haber bloklarinin icerigi.
+    # Asagidaki kod BILEREK duruyor -- yeniden acmak bu satiri
+    # silmekten ibaret olsun diye.
+    abort(403)
+
     sayfa = db.session.get(Page, sayfa_id)
     if sayfa is None:
         abort(404)
@@ -374,6 +388,7 @@ def block_new(sayfa_id: int):
 def block_delete(blok_id: int):
     security.csrf_dogrula()
     blok = _blok_veya_404(blok_id)
+    security.kilit_kontrol(blok)
     sayfa_id = blok.page_id
     etiket = BLOCK_TYPES.get(blok.type, {}).get("label", blok.type)
 
@@ -395,6 +410,10 @@ def block_delete(blok_id: int):
 @bp.route("/sayfa/<int:sayfa_id>/sirala", methods=["POST"])
 @security.admin_gerekli
 def block_reorder(sayfa_id: int):
+    # KAPALI. Siralama sitenin duzenini degistirir; kilidin amaci tam
+    # olarak bunu engellemek. Kod BILEREK duruyor (bkz. block_new).
+    abort(403)
+
     security.csrf_dogrula()
     sayfa = db.session.get(Page, sayfa_id)
     if sayfa is None:
@@ -418,3 +437,29 @@ def block_reorder(sayfa_id: int):
     db.session.commit()
     flash("Blok sırası kaydedildi.", "ok")
     return redirect(url_for("admin.page_edit", sayfa_id=sayfa.id))
+
+
+# ============================================================
+#  Haberler kisayolu
+#
+#  Panel menusundeki "Haberler" girisi buraya gelir. Editorun sayfa
+#  agacinda gezinip haber blogunu aramasi gerekmesin diye dogrudan
+#  duzenlenebilir haber bloguna atar.
+#
+#  Birden fazla varsa menudeki sayfa sirasina, sonra blok sirasina
+#  gore ilki secilir.
+# ============================================================
+@bp.route("/haberler")
+@security.admin_gerekli
+def news():
+    blok = (
+        db.session.query(Block)
+        .join(Page)
+        .filter(Block.type == "news_list", Block.is_locked.is_(False))
+        .order_by(Page.nav_order, Block.position)
+        .first()
+    )
+    if blok is None:
+        flash("Düzenlenebilir bir haber bloğu bulunamadı.", "hata")
+        return redirect(url_for("admin.pages"))
+    return redirect(url_for("admin.block_edit", blok_id=blok.id))

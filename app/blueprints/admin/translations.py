@@ -27,6 +27,11 @@ def block_translations(blok_id: int):
 
     if request.method == "POST":
         security.csrf_dogrula()
+        # Ceviri ekrani blogun KENDI kilidini takip eder: haber
+        # bultenlerinin Ingilizcesi panelden duzeltilebilmeli, diger
+        # bloklarinki duzeltilememeli. Tek `abort(403)` yerine
+        # kilit_kontrol -- ekranin tamamen kapatilmasi istenmiyor.
+        security.kilit_kontrol(blok)
         eylem = request.form.get("eylem") or "kaydet"
 
         if eylem == "hepsini_yenile":
@@ -82,7 +87,9 @@ def block_translations(blok_id: int):
         tip=BLOCK_TYPES.get(blok.type, {"label": blok.type}),
         alanlar=translation_sync.blok_alanlari(blok),
         etiket=translation_sync.DURUM_ETIKET,
-        aktif="sayfalar",
+        # Kilitli blogun cevirileri GORUNUR ama duzenlenemez.
+        salt_okunur=blok.is_locked,
+        aktif="haberler" if blok.type == "news_list" else "sayfalar",
         oturum_acik=True,
         csrf=security.csrf_token(),
     )

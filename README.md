@@ -134,12 +134,46 @@ toyota_project/
 - Kullanıcı adı yok, tek ortak şifre. Yanlış şifre **404** döner; aynı IP'den
   5 hatalı denemeden sonra 15 dakika kilit.
 - Oturum 60 dakika sonra düşer. Şifre panelden değiştirilebilir.
-- Editör sayfa **açamaz/silemez**; blok ekleyebilir, silebilir, sürükleyerek
-  sıralayabilir.
-- **Görseller** ekranından resim yüklenir; kapak, kartlar, metin+görsel bloğu
-  ve sayfa arka planında kullanılabilir. Dosya Pillow ile gerçekten resim mi
-  diye açılıp doğrulanır, rastgele bir adla kaydedilir.
-- Her bloğun **İngilizce çeviriler** ekranı var (bkz. aşağısı).
+- **Panel yalnızca haber bültenlerine açık** (bkz. bir alttaki bölüm).
+- **Görseller** ekranı salt okunur: kütüphane görünür, yükleme/silme kapalı.
+- Her bloğun **İngilizce çeviriler** ekranı var (bkz. aşağısı); düzenlenebilir
+  olması bloğun kilidine bağlı.
+
+## Blok kilidi
+
+Panel 25 blok tipinin hepsini düzenlemeye açıktı; bu geniş bir hata yüzeyiydi
+(örneğin `tps_house` öğelerinin `slug` değeri bozulursa o parça diyagramdan
+sessizce düşer). Artık `block.is_locked = False` olan bloklar düzenlenebilir,
+diğer her şey salt okunurdur. Bugün açık olan tek tip: **`news_list`**.
+
+- Kapalı olanlar: blok ekleme, silme, sıralama; sayfa ayarları; görsel
+  yükleme/silme/alt metni. Hepsi **403** döner.
+- Açık olanlar: haber bloğunun içeriği ve İngilizce çevirileri.
+- Kilitli bloklar panelde **görünür ama yazılamaz** — form
+  `<fieldset disabled>` içine alınır, Kaydet butonu basılmaz.
+- **Asıl kapı sunucu tarafında**: `app/security.py → kilit_kontrol()`, her
+  yazma rotasının içinde. Şablondaki gizleme yalnızca görseldir; geçerli
+  oturum ve geçerli CSRF token'ı ile elle POST atan biri de 403 alır.
+- Kilit kötü niyete değil **kazaya** karşıdır: şifreyi bilen zaten
+  veritabanına da erişebilir.
+
+Mevcut bir veritabanına uygulamak (bir kez, iki kez çalıştırılabilir):
+
+```bash
+python tools/kilit_ekle.py --rapor   # yazmadan ne yapacağını göster
+python tools/kilit_ekle.py           # sütunu ekle, haber bloklarını aç
+```
+
+Başka bir bloğu açmak tek satır:
+
+```sql
+UPDATE block SET is_locked = 0 WHERE id = 42;
+```
+
+Bir **tipin tamamını** kalıcı olarak açmak için iki listeye ekle:
+`ACIK_TIPLER` (`tools/kilit_ekle.py`) ve `ACIK_BLOK_TIPLERI` (`tools/seed.py`).
+Panelin 25 form ekranı, rotalar ve şablonlar yerinde duruyor — hiçbiri
+silinmedi, yalnızca kapatıldı.
 
 ## Dil / çeviri (TR → EN)
 
@@ -166,6 +200,8 @@ python tools/css_check.py         # CSS bölünmesi kayıpsız mı
 python tools/panel_roundtrip.py   # panelden kaydetmek veri bozuyor mu
 
 python tools/kontrol.py           # ★ hepsini sırayla çalıştır
+
+python tools/kilit_ekle.py --rapor   # blok kilidi göçü — ne yapacağını göster
 
 python tools/ceviri_yenile.py --rapor   # çeviri durumu özeti
 python tools/ceviri_yenile.py           # eksik/bayat çevirileri tamamla
