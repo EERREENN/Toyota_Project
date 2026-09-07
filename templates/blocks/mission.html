@@ -1,0 +1,37 @@
+{# MISYON BANDI -- ortalanmis buyuk cumle + kisa paragraflar.
+
+   Kart DEGIL: .tk-block sarmalayicisi da kullanmiyor, kendi kabugu var
+   (stat_badge gibi). Zemini sayfanin geri kalanindan hafifce ayrilir;
+   renk paleti degismiyor, yalnizca mevcut --bg ve --border kullaniliyor.
+
+   Icerik bos ise blok hic basilmaz. #}
+{% import "blocks/_macros.html" as m with context %}
+{%- set cumle = blok.first_of('statement') %}
+{%- set paragraflar = blok.items_of('paragraph') %}
+{%- if blok.renders %}
+{#- variant "split": solda baslik + aciklama, sagda buton. Ortalanmis
+    varyanttan tek farki yerlesim; ayni kabuk, ayni renkler. -#}
+{%- set kabuk = 'tk-mission tk-mission--split' if blok.variant == 'split' else 'tk-mission' %}
+<section class="{{ m.kabuk_sinif(blok, kabuk) }}"{{ m.capa(blok) }}>
+  <div class="tk-mission__body">
+  {%- if blok.heading %}
+  <h{{ blok.heading_level }} class="tk-mission__heading">{{ blok.heading }}</h{{ blok.heading_level }}>
+  {%- endif %}
+  {%- if cumle and cumle.text %}
+  <p class="tk-mission__statement">{{ cumle.text|safe }}</p>
+  {%- endif %}
+  {%- for p in paragraflar %}
+  <p class="tk-mission__text">{{ p.text|safe }}</p>
+  {%- endfor %}
+  </div>
+  {%- set buton = blok.first_of('link') %}
+  {%- if buton and buton.url and buton.title %}
+  <p class="tk-mission__action">
+    <a class="tk-button" href="{{ buton.url }}"{% if buton.url.startswith('http') %} target="_blank" rel="noopener"{% endif %}>{{ buton.title }}</a>
+  </p>
+  {%- endif %}
+  {%- if blok.note %}
+  <p class="tk-note tk-mission__note">{{ blok.note }}</p>
+  {%- endif %}
+</section>
+{%- endif %}

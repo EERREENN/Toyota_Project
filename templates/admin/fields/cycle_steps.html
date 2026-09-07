@@ -1,0 +1,66 @@
+{# DONGUSEL AKIS -- adimlar + alt aciklama kutusu #}
+{% import "admin/_parts.html" as p %}
+
+{%- macro adim(k, o) -%}
+{{ p.satir_bas(k, 'Adım') }}
+  {{ p.metin(k, 'eyebrow', 'Sıra no', o.eyebrow if o else '',
+             'Rozette yazan numara. Boş bırakırsan sıradaki sayı yazılır.') }}
+  {{ p.metin(k, 'title', 'Adım başlığı', o.title if o else '') }}
+  {{ p.uzun(k, 'text', 'Açıklama', o.text if o else '',
+            'Kartın içinde her zaman görünür — tıklamaya gerek yok.') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+{%- macro alt_baglanti(k, o) -%}
+{{ p.satir_bas(k, 'Alttaki bağlantı') }}
+  {{ p.metin(k, 'title', 'Görünen yazı', o.title if o else '') }}
+  {{ p.metin(k, 'url', 'Adres', o.url if o else '',
+             'Site içi adres “/” ile başlar (örnek: /tmmt#phev). '
+             'https:// ile başlayanlar yeni sekmede açılır.') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+{%- macro kapanis(k, o) -%}
+{{ p.satir_bas(k, 'Açıklama kutusu') }}
+  {{ p.metin(k, 'title', 'Kutu başlığı', o.title if o else '',
+             'Boş bırakılabilir.') }}
+  {{ p.uzun(k, 'text', 'Metin', o.text if o else '') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">Görünüm</h2>
+  {{ p.ayar_secim('variant', 'Akış tipi', blok.settings.get('variant'),
+                  [('cycle', 'Döngüsel — sonda “başa döner” şeridi çıkar'),
+                   ('linear', 'Düz — soldan sağa akış, şerit yok')],
+                  'Düz bir süreçte (örnek: bataryanın ikinci hayatı) '
+                  '“başa döner” şeridi yanıltıcı olur.') }}
+</div>
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('step', 'Akış adımları', 'Adım ekle',
+                  blok.items_of('step')|map(attribute='id')|list,
+                  'Adımlar oklarla birbirine bağlanır. Geniş ekranda yan yana, '
+                  'dar ekranda alt alta görünür.') }}
+    {% for o in blok.items_of('step') %}{{ adim(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ adim('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('outro', 'Döngünün altındaki açıklama kutusu', 'Kutu ekle',
+                  blok.items_of('outro')|map(attribute='id')|list,
+                  'Beyaz kart görünümünde küçük bir kutu. Boşsa hiç görünmez.') }}
+    {% for o in blok.items_of('outro') %}{{ kapanis(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ kapanis('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('link', 'Akışın altındaki bağlantı', 'Bağlantı ekle',
+                  blok.items_of('link')|map(attribute='id')|list,
+                  'Tek satır yeter. Boşsa hiç görünmez.') }}
+    {% for o in blok.items_of('link') %}{{ alt_baglanti(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ alt_baglanti('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>

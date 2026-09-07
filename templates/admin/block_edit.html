@@ -1,0 +1,112 @@
+{% extends "admin/base.html" %}
+{% import "admin/_parts.html" as p %}
+{% block title %}{{ tip.label }}{% endblock %}
+
+{% block content %}
+<p class="yn-yol">
+  <a href="{{ url_for('admin.pages') }}">Sayfalar</a> ›
+  <a href="{{ url_for('admin.page_edit', sayfa_id=sayfa.id) }}">{{ sayfa.nav_label }}</a> ›
+  {{ tip.label }}
+</p>
+<h1 class="yn-baslik">{{ tip.label }}</h1>
+<p class="yn-aciklama">{{ tip.description }}</p>
+
+<div class="yn-uyari">
+  Burada <strong>Türkçe</strong> içeriği düzenliyorsun. Kaydettiğinde
+  İngilizcesi otomatik üretilir; elle düzelttiğin çeviriler korunur.
+  <a href="{{ url_for('admin.block_translations', blok_id=blok.id) }}">İngilizce çevirileri gözden geçir →</a>
+</div>
+
+{% if blok.settings.get('panel_note') %}
+<div class="yn-uyari">
+  <strong>Not:</strong> {{ blok.settings.get('panel_note') }}
+</div>
+{% endif %}
+
+<form method="post" class="yn-form" id="blok-form">
+  <input type="hidden" name="_csrf" value="{{ csrf }}">
+
+  {# ---------- Her blokta ortak alanlar ---------- #}
+  {% if tip.uses_heading %}
+  <div class="yn-kart">
+    <h2 class="yn-kart__baslik">Başlık ve giriş</h2>
+    <div class="yn-alan">
+      <label for="heading">Başlık</label>
+      <input type="text" id="heading" name="heading" value="{{ blok.heading or '' }}">
+      <small>Boş bırakırsan başlık hiç görünmez.</small>
+    </div>
+    <div class="yn-alan">
+      <label for="heading_level">Başlık boyutu</label>
+      <select id="heading_level" name="heading_level">
+        <option value="1"{{ ' selected' if blok.heading_level == 1 }}>Büyük (sayfa başlığı)</option>
+        <option value="2"{{ ' selected' if blok.heading_level == 2 }}>Orta (bölüm başlığı)</option>
+        <option value="3"{{ ' selected' if blok.heading_level == 3 }}>Küçük</option>
+      </select>
+    </div>
+    <div class="yn-alan">
+      <label for="intro">Giriş paragrafı</label>
+      <textarea id="intro" name="intro" rows="3">{{ blok.intro or '' }}</textarea>
+      <small>Başlığın hemen altındaki açıklama. Kalın yazmak için &lt;strong&gt;metin&lt;/strong&gt; yazabilirsin.</small>
+    </div>
+    <div class="yn-alan">
+      <label for="note">Kaynak dipnotu</label>
+      <input type="text" id="note" name="note" value="{{ blok.note or '' }}">
+      <small>Bloğun en altında küçük gri yazı olarak görünür.</small>
+    </div>
+  </div>
+  {% endif %}
+
+  {# ---------- Tipe ozel alanlar (elle yazilmis) ---------- #}
+  {% include "admin/fields/" ~ blok.type ~ ".html" %}
+
+  {# ---------- Gorunum ayarlari ---------- #}
+  <div class="yn-kart">
+    <h2 class="yn-kart__baslik">Görünüm</h2>
+    <div class="yn-alan yn-alan--onay">
+      <label>
+        <input type="checkbox" name="is_visible" value="1" {{ 'checked' if blok.is_visible }}>
+        Bu blok sitede görünsün
+      </label>
+      <small>İşareti kaldırırsan blok silinmez, sadece gizlenir.</small>
+    </div>
+    <div class="yn-alan">
+      <label for="reveal">Kaydırınca belirme animasyonu</label>
+      <select id="reveal" name="reveal">
+        <option value=""{{ ' selected' if blok.reveal is none }}>Sayfa ayarına uy</option>
+        <option value="evet"{{ ' selected' if blok.reveal is true }}>Açık</option>
+        <option value="hayir"{{ ' selected' if blok.reveal is false }}>Kapalı</option>
+      </select>
+    </div>
+    <div class="yn-alan">
+      <label for="panel_note">Panel notu (yalnızca burada görünür)</label>
+      <input type="text" id="panel_note" name="panel_note"
+             value="{{ blok.settings.get('panel_note') or '' }}">
+      <small>Bu bloğu düzenleyecek kişiye hatırlatma. Sitede görünmez.</small>
+    </div>
+    <div class="yn-alan">
+      <label for="anchor">Bağlantı adresi (#)</label>
+      <input type="text" id="anchor" name="anchor" value="{{ blok.anchor or '' }}">
+      <small>Doldurursan bu bloğa doğrudan link verilebilir. Boş bırakabilirsin.</small>
+    </div>
+  </div>
+
+  <div class="yn-eylemler">
+    <button type="submit" class="yn-dugme yn-dugme--birincil">Kaydet</button>
+    <a href="{{ url_for('admin.block_translations', blok_id=blok.id) }}" class="yn-dugme">İngilizce çeviriler</a>
+    <a href="{{ url_for('admin.page_edit', sayfa_id=sayfa.id) }}" class="yn-dugme">Vazgeç</a>
+    <a href="{{ sayfa.url }}" target="_blank" rel="noopener" class="yn-dugme">Sayfayı gör ↗</a>
+  </div>
+</form>
+
+{# Silme ayri form: kaydet dugmesiyle karismasin #}
+<form method="post" action="{{ url_for('admin.block_delete', blok_id=blok.id) }}"
+      class="yn-sil-form"
+      onsubmit="return confirm('Bu blok ve içindeki her şey silinecek. Emin misin?');">
+  <input type="hidden" name="_csrf" value="{{ csrf }}">
+  <button type="submit" class="yn-dugme yn-dugme--tehlike">Bu bloğu sil</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin/panel.js') }}"></script>
+{% endblock %}

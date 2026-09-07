@@ -1,0 +1,72 @@
+/* ============================================================
+   TEMA: Toyota ve Cevre -- dogal arka plan
+   ============================================================ */
+.tk-bg--cevre {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #eef2ec url("../../img/cevre-bg.jpg") center center / cover no-repeat;
+}
+.tk-bg--cevre::after {
+  /* okunabilirlik icin acik yesil pece: metnin oldugu orta bolge yogun,
+     kenarlar daha seffaf -> yesil doku gorunur ama yazi net kalir */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(125% 105% at 50% 45%,
+    rgba(241, 245, 239, 0.93) 0%,
+    rgba(241, 245, 239, 0.90) 45%,
+    rgba(241, 245, 239, 0.66) 100%);
+}
+
+/* Basliklar ve govde metni: koyu yesil ton */
+.page-cevre .tk-hero h1,
+.page-cevre .tk-block h1,
+.page-cevre .tk-block h2 { color: #143620; }
+.page-cevre .tk-hero__lede { color: #33463a; }
+.page-cevre .tk-block > p,
+.page-cevre .tk-block > ol > li { color: #2b3b31; }
+.page-cevre .tk-note { color: #566b5d; }
+.page-cevre .tk-timeline__detail p { color: #33463a; }
+.page-cevre .tk-timeline__title { color: #143620; }
+
+/* Kartlar: tam beyaz + yesilimsi golge + hover akisi */
+.page-cevre .tk-card,
+.page-cevre .tk-stat-grid__progress-card,
+.page-cevre .tk-chip-groups__group,
+.page-cevre .tk-card-grid__award-card,
+.page-cevre .tk-calc__result {
+  background: #ffffff;
+  border-color: #e2e6df;
+  box-shadow: 0 14px 34px rgba(20, 54, 31, 0.13);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.page-cevre .tk-card:hover,
+.page-cevre .tk-stat-grid__progress-card:hover,
+.page-cevre .tk-card-grid__award-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 46px rgba(20, 54, 31, 0.20);
+}
+
+/* Form alanlari ve harita/gorsel kutulari */
+.page-cevre .tk-calc__form {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid #e2e6df;
+  border-radius: 6px;
+  padding: clamp(14px, 3vw, 20px);
+  box-shadow: 0 10px 26px rgba(20, 54, 31, 0.10);
+}
+.page-cevre .tk-calc__field input,
+.page-cevre .tk-calc__field select { background: #ffffff; }
+.page-cevre .tk-media-split__frame {
+  background: linear-gradient(135deg, #ffffff, #eef3ea);
+  box-shadow: 0 14px 34px rgba(20, 54, 31, 0.13);
+}
+
+/* Zaman tuneli cizgisi biraz daha belirgin */
+.page-cevre .tk-timeline__button { border-color: #cdd6cc; }
+.page-cevre .tk-timeline__button::before { background: #cdd6cc; }
+
+/* Kaynaklar bloku okunakli kalsin */
+.page-cevre .tk-source-list ul { color: #445247; }
+.page-cevre .tk-source-list a { color: #143620; }

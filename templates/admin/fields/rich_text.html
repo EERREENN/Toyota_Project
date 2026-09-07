@@ -1,0 +1,18 @@
+{# METIN BLOGU -- paragraflar #}
+{% import "admin/_parts.html" as p %}
+
+{%- macro satir(k, o) -%}
+{{ p.satir_bas(k, 'Paragraf') }}
+  {{ p.uzun(k, 'text', 'Metin', o.text if o else '',
+            'Kalın için <strong>...</strong>, link için <a href="...">...</a> yazabilirsin.') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('paragraph', 'Paragraflar', 'Paragraf ekle',
+                  blok.items_of('paragraph')|map(attribute='id')|list,
+                  'Her paragraf ayrı satırdır — birleştirme, çeviriler paragraf bazında saklanıyor.') }}
+    {% for o in blok.items_of('paragraph') %}{{ satir(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ satir('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>

@@ -1,0 +1,237 @@
+/* ============================================================
+   Temel katman: sifirlama, tipografi, sayfa kabi ve butun
+   bloklarin paylastigi kucuk araclar.
+
+   RESPONSIVE KURALLARI (bundan sonraki tum isler boyle devam):
+   - Mobil oncelikli yaz: once dar ekran, sonra @media (min-width) ile buyut.
+   - Sabit px genislik/yukseklik yerine %, rem, clamp(), min(), max() kullan.
+   - Cok kolonlu yapilar: repeat(auto-fit, minmax(min(100%, Npx), 1fr)).
+   - Ana kirilim noktasi 860px (ust menu burada hamburgere doner).
+   - Gorsel / video / tablo / kod bloklari sayfayi yatay tasirmaz
+     (asagidaki global guard kurallari + .table-wrap).
+   - Dokunma hedefleri en az 44x44px.
+   ============================================================ */
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+/* menu acikken arka plan kaymasin */
+body.nav-open { overflow: hidden; }
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  margin: 0 0 0.5em;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+}
+
+/* ---------- Global guard: icerik tasmasin ---------- */
+img, video, canvas, svg, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+pre {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 16px;
+}
+
+table { border-collapse: collapse; width: 100%; }
+
+/* ============================================================
+   Sayfa kabi
+   ============================================================ */
+.page {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: clamp(32px, 6vw, 56px) var(--pad-x) clamp(56px, 12vw, 80px);
+}
+
+/* Sayfa ici baglanti hedefi (section_nav) sabit ust barin altinda
+   kalmasin: tarayici kaydirirken ustte nav yuksekligi kadar pay birakir. */
+.page > [id] {
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+
+/* Bolum menusundeki baglantilar yumusak kaysin. Hareketi azaltilmis
+   kullanicilar icin asagida (prefers-reduced-motion) kapatiliyor. */
+html { scroll-behavior: smooth; }
+
+/* ---------- Blok sarmalayicisi (eski .icerik-blok) ----------
+   Bloklarin cogu bunun icinde yasar: baslik + giris + govde. */
+.tk-block {
+  margin-top: clamp(32px, 7vw, 48px);
+}
+
+.tk-block h1 {
+  font-size: clamp(1.6rem, 5.5vw, 2rem);
+}
+
+.tk-block h2 {
+  font-size: clamp(1.25rem, 4vw, 1.4rem);
+}
+
+.tk-block p,
+.tk-block li {
+  max-width: 68ch;
+  color: var(--ink);
+}
+
+/* ---------- Paylasilan kucuk metinler ----------
+   .tk-note   : blok sonundaki kaynak dipnotu (eski .kaynak-not)
+   .tk-subnote: soluk alt not. Eski adi .milestone-sub idi ve hem
+                stat_badge hem chip_groups kullaniyordu; bir bloga
+                ait olmadigi icin paylasilan araca tasindi. */
+.tk-note {
+  margin-top: 14px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.tk-subnote {
+  width: 100%;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* .tk-gizli-metin: gorsel olarak gizli ama ekran okuyucunun okudugu
+   metin. Diyagram gibi gorsel anlatimlarin yazili karsiligi icin.
+   display:none KULLANILMAZ -- o, metni erisilebilirlik agacindan da
+   siler. */
+.tk-gizli-metin {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* .tk-button: belirgin yonlendirme butonu. Yeni renk getirmiyor --
+   mevcut kirmizi vurgu zemin, uzerinde beyaz yazi. Dokunma hedefi
+   en az 44px yuksekliginde. */
+.tk-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 12px clamp(18px, 4vw, 26px);
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.tk-button:hover {
+  background: #a60d26;
+  transform: translateY(-1px);
+}
+.tk-button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* .tk-lead: bolum BASLIGININ USTUNDE duran kisa gecis cumlesi.
+   Bir onceki bolumden koprudur, o yuzden soluk ve kucuk. */
+.tk-lead {
+  margin: 0 0 6px;
+  max-width: 68ch;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* .tk-callout: bolumun altindaki kucuk aciklama kutusu.
+   Yuzeyi .tk-card'dan geliyor (yeni kutu tipi degil); burada
+   yalnizca ust bosluk ve tipografi var. */
+.tk-callout {
+  margin-top: clamp(18px, 4vw, 24px);
+}
+.tk-callout h3 {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+.tk-callout p {
+  max-width: 74ch;
+  font-size: 0.9rem;
+}
+
+/* .tk-more-link: bir bolumun altindaki tek "devamina git" baglantisi.
+   Birden fazla blok tipi kullandigi icin burada. Yeni renk yok --
+   mevcut kirmizi vurgu. */
+.tk-more-link {
+  margin-top: clamp(18px, 4vw, 24px);
+  font-size: 0.92rem;
+}
+
+.tk-more-link a {
+  font-family: var(--display);
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.tk-more-link a:hover,
+.tk-more-link a:focus-visible {
+  border-bottom-color: var(--accent);
+}
+
+/* ---------- Kaydirdikca belirme ----------
+   .js sinifini <head>'deki satir ici script ekler: JS kapaliysa
+   icerik gizlenmesin diye. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.js .reveal.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Sayac animasyonu sirasinda genislik ziplamasin */
+.tk-stat-grid__value,
+.tk-stat-badge__value,
+.tk-stat-grid__progress-value,
+[data-count-to] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Erisilebilirlik: hareket azaltma ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  .js .reveal { opacity: 1 !important; transform: none !important; }
+  html { scroll-behavior: auto; }
+}

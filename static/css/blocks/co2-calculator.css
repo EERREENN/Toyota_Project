@@ -1,0 +1,103 @@
+/* ============================================================
+   CO2 HESAPLAYICI  (co2_calculator)
+   ============================================================ */
+.tk-calc__form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 16px;
+  margin-top: clamp(20px, 5vw, 28px);
+}
+.tk-calc__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tk-calc__field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.tk-calc__field input,
+.tk-calc__field select {
+  font: inherit;
+  min-height: 44px;
+  padding: 10px 12px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.tk-calc__field input:focus-visible,
+.tk-calc__field select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ---------- Sonuc alani ---------- */
+.tk-calc__result {
+  margin-top: 20px;
+  padding: clamp(16px, 4vw, 24px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+}
+.tk-calc__summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 14px;
+}
+.tk-calc__summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tk-calc__label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.tk-calc__value {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 5vw, 1.9rem);
+  color: var(--accent);
+}
+
+/* ---------- Cubuk grafik ---------- */
+.tk-calc__chart { margin-top: 22px; }
+.tk-calc__chart-title {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.tk-calc__row {
+  display: grid;
+  grid-template-columns: minmax(78px, auto) 1fr minmax(52px, auto);
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.tk-calc__row-label { font-size: 0.85rem; }
+.tk-calc__track {
+  height: 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.tk-calc__fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tk-calc__fill--current { background: #9a9a97; }
+.tk-calc__fill--toyota { background: var(--accent); }
+.tk-calc__row-value {
+  font-size: 0.85rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

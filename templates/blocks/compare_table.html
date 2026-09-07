@@ -1,0 +1,85 @@
+{# KARSILASTIRMA TABLOSU
+
+   VERI DUZENI -- neden hucreler sutunun icinde:
+     row    : yalnizca satir ETIKETI (soldaki sabit sutun)
+     column : bir teknoloji + o teknolojiye ait hucreler (`cell`
+              cocuklari), satirlarla AYNI SIRADA
+   Hucreler satirin degil sutunun altinda durdugu icin yeni bir sutun
+   eklemek mevcut sutunlara hic dokunmaz -- tablo bozulmaz. Eksik
+   hucre bos gorunur, hata vermez.
+
+   Gercek bir <table>: ekran okuyucu satir/sutun iliskisini anlasin
+   diye. Dar ekranda .table-wrap (base.css) yatay kaydiriyor, satir
+   etiketleri ise sola yapisik kaliyor. #}
+{% import "blocks/_macros.html" as m with context %}
+{%- set satirlar = blok.items_of('row') %}
+{%- set sutunlar = blok.items_of('column') %}
+{%- set kapanis = blok.items_of('outro') %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  {%- if satirlar and sutunlar %}
+  <div class="table-wrap tk-compare">
+    <table class="tk-compare__table">
+      <thead>
+        <tr>
+          <th scope="col" class="tk-compare__corner">
+            {#- Sabit arayuz metni: icerik degil, o yuzden CMS'te degil
+                `_()` ile cevriliyor (404.html'deki gibi). -#}
+            <span class="tk-gizli-metin">{{ _('Özellik') }}</span>
+          </th>
+          {%- for sutun in sutunlar %}
+          <th scope="col" class="tk-compare__head">
+            <span class="tk-compare__tech">{{ sutun.title }}</span>
+            {%- if sutun.subtitle %}
+            <span class="tk-compare__tech-sub">{{ sutun.subtitle }}</span>
+            {%- endif %}
+          </th>
+          {%- endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {%- for satir in satirlar %}
+        {#- Ic dongu `loop`u golgeledigi icin satir sirasi burada
+            saklaniyor. -#}
+        {%- set satir_no = loop.index0 %}
+        <tr>
+          <th scope="row" class="tk-compare__label">{{ satir.title }}</th>
+          {%- for sutun in sutunlar %}
+          {#- Hucreler satirlarla ayni sirada: satirin sirasindaki
+              hucreyi aliyoruz. Sutunda o kadar hucre yoksa bos gecer. -#}
+          {%- set hucreler = sutun.children_of('cell') %}
+          {%- set hucre = hucreler[satir_no] if hucreler|length > satir_no else none %}
+          <td class="tk-compare__cell">{{ hucre.text|safe if hucre and hucre.text }}</td>
+          {%- endfor %}
+        </tr>
+        {%- endfor %}
+        {#- Sutuna ait not ve baglanti (ornek: "Sakarya'da uretiliyor").
+            Yalnizca en az bir sutunda varsa basilir. -#}
+        {%- set notlu = sutunlar|selectattr('note')|list %}
+        {%- set baglantili = sutunlar|selectattr('url')|list %}
+        {%- if notlu or baglantili %}
+        <tr class="tk-compare__note-row">
+          <th scope="row" class="tk-compare__label">
+            <span class="tk-gizli-metin">{{ _('Not') }}</span>
+          </th>
+          {%- for sutun in sutunlar %}
+          <td class="tk-compare__cell tk-compare__cell--note">
+            {%- if sutun.note %}
+            <span class="tk-compare__note">{{ sutun.note }}</span>
+            {%- endif %}
+            {%- if sutun.url and sutun.link_label %}
+            <a class="tk-compare__link" href="{{ sutun.url }}"{% if sutun.url.startswith('http') %} target="_blank" rel="noopener"{% endif %}>{{ sutun.link_label }}</a>
+            {%- endif %}
+          </td>
+          {%- endfor %}
+        </tr>
+        {%- endif %}
+      </tbody>
+    </table>
+  </div>
+  {%- endif %}
+  {%- for oge in kapanis %}
+  <p class="tk-compare__outro">{{ oge.text|safe }}</p>
+  {%- endfor %}
+  {{- m.dipnot(blok) }}
+</section>

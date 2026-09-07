@@ -1,0 +1,30 @@
+/* ============================================================
+   BUYUK RAKAM ROZETI  (stat_badge)
+
+   NOT: eski .milestone-sub sinifi burada degil base.css'te
+   (.tk-subnote): chip_groups bloku da onu kullaniyordu, dolayisiyla
+   tek bir bloga ait degil.
+   ============================================================ */
+.tk-stat-badge {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  background: #fdf8ec;
+  border: 1px solid #c9a227;
+  border-radius: 6px;
+  padding: clamp(14px, 4vw, 18px) clamp(16px, 4vw, 22px);
+  margin-top: clamp(20px, 5vw, 28px);
+}
+.tk-stat-badge__value {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 6vw, 1.9rem);
+  font-weight: 700;
+  color: #c9a227;
+  line-height: 1;
+}
+.tk-stat-badge__label {
+  font-size: 0.95rem;
+  color: var(--ink);
+  font-weight: 500;
+}

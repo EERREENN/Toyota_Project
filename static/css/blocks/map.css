@@ -1,0 +1,54 @@
+/* ============================================================
+   HARITA  (map) -- Leaflet
+
+   NOT: eski CSS #toyota-map id'sini hedefliyordu. Harita kabinin
+   id'si artik panelden ayarlanabildigi icin (block.settings.map_id)
+   stil bir sinifa tasindi; id yalnizca JS'in haritayi bulmasi icin
+   duruyor.
+   ============================================================ */
+.tk-map__canvas {
+  height: clamp(320px, 60vh, 480px);
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  margin-top: 16px;
+  z-index: 0;
+}
+
+/* Leaflet'in kendi siniflari -- ucuncu parti, yeniden adlandirilmaz */
+.leaflet-tile-pane {
+  filter: grayscale(1) brightness(1.05) contrast(0.95);
+}
+
+.leaflet-popup-content {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* popup icindeki urun satiri (JS tarafindan basiliyor) */
+.tk-map__product {
+  color: var(--muted);
+}
+
+/* ---------- Gosterge satiri ---------- */
+.tk-map__legend {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.tk-map__dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.tk-map__dot--red { background: #c8102e; }
+.tk-map__dot--gold { background: #c9a227; }

@@ -1,0 +1,25 @@
+{# ROZET SERIDI -- sertifika ve odul etiketleri #}
+{% import "admin/_parts.html" as p %}
+
+{%- macro rozet(k, o) -%}
+{{ p.satir_bas(k, 'Rozet') }}
+  {{ p.metin(k, 'title', 'Başlık', o.title if o else '',
+             'Rozetin üzerindeki yazı. BOŞ BIRAKIRSAN rozet sitede görünmez.') }}
+  {{ p.metin(k, 'text', 'Kısa açıklama', o.text if o else '',
+             'İsteğe bağlı. Örnek: “1999’dan bu yana”.') }}
+  {{ p.oge_gorsel(k, 'Logo', (o.image_id if o else none), gorseller,
+                  'İsteğe bağlı. Küçük, geniş logolar iyi durur.') }}
+  {{ p.metin(k, 'slug', 'Kısa kimlik (not)', o.slug if o else '',
+             'Sitede görünmez. Henüz doğrulanmamış bir rozeti başlığı boş '
+             'bırakarak burada isimlendirebilirsin.') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('badge', 'Rozetler', 'Rozet ekle',
+                  blok.items_of('badge')|map(attribute='id')|list,
+                  'Başlığı boş olan rozet sitede görünmez; panelde yerinde durur.') }}
+    {% for o in blok.items_of('badge') %}{{ rozet(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ rozet('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>

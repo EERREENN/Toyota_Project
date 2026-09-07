@@ -1,0 +1,88 @@
+/* ============================================================
+   KART LISTESI  (card_grid)
+
+   Uc varyant:
+     plain   -> paylasilan .tk-card + .tk-grid  (card.css)
+     award   -> yan yana 5 odul karti
+     station -> TPS sayfasindaki numarali istasyon kartlari
+   ============================================================ */
+
+/* ---------- award varyanti: yan yana 5 kart ---------- */
+.tk-card-grid--award {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(12px, 2vw, 18px);
+  margin-top: clamp(24px, 6vw, 32px);
+}
+.tk-card-grid__award-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: clamp(16px, 2vw, 20px);
+}
+.tk-card-grid__year {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.tk-card-grid__award-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+.tk-card-grid__award-card p {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 1000px) {
+  .tk-card-grid--award { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 760px) {
+  .tk-card-grid--award { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .tk-card-grid--award { grid-template-columns: 1fr; }
+}
+
+/* ---------- station varyanti: hat alani + numarali kartlar ---------- */
+.tk-card-grid--station {
+  margin-top: clamp(8px, 2vw, 12px);
+}
+.tk-card-grid__station-title {
+  font-size: clamp(1.25rem, 4vw, 1.4rem);
+  color: #1c1c1c;
+  margin-bottom: 6px;
+}
+.tk-card-grid__station-intro {
+  max-width: 68ch;
+  color: #4a5058;
+  margin: 0 0 clamp(16px, 4vw, 22px);
+}
+
+.tk-card-grid__station { position: relative; overflow: visible; }
+.tk-card-grid__station-no {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 6px 16px rgba(200, 16, 46, 0.4);
+}

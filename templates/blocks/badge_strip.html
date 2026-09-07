@@ -1,0 +1,29 @@
+{# ROZET SERIDI -- sertifika ve odul etiketleri yan yana.
+
+   Basligi bos olan rozet basilmaz (bkz. fact_table'daki ayni kural):
+   panelde yer tutan, degeri henuz dogrulanmamis satirlar sitede
+   gorunmez. Logo istege bagli. #}
+{% import "blocks/_macros.html" as m with context %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  {%- set rozetler = blok.items_of('badge')|selectattr('title')|list %}
+  {%- if rozetler %}
+  <ul class="tk-badge-strip">
+    {%- for rozet in rozetler %}
+    <li class="tk-badge-strip__badge">
+      {%- if rozet.image %}
+      <img class="tk-badge-strip__logo" src="{{ url_for('static', filename=rozet.image.path) }}"
+           alt="{{ rozet.image.alt }}"{% if rozet.image.width %} width="{{ rozet.image.width }}" height="{{ rozet.image.height }}"{% endif %}>
+      {%- endif %}
+      <span class="tk-badge-strip__metin">
+        <span class="tk-badge-strip__baslik">{{ rozet.title }}</span>
+        {%- if rozet.text %}
+        <span class="tk-badge-strip__aciklama">{{ rozet.text }}</span>
+        {%- endif %}
+      </span>
+    </li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+  {{- m.dipnot(blok) }}
+</section>

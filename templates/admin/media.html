@@ -1,0 +1,59 @@
+{% extends "admin/base.html" %}
+{% block title %}Görseller{% endblock %}
+
+{% block content %}
+<h1 class="yn-baslik">Görseller</h1>
+<p class="yn-aciklama">
+  Yüklediğin görselleri kapak, kart ve metin+görsel bloklarında ve sayfa
+  arka planında kullanabilirsin. JPG, PNG, WebP veya GIF · en fazla 4 MB.
+</p>
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">Yeni görsel yükle</h2>
+  <form method="post" enctype="multipart/form-data" class="yn-form">
+    <input type="hidden" name="_csrf" value="{{ csrf }}">
+    <div class="yn-alan">
+      <label for="dosya">Dosya</label>
+      <input type="file" id="dosya" name="dosya" accept="image/*" required>
+    </div>
+    <div class="yn-alan">
+      <label for="alt">Görsel açıklaması</label>
+      <input type="text" id="alt" name="alt">
+      <small>Görme engelli kullanıcılar ve görsel yüklenmediğinde görünür. Kısa ve betimleyici yaz.</small>
+    </div>
+    <button type="submit" class="yn-dugme yn-dugme--birincil">Yükle</button>
+  </form>
+</div>
+
+<div class="yn-gorsel-izgara">
+  {% for g in gorseller %}
+  <div class="yn-gorsel">
+    <img src="{{ url_for('static', filename=g.path) }}" alt="{{ g.alt or '' }}" loading="lazy">
+    <div class="yn-gorsel__bilgi">
+      <strong>{{ g.original_name or g.path }}</strong>
+      <span>{{ g.width }}×{{ g.height }} · {{ boyut(g.size_bytes) }}</span>
+      {% if g.is_builtin %}<span class="yn-rozet">projeyle gelen</span>{% endif %}
+      <span class="yn-gorsel__kullanim">
+        {% if kullanim[g.id] %}{{ kullanim[g.id] }} yerde kullanılıyor{% else %}kullanılmıyor{% endif %}
+      </span>
+    </div>
+
+    <form method="post" action="{{ url_for('admin.media_alt', gorsel_id=g.id) }}" class="yn-gorsel__alt">
+      <input type="hidden" name="_csrf" value="{{ csrf }}">
+      <input type="text" name="alt" value="{{ g.alt or '' }}" placeholder="Görsel açıklaması">
+      <button type="submit" class="yn-dugme">Kaydet</button>
+    </form>
+
+    {% if not g.is_builtin %}
+    <form method="post" action="{{ url_for('admin.media_delete', gorsel_id=g.id) }}"
+          onsubmit="return confirm('Bu görsel kalıcı olarak silinecek. Emin misin?');">
+      <input type="hidden" name="_csrf" value="{{ csrf }}">
+      <button type="submit" class="yn-dugme yn-dugme--tehlike">Sil</button>
+    </form>
+    {% endif %}
+  </div>
+  {% else %}
+  <p class="yn-bos">Henüz görsel yok.</p>
+  {% endfor %}
+</div>
+{% endblock %}

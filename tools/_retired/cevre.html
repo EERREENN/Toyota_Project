@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% block title %}{{ _('Toyota ve Çevre') }}{% endblock %}
+{% block body_class %}page-cevre{% endblock %}
+
+{% block background %}
+<div class="cevre-bg" aria-hidden="true"></div>
+{% endblock %}
+
+{% block content %}
+<section class="icerik-blok">
+  <h1>{{ _('Toyota ve Çevre') }}</h1>
+  <p>
+    {% trans %}Toyota'nın çevreye verdiği önem, 1997'de piyasaya sürdüğü ilk hibrit
+    modeli Prius'a kadar uzanır. Bugün bu yaklaşım, şirketin "Gezegene Saygı"
+    vizyonu doğrultusunda 2015 yılında ilan edilen
+    <strong>Toyota Environmental Challenge 2050</strong> stratejisiyle
+    devam ediyor. Bu strateji, 2050 yılına kadar karbon nötr olmayı
+    hedefleyen altı uzun vadeli hedeften oluşuyor.{% endtrans %}
+  </p>
+</section>
+
+<section class="icerik-blok">
+  <h2>{{ _('Altı hedef, güncel ilerleme') }}</h2>
+  <p>{{ _('Toyota Environmental Challenge 2050 altı uzun vadeli hedeften oluşuyor. Aşağıdaki rakamlar, Sustainability Data Book 2025\'e göre ara hedeflerdeki güncel durumu gösteriyor.') }}</p>
+
+  <div class="ilerleme-grid">
+    <article class="ilerleme-kart" data-sayac data-hedef="32" data-sonek="%">
+      <h3>{{ _('Yeni araç CO2 emisyonu') }}</h3>
+      <span class="ilerleme-sayi"><span class="sayac">32</span><span class="sayac-sonek">%</span></span>
+      <p>{{ _('2010\'a kıyasla azalma. Hedef yüzde 30\'du, planlanandan önce aşıldı.') }}</p>
+    </article>
+
+    <article class="ilerleme-kart" data-sayac data-hedef="34" data-sonek="%">
+      <h3>{{ _('Fabrika CO2 emisyonu') }}</h3>
+      <span class="ilerleme-sayi"><span class="sayac">34</span><span class="sayac-sonek">%</span></span>
+      <p>{{ _('2013\'e kıyasla azalma. Hedef yüzde 30\'du.') }}</p>
+    </article>
+
+    <article class="ilerleme-kart" data-sayac data-hedef="19" data-sonek="%">
+      <h3>{{ _('Yaşam döngüsü CO2 emisyonu') }}</h3>
+      <span class="ilerleme-sayi"><span class="sayac">19</span><span class="sayac-sonek">%</span></span>
+      <p>{{ _('2013\'e kıyasla azalma. Hedef yüzde 18\'di.') }}</p>
+    </article>
+
+    <article class="ilerleme-kart" data-sayac data-hedef="36" data-sonek="%">
+      <h3>{{ _('Yenilenebilir elektrik (küresel)') }}</h3>
+      <span class="ilerleme-sayi"><span class="sayac">36</span><span class="sayac-sonek">%</span></span>
+      <p>{{ _('Toplam elektrik kullanımında. Hedef yüzde 25\'ti.') }}</p>
+    </article>
+
+    <article class="ilerleme-kart" data-sayac data-hedef="100" data-sonek="%">
+      <h3>{{ _('Avrupa & Güney Amerika') }}</h3>
+      <span class="ilerleme-sayi"><span class="sayac">100</span><span class="sayac-sonek">%</span></span>
+      <p>{{ _('Bölgedeki tüm fabrikalar yenilenebilir elektrikle çalışıyor.') }}</p>
+    </article>
+
+    <article class="ilerleme-kart" data-sayac data-hedef="2035" data-baslangic="2013" data-format="plain">
+      <h3>{{ _('Karbon nötr fabrikalar') }}</h3>
+      <span class="ilerleme-sayi"><span class="sayac">2035</span></span>
+      <p>{{ _('Üretimde net sıfır karbon için hedeflenen yıl.') }}</p>
+    </article>
+  </div>
+  <p class="kaynak-not">{{ _('Kaynak: Toyota Sustainability Data Book 2025') }}</p>
+</section>
+
+<section class="icerik-blok">
+  <h2>{{ _('Çevre yolculuğu') }}</h2>
+  <p>{{ _('Bir durağa dokunarak o yılın kısa özetini görebilirsiniz.') }}</p>
+
+  <ol class="zaman-tuneli">
+    <li class="zt-durak">
+      <button type="button" class="zt-nokta" aria-expanded="false" aria-controls="zt-1992">
+        <span class="zt-yil">1992</span>
+        <span class="zt-baslik">{{ _('Earth Charter') }}</span>
+      </button>
+      <div class="zt-detay" id="zt-1992" hidden>
+        <p>{{ _('Toyota Earth Charter yayımlandı: şirketin çevre politikasının temelini oluşturan ilke metni (2000\'de güncellendi).') }}</p>
+      </div>
+    </li>
+    <li class="zt-durak">
+      <button type="button" class="zt-nokta" aria-expanded="false" aria-controls="zt-1997">
+        <span class="zt-yil">1997</span>
+        <span class="zt-baslik">{{ _('İlk hibrit: Prius') }}</span>
+      </button>
+      <div class="zt-detay" id="zt-1997" hidden>
+        <p>{{ _('Dünyanın ilk seri üretim hibrit otomobili Prius piyasaya sürüldü ve Toyota\'nın elektrikli aktarma organı deneyiminin başlangıcı oldu.') }}</p>
+      </div>
+    </li>
+    <li class="zt-durak">
+      <button type="button" class="zt-nokta" aria-expanded="false" aria-controls="zt-2015">
+        <span class="zt-yil">2015</span>
+        <span class="zt-baslik">{{ _('Challenge 2050') }}</span>
+      </button>
+      <div class="zt-detay" id="zt-2015" hidden>
+        <p>{{ _('Paris İklim Anlaşması ile aynı yıl açıklanan Toyota Environmental Challenge 2050, 2050\'ye kadar ulaşılacak altı uzun vadeli hedefi içeriyor.') }}</p>
+      </div>
+    </li>
+    <li class="zt-durak">
+      <button type="button" class="zt-nokta" aria-expanded="false" aria-controls="zt-2022">
+        <span class="zt-yil">2022</span>
+        <span class="zt-baslik">{{ _('SBTi doğrulaması') }}</span>
+      </button>
+      <div class="zt-detay" id="zt-2022" hidden>
+        <p>{{ _('Toyota\'nın sera gazı azaltım hedefleri, Science Based Targets initiative (SBTi) tarafından bilimsel temelli olarak onaylandı.') }}</p>
+      </div>
+    </li>
+    <li class="zt-durak">
+      <button type="button" class="zt-nokta" aria-expanded="false" aria-controls="zt-2025">
+        <span class="zt-yil">2025</span>
+        <span class="zt-baslik">{{ _('Güncel Data Book') }}</span>
+      </button>
+      <div class="zt-detay" id="zt-2025" hidden>
+        <p>{{ _('Yayımlanan güncel Sustainability Data Book\'a göre birçok ara hedefe planlanandan önce ulaşıldı.') }}</p>
+      </div>
+    </li>
+  </ol>
+  <p class="kaynak-not">{{ _('Kaynak: global.toyota sürdürülebilirlik sayfaları; thesustainableinnovation.com özeti') }}</p>
+</section>
+
+<section class="icerik-blok">
+  <h2>{{ _('Hidrojenle Geleceğe') }}</h2>
+  <div class="vitrin-grid">
+    <div class="vitrin-metin">
+      <p>{{ _('Toyota Mirai, elektriğini bir bataryadan değil, hidrojen ile havadaki oksijeni birleştiren yakıt hücresinden üretir; egzozundan yalnızca su çıkar. Şirket bu teknolojiyi otomobilin ötesinde kamyon, otobüs ve sabit jeneratörlere de taşıyor.') }}</p>
+      <ul>
+        <li>{{ _('Toyota Hydrogen Solutions (2025): hidrojen çözümleriyle ilgilenen işletmelere yönelik kurulan kurumsal hub.') }}</li>
+        <li>{{ _('Hydrogen Headquarters (H2HQ), Gardena, Kaliforniya: hidrojen Ar-Ge ve demo faaliyetlerinin merkezi.') }}</li>
+      </ul>
+    </div>
+    <figure class="vitrin-gorsel">
+      <div class="gorsel-yer" role="img" aria-label="{{ _('Yakıt hücreli araç görseli') }}">
+        <svg viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M18 78 L40 78 L54 54 L128 54 L150 78 L182 78 L182 90 L18 90 Z" fill="currentColor" opacity="0.9"/>
+          <circle cx="58" cy="90" r="12" fill="#1b1d1f"/>
+          <circle cx="142" cy="90" r="12" fill="#1b1d1f"/>
+          <text x="100" y="40" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="20" fill="currentColor">H₂</text>
+        </svg>
+      </div>
+      <figcaption>{{ _('Görsel alanı — buraya yakıt hücreli araç fotoğrafı veya kısa video eklenebilir.') }}</figcaption>
+    </figure>
+  </div>
+  <p class="kaynak-not">{{ _('Kaynak: pressroom.toyota.com — "2025 Toyota Year in Review"') }}</p>
+</section>
+
+<section class="icerik-blok">
+  <h2>{{ _('Kişisel CO2 ve Yakıt Tasarrufu Hesaplayıcısı') }}</h2>
+  <p>{{ _('Mevcut aracınızı bir Toyota elektrikli teknolojisiyle değiştirseydiniz yıllık olarak kabaca ne kadar tasarruf edeceğinizi görün.') }}</p>
+
+  <form class="hesap-form" id="hesap-form">
+    <div class="hesap-alan">
+      <label for="h-km">{{ _('Yıllık ortalama kilometre') }}</label>
+      <input type="number" id="h-km" name="km" min="0" step="500" value="15000" inputmode="numeric">
+    </div>
+    <div class="hesap-alan">
+      <label for="h-arac">{{ _('Mevcut araç tipi') }}</label>
+      <select id="h-arac" name="arac">
+        <option value="benzin">{{ _('Benzinli') }}</option>
+        <option value="dizel">{{ _('Dizel') }}</option>
+      </select>
+    </div>
+    <div class="hesap-alan">
+      <label for="h-toyota">{{ _('Karşılaştırılacak Toyota teknolojisi') }}</label>
+      <select id="h-toyota" name="toyota">
+        <option value="hev">{{ _('Hibrit (HEV)') }}</option>
+        <option value="phev">{{ _('Şarj Edilebilir Hibrit (PHEV)') }}</option>
+        <option value="bev">{{ _('Tam Elektrikli (BEV)') }}</option>
+      </select>
+    </div>
+  </form>
+
+  <div class="hesap-sonuc" id="hesap-sonuc" aria-live="polite">
+    <div class="sonuc-ust">
+      <div class="sonuc-kart">
+        <span class="sonuc-etiket">{{ _('Yıllık CO2 tasarrufu') }}</span>
+        <span class="sonuc-deger"><span id="s-co2">0</span> {{ _('kg') }}</span>
+      </div>
+      <div class="sonuc-kart">
+        <span class="sonuc-etiket">{{ _('Yıllık yakıt/enerji tasarrufu') }}</span>
+        <span class="sonuc-deger"><span id="s-para">0</span> ₺</span>
+      </div>
+    </div>
+
+    <div class="sonuc-bar">
+      <p class="bar-baslik">{{ _('Yıllık CO2 emisyonu (kg)') }}</p>
+      <div class="bar-satir">
+        <span class="bar-etiket">{{ _('Mevcut araç') }}</span>
+        <span class="bar-yol"><span class="bar-dolu bar-mevcut" id="bar-mevcut"></span></span>
+        <span class="bar-sayi" id="b-mevcut">0</span>
+      </div>
+      <div class="bar-satir">
+        <span class="bar-etiket">{{ _('Toyota') }}</span>
+        <span class="bar-yol"><span class="bar-dolu bar-toyota" id="bar-toyota"></span></span>
+        <span class="bar-sayi" id="b-toyota">0</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="kaynak-not">{{ _('Değerler tahminidir. Toyota resmi WLTP yakıt tüketimi verileri ile güncel ortalama Türkiye yakıt ve elektrik fiyatları esas alınmıştır; gerçek tasarruf sürüş koşullarına göre değişir.') }}</p>
+</section>
+
+<section class="icerik-blok">
+  <h2>{{ _('Çoklu yol yaklaşımı') }}</h2>
+  <p>
+    {% trans %}Toyota, karbon nötrlüğe tek bir teknolojiyle değil, bölgeye ve müşteri
+    ihtiyacına göre değişen birden fazla yolla ulaşmayı hedefliyor: hibrit
+    (HEV), şarj edilebilir hibrit (PHEV), tam elektrikli (BEV) ve hidrojen
+    yakıt hücreli (FCEV) araçlar bir arada geliştiriliyor. Bu yaklaşımın
+    arkasındaki fikir, şarj altyapısının zayıf olduğu bir bölgede hibritin,
+    altyapının güçlü olduğu bir bölgede ise elektrikli araçların daha
+    gerçekçi bir çözüm olabileceği.{% endtrans %}
+  </p>
+</section>
+
+<section class="icerik-blok kaynaklar">
+  <h2>{{ _('Kaynaklar') }}</h2>
+  <ul>
+    <li><a href="https://global.toyota/en/sustainability/esg/environmental/" target="_blank" rel="noopener">Toyota Global – Environmental Initiatives</a></li>
+    <li><a href="https://www.toyota.com/2050challenge/" target="_blank" rel="noopener">Toyota – 2050 Environmental Challenge</a></li>
+  </ul>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/cevre.js') }}"></script>
+{% endblock %}

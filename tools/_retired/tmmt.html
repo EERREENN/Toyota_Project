@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}{{ _('TMMT — Toyota Motor Manufacturing Türkiye') }}{% endblock %}
+{% block body_class %}page-tmmt{% endblock %}
+
+{% block background %}
+<div class="tmmt-bg" aria-hidden="true"></div>
+{% endblock %}
+
+{% block content %}
+<section class="icerik-blok">
+  <h1>{{ _('TMMT — Toyota Motor Manufacturing Türkiye') }}</h1>
+  <p>
+    {% trans %}TMMT (Toyota Motor Manufacturing Türkiye), 1990 yılında "Toyotasa" adıyla
+    kuruldu ve üretime 1994'te Corolla Sedan ile başladı. Fabrika, Sakarya'nın
+    Arifiye ilçesinde yer alıyor ve bugün Toyota'nın Avrupa'daki en önemli
+    üretim üslerinden biri konumunda.{% endtrans %}
+  </p>
+  <p>
+    {% trans %}Şirketin bugünkü ortaklık yapısı <strong>Toyota Motor Europe NV/SA (%90)</strong>
+    ve <strong>Mitsui &amp; Co. (%10)</strong> şeklinde.{% endtrans %}
+  </p>
+</section>
+
+<section class="grid">
+  <div class="kart">
+    <span class="stat">280.000</span>
+    <h3>{{ _('Yıllık üretim kapasitesi') }}</h3>
+    <p>{{ _('Bu kapasiteyle TMMT, Avrupa\'daki en yüksek hacimli Toyota fabrikası.') }}</p>
+  </div>
+  <div class="kart">
+    <span class="stat">~5.000–5.400</span>
+    <h3>{{ _('Çalışan') }}</h3>
+    <p>{{ _('Üretimden mühendisliğe pek çok farklı alanda istihdam.') }}</p>
+  </div>
+  <div class="kart">
+    <span class="stat">215.645</span>
+    <h3>{{ _('2024 üretim adedi') }}</h3>
+    <p>{{ _('Fabrikanın 2024 yılında ürettiği toplam araç sayısı.') }}</p>
+  </div>
+</section>
+
+<section class="icerik-blok">
+  <h2>{{ _('Üretilen modeller') }}</h2>
+  <p>
+    {% trans %}TMMT bugün başlıca iki model ailesi üretiyor: <strong>Toyota Corolla Sedan</strong>
+    ve <strong>Toyota C-HR</strong> (klasik hibrit ve şarj edilebilir hibrit / PHEV
+    versiyonlarıyla). Kasım 2023'ten bu yana fabrika, C-HR PHEV'in bataryasını da
+    üretiyor; bu, Toyota'nın Avrupa'da PHEV bataryası üreten ilk fabrikası olması
+    anlamına geliyor.{% endtrans %}
+  </p>
+</section>
+
+<section class="icerik-blok">
+  <h2>{{ _('İhracat ve kilometre taşları') }}</h2>
+  <p>
+    {% trans %}Üretimin büyük bölümü, ağırlıklı olarak Avrupa'ya, ayrıca Orta Doğu ve
+    Afrika'ya olmak üzere 30'dan fazla ülkeye ihraç ediliyor. Fabrika, 2021
+    yılında 3 milyonuncu aracını üretti ve Türkiye'nin en büyük ihracatçı
+    sanayi kuruluşlarından biri.{% endtrans %}
+  </p>
+</section>
+
+<section class="icerik-blok">
+  <h2>{{ _('Üretim yaklaşımı ve çevre') }}</h2>
+  <p>
+    {% trans %}TMMT, kuruluşundan bu yana <strong>Toyota Production System (TPS)</strong>
+    ilkeleriyle çalışıyor. Fabrika 1999'dan beri ISO 14001 çevre yönetim sistemi
+    sertifikasına sahip ve enerji/su verimliliği ile atık azaltımına yönelik
+    sürekli iyileştirme (kaizen) projeleri yürütüyor.{% endtrans %}
+  </p>
+</section>
+
+<section class="icerik-blok kaynaklar">
+  <h2>{{ _('Kaynaklar') }}</h2>
+  <ul>
+    <li><a href="https://en.wikipedia.org/wiki/Toyota_Motor_Manufacturing_T%C3%BCrkiye" target="_blank" rel="noopener">Wikipedia – Toyota Motor Manufacturing Türkiye</a></li>
+    <li><a href="https://grokipedia.com/page/Toyota_Motor_Manufacturing_Turkey" target="_blank" rel="noopener">Grokipedia – Toyota Motor Manufacturing Turkey</a></li>
+    <li><a href="https://global.toyota/en/" target="_blank" rel="noopener">global.toyota – {{ _('resmi haber duyuruları') }}</a></li>
+  </ul>
+</section>
+{% endblock %}

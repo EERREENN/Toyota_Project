@@ -1,0 +1,76 @@
+{# CO2 HESAPLAYICI -- cevre.html'deki form + sonuc alani.
+
+   Etiketler ve secenekler veritabanindan (field/option/label turunde
+   ogeler), katsayilar ise asagidaki JSON blogundan geliyor.
+   HTML id'leri sabit: JS ve CSS onlara bagli, editorun degistirmesi
+   gereken bir sey degil. #}
+{% import "blocks/_macros.html" as m with context %}
+{%- set mesafe = blok.by_slug('distance') %}
+{%- set arac = blok.by_slug('vehicle') %}
+{%- set teknoloji = blok.by_slug('technology') %}
+{%- set e_co2 = blok.by_slug('co2') %}
+{%- set e_para = blok.by_slug('money') %}
+{%- set e_grafik = blok.by_slug('chart') %}
+{%- set e_mevcut = blok.by_slug('current') %}
+{%- set e_toyota = blok.by_slug('toyota') %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+
+  <form class="tk-calc__form" id="hesap-form">
+    {%- if mesafe %}
+    <div class="tk-calc__field">
+      <label for="h-km">{{ mesafe.title }}</label>
+      <input type="number" id="h-km" name="km" min="{{ mesafe.settings.get('min', 0) }}" step="{{ mesafe.settings.get('step', 500) }}" value="{{ mesafe.settings.get('default', 15000) }}" inputmode="numeric">
+    </div>
+    {%- endif %}
+    {%- if arac %}
+    <div class="tk-calc__field">
+      <label for="h-arac">{{ arac.title }}</label>
+      <select id="h-arac" name="arac">
+        {%- for secenek in arac.children_of('option') %}
+        <option value="{{ secenek.value }}">{{ secenek.title }}</option>
+        {%- endfor %}
+      </select>
+    </div>
+    {%- endif %}
+    {%- if teknoloji %}
+    <div class="tk-calc__field">
+      <label for="h-toyota">{{ teknoloji.title }}</label>
+      <select id="h-toyota" name="toyota">
+        {%- for secenek in teknoloji.children_of('option') %}
+        <option value="{{ secenek.value }}">{{ secenek.title }}</option>
+        {%- endfor %}
+      </select>
+    </div>
+    {%- endif %}
+  </form>
+
+  <div class="tk-calc__result" id="hesap-sonuc" aria-live="polite">
+    <div class="tk-calc__summary">
+      <div class="tk-calc__summary-item">
+        <span class="tk-calc__label">{{ e_co2.title }}</span>
+        <span class="tk-calc__value"><span id="s-co2">0</span> {{ e_co2.subtitle }}</span>
+      </div>
+      <div class="tk-calc__summary-item">
+        <span class="tk-calc__label">{{ e_para.title }}</span>
+        <span class="tk-calc__value"><span id="s-para">0</span> {{ e_para.value }}</span>
+      </div>
+    </div>
+
+    <div class="tk-calc__chart">
+      <p class="tk-calc__chart-title">{{ e_grafik.title }}</p>
+      <div class="tk-calc__row">
+        <span class="tk-calc__row-label">{{ e_mevcut.title }}</span>
+        <span class="tk-calc__track"><span class="tk-calc__fill tk-calc__fill--current" id="bar-mevcut"></span></span>
+        <span class="tk-calc__row-value" id="b-mevcut">0</span>
+      </div>
+      <div class="tk-calc__row">
+        <span class="tk-calc__row-label">{{ e_toyota.title }}</span>
+        <span class="tk-calc__track"><span class="tk-calc__fill tk-calc__fill--toyota" id="bar-toyota"></span></span>
+        <span class="tk-calc__row-value" id="b-toyota">0</span>
+      </div>
+    </div>
+  </div>
+  {{- m.dipnot(blok) }}
+  <script type="application/json" id="hesap-veri">{{ calc_payload(blok)|tojson }}</script>
+</section>

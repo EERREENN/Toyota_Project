@@ -1,0 +1,16 @@
+# --- gizli / makineye ozel ---
+.env
+instance/
+static/uploads/
+
+# --- python ---
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# --- arac ciktilari ---
+tools/_snapshots/
+
+# tools/_retired/ ve tools/baseline_strings.json BILEREK haric tutulmuyor:
+# tasima oncesi halin kalici kaydi, dogrulama bunlara dayaniyor.

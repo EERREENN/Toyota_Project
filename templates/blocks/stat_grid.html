@@ -1,0 +1,104 @@
+{# RAKAM IZGARASI -- iki varyant:
+     card     : paylasilan .tk-card yuzeyi + .tk-stat-grid__value
+     progress : cevre'deki <article class="tk-stat-grid__progress-card">
+     split    : solda rakam kartlari, sagda aciklama metni (blok girisi)
+
+   Baslik/giris/dipnot varsa disari bir <section class="tk-block">
+   sarilir ve reveal ONA gelir; yoksa izgaranin kendisi kok elemandir.
+   Bugunku sablonlarin davranisi tam olarak budur. #}
+{% import "blocks/_macros.html" as m with context %}
+{%- set izgara = 'tk-grid tk-grid--2' if blok.columns == '2' else 'tk-grid' %}
+{#- ICI BOS KUTU CIZILMEZ: ne rakami ne aciklamasi olan kart, panelde
+    yalnizca etiketiyle yer tutar ve sitede gorunmez -- henuz
+    dogrulanmamis veriler icin. Rakami olmayan ama aciklamasi olan
+    BILGI kartlari ise basilir (ornek: "Enerji ve su verimliligi").
+    (fact_table / badge_strip / card_grid ile ayni aile.) -#}
+{%- set kutular = [] %}
+{%- for oge in blok.items_of('stat') if oge.value or oge.text %}
+{%- set _ = kutular.append(oge) %}
+{%- endfor %}
+{#- Bolumun altindaki tek baglanti (ornek: "Turkiye'deki fabrikamiz: TMMT"). -#}
+{%- set alt_bag = blok.first_of('link') %}
+
+{%- if blok.variant == 'split' %}
+{#- Solda kartlar, sagda blogun giris metni. Dar ekranda alt alta.
+    Kart yapisi digerleriyle AYNI (_stat_card.html). -#}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {%- if blok.heading %}
+  <h{{ blok.heading_level }}>{{ blok.heading }}</h{{ blok.heading_level }}>
+  {%- endif %}
+  <div class="tk-stat-grid--split">
+    <div class="tk-stat-grid__column">
+      {%- for oge in kutular %}
+      {% include "blocks/_stat_card.html" %}
+      {%- endfor %}
+    </div>
+    {%- if blok.intro %}
+    <div class="tk-stat-grid__aside">
+      <p>{{ blok.intro|safe }}</p>
+    </div>
+    {%- endif %}
+  </div>
+  {{- m.alt_baglanti(alt_bag) }}
+  {{- m.dipnot(blok) }}
+</section>
+
+{%- elif blok.variant == 'progress' %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  <div class="tk-stat-grid--progress">
+    {%- for oge in kutular %}
+    <article class="tk-stat-grid__progress-card" data-sayac data-hedef="{{ sayi(oge.count_to) }}"
+      {%- if oge.count_suffix %} data-sonek="{{ oge.count_suffix }}"{% endif %}
+      {%- if oge.count_from %} data-baslangic="{{ sayi(oge.count_from) }}"{% endif %}
+      {%- if oge.count_format == 'plain' %} data-format="plain"{% endif %}>
+      {#- Hedefin resmi adi. Bos birakilirsa satir HIC basilmaz. -#}
+      {%- if oge.subtitle %}
+      <span class="tk-stat-grid__goal">{{ oge.subtitle }}</span>
+      {%- endif %}
+      <h3>{{ oge.title }}</h3>
+      <span class="tk-stat-grid__progress-value"><span class="tk-stat-grid__count">{{ oge.value }}</span>{% if oge.count_suffix %}<span class="tk-stat-grid__count-suffix">{{ oge.count_suffix }}</span>{% endif %}</span>
+      {%- if oge.text %}
+      <p>{{ oge.text|safe }}</p>
+      {%- endif %}
+    </article>
+    {%- endfor %}
+  </div>
+  {#- Izgaranin altindaki kompakt liste: rakami olmayan, yalnizca ad +
+      tek cumleden ibaret maddeler (ornek: kalan cevre hedefleri). -#}
+  {%- set maddeler = blok.items_of('fact')|selectattr('title')|list %}
+  {%- if maddeler %}
+  <dl class="tk-stat-grid__goals-list">
+    {%- for madde in maddeler %}
+    <div class="tk-stat-grid__goal-row">
+      <dt>{{ madde.title }}</dt>
+      {%- if madde.text %}
+      <dd>{{ madde.text|safe }}</dd>
+      {%- endif %}
+    </div>
+    {%- endfor %}
+  </dl>
+  {%- endif %}
+  {{- m.alt_baglanti(alt_bag) }}
+  {{- m.dipnot(blok) }}
+</section>
+
+{%- elif blok.has_header %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  <section class="{{ izgara }}">
+    {%- for oge in kutular %}
+    {% include "blocks/_stat_card.html" %}
+    {%- endfor %}
+  </section>
+  {{- m.alt_baglanti(alt_bag) }}
+  {{- m.dipnot(blok) }}
+</section>
+
+{%- else %}
+<section class="{{ m.kabuk_sinif(blok, izgara) }}"{{ m.capa(blok) }}>
+  {%- for oge in kutular %}
+  {% include "blocks/_stat_card.html" %}
+  {%- endfor %}
+</section>
+{%- endif %}

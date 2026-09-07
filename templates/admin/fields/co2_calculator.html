@@ -1,0 +1,96 @@
+{# CO2 HESAPLAYICI -- etiketler oge, katsayilar ayar olarak duzenlenir #}
+{% import "admin/_parts.html" as p %}
+{% set oranlar = (blok.settings or {}).get('rates', {}) %}
+{% set yakit = oranlar.get('fuel_per_100km', {}) %}
+{% set elektrik = oranlar.get('kwh_per_100km', {}) %}
+{% set co2 = oranlar.get('co2_per_unit', {}) %}
+{% set fiyat = oranlar.get('price_per_unit', {}) %}
+
+{%- macro secenek(k, o) -%}
+{{ p.satir_bas(k, 'Seçenek') }}
+  {{ p.metin(k, 'title', 'Görünen yazı', o.title if o else '', 'Örnek: Benzinli') }}
+  {{ p.metin(k, 'value', 'Kod', o.value if o else '',
+             'DEĞİŞTİRME. Aşağıdaki katsayı tabloları bu koda göre eşleşiyor.') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+{%- macro alan(k, o) -%}
+{{ p.satir_bas(k, 'Form alanı') }}
+  {{ p.metin(k, 'title', 'Etiket', o.title if o else '') }}
+  {{ p.metin(k, 'slug', 'Kod', o.slug if o else '',
+             'distance / vehicle / technology — değiştirme.') }}
+  {{ p.tekrar_bas(k ~ '-option', 'Seçenekler', 'Seçenek ekle',
+                  (o.children_of('option')|map(attribute='id')|list) if o else []) }}
+    {% if o %}{% for c in o.children_of('option') %}{{ secenek(c.id, c) }}{% endfor %}{% endif %}
+    <template class="yn-tekrar__sablon">{{ secenek('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+{%- macro etiket(k, o) -%}
+{{ p.satir_bas(k, 'Sonuç etiketi') }}
+  {{ p.metin(k, 'title', 'Yazı', o.title if o else '') }}
+  {{ p.metin(k, 'subtitle', 'Birim', o.subtitle if o else '', 'Örnek: kg') }}
+  {{ p.metin(k, 'value', 'Sembol', o.value if o else '', 'Örnek: ₺') }}
+  {{ p.metin(k, 'slug', 'Kod', o.slug if o else '', 'Değiştirme.') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('field', 'Form alanları', 'Alan ekle',
+                  blok.items_of('field')|map(attribute='id')|list,
+                  'Ziyaretçinin dolduracağı kutular.') }}
+    {% for o in blok.items_of('field') %}{{ alan(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ alan('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('label', 'Sonuç etiketleri', 'Etiket ekle',
+                  blok.items_of('label')|map(attribute='id')|list) }}
+    {% for o in blok.items_of('label') %}{{ etiket(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ etiket('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">Yakıt tüketimi (litre / 100 km)</h2>
+  <p class="yn-tekrar__aciklama">Elektrikli araçta 0 yazılır.</p>
+  <div class="yn-ucul">
+    {{ p.ayar_sayi('rates.fuel_per_100km.benzin', 'Benzinli', yakit.get('benzin')) }}
+    {{ p.ayar_sayi('rates.fuel_per_100km.dizel', 'Dizel', yakit.get('dizel')) }}
+    {{ p.ayar_sayi('rates.fuel_per_100km.hev', 'Hibrit (HEV)', yakit.get('hev')) }}
+    {{ p.ayar_sayi('rates.fuel_per_100km.phev', 'Şarjlı hibrit (PHEV)', yakit.get('phev')) }}
+    {{ p.ayar_sayi('rates.fuel_per_100km.bev', 'Elektrikli (BEV)', yakit.get('bev')) }}
+  </div>
+</div>
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">Elektrik tüketimi (kWh / 100 km)</h2>
+  <div class="yn-ikili">
+    {{ p.ayar_sayi('rates.kwh_per_100km.phev', 'Şarjlı hibrit (PHEV)', elektrik.get('phev')) }}
+    {{ p.ayar_sayi('rates.kwh_per_100km.bev', 'Elektrikli (BEV)', elektrik.get('bev')) }}
+  </div>
+</div>
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">CO2 katsayıları</h2>
+  <p class="yn-tekrar__aciklama">Benzin/dizel için kg CO2 / litre, elektrik için kg CO2 / kWh.</p>
+  <div class="yn-ucul">
+    {{ p.ayar_sayi('rates.co2_per_unit.benzin', 'Benzin', co2.get('benzin')) }}
+    {{ p.ayar_sayi('rates.co2_per_unit.dizel', 'Dizel', co2.get('dizel')) }}
+    {{ p.ayar_sayi('rates.co2_per_unit.elektrik', 'Elektrik', co2.get('elektrik')) }}
+  </div>
+</div>
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">Fiyatlar</h2>
+  <p class="yn-tekrar__aciklama">TL / litre ve TL / kWh. Zam geldikçe burayı güncelle.</p>
+  <div class="yn-ucul">
+    {{ p.ayar_sayi('rates.price_per_unit.benzin', 'Benzin (TL/L)', fiyat.get('benzin')) }}
+    {{ p.ayar_sayi('rates.price_per_unit.dizel', 'Dizel (TL/L)', fiyat.get('dizel')) }}
+    {{ p.ayar_sayi('rates.price_per_unit.elektrik', 'Elektrik (TL/kWh)', fiyat.get('elektrik')) }}
+  </div>
+  {{ p.ayar_metin('number_locale', 'Sayı biçimi dili', (blok.settings or {}).get('number_locale'),
+                  'tr-TR bırak: 1.234,5 biçiminde gösterir.') }}
+</div>

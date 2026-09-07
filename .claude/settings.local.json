@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sS -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 Chrome/125.0 Safari/537.36\" -m 30 -o /dev/null -w \"live: %{http_code}\\\\n\" \"https://www.toyotatr.com/projeler\")",
+      "Bash(curl -sS -m 30 -o /dev/null -w \"en: %{http_code}\\\\n\" -A \"Mozilla/5.0\" \"https://www.toyotatr.com/en/projects\")"
+    ]
+  }
+}

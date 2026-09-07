@@ -1,0 +1,27 @@
+{
+  // ------------------------------------------------------------
+  //  Jinja sablonlarini HTML olarak BICIMLENDIRME.
+  //
+  //  Bicimlendirici, etiket icindeki {% if a == b %} ifadesini
+  //  satirlara bolup == isaretini bozuyor ve sablon calismaz hale
+  //  geliyor (templates/admin/base.html bir kez boyle kirildi).
+  //
+  //  Bu ayar templates/ altindaki .html dosyalarinda kaydederken
+  //  bicimlendirmeyi kapatir.
+  // ------------------------------------------------------------
+  "[html]": {
+    "editor.formatOnSave": false
+  },
+  "files.associations": {
+    "templates/**/*.html": "jinja-html",
+    "**/*.svg": "html"
+  },
+  "emmet.excludeLanguages": ["jinja-html"],
+
+  // Python tarafi
+  "python.defaultInterpreterPath": "venv\Scripts\python.exe",
+  "files.exclude": {
+    "**/__pycache__": true,
+    "tools/_snapshots": true
+  }
+}

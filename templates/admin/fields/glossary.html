@@ -1,0 +1,40 @@
+{# SOZLUK -- arama kutulu akordeon liste #}
+{% import "admin/_parts.html" as p %}
+
+{%- macro terim(k, o) -%}
+{{ p.satir_bas(k, 'Terim') }}
+  {{ p.metin(k, 'title', 'Terim', o.title if o else '', 'Örnek: Kanban') }}
+  {{ p.metin(k, 'subtitle', 'Japonca / orijinal yazım', o.subtitle if o else '',
+             'Terimin yanında küçük gri yazı. Örnek: かんばん. '
+             'Boş bırakılabilir.') }}
+  {{ p.uzun(k, 'text', 'Açıklama', o.text if o else '',
+            'Terime tıklandığında açılan metin. Arama hem terimde hem '
+            'burada arar.') }}
+  {{ p.metin(k, 'slug', 'Sabit kimlik', o.slug if o else '',
+             'Doğrudan link vermek için. Boş bırakırsan otomatik üretilir.') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">Arama kutusu</h2>
+  {{ p.ayar_metin('search_label', 'Arama kutusunun yazısı',
+                  (blok.settings or {}).get('search_label'),
+                  'Boş bırakırsan “Terim ara” yazar.') }}
+  {{ p.ayar_metin('empty_label', 'Sonuç bulunamadı yazısı',
+                  (blok.settings or {}).get('empty_label'),
+                  'Boş bırakırsan “Aramanla eşleşen terim yok.” yazar.') }}
+  <p class="yn-aciklama">
+    Arama tarayıcıda çalışır; Türkçe karakter duyarsızdır
+    (“sogut” yazınca “söğüt” de bulunur). JavaScript kapalıysa kutu
+    hiç görünmez, liste yine çalışır.
+  </p>
+</div>
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('term', 'Terimler', 'Terim ekle',
+                  blok.items_of('term')|map(attribute='id')|list,
+                  'Sayfada bu sırayla listelenir. Başta hepsi kapalıdır.') }}
+    {% for o in blok.items_of('term') %}{{ terim(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ terim('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>

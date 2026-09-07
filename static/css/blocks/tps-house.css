@@ -1,0 +1,152 @@
+/* ============================================================
+   TPS EVI  (tps_house)
+
+   Yeni renk YOK: govde --surface, kenarlik --border, yazi --ink /
+   --muted, vurgu --accent. SVG'de sabit hex yok -- sekiller
+   `fill`/`stroke` CSS ozellikleriyle boyaniyor, degiskenler oradan
+   geliyor.
+
+   Mobil oncelikli: varsayilan sunum dikey akordeon, 720px ustunde
+   SVG diyagrama geciyor. Diyagram viewBox ile olceklenir, sabit
+   piksel genisligi yoktur.
+   ============================================================ */
+
+/* ---------- Sunum secimi ---------- */
+.tk-house__diagram { display: none; }
+
+.tk-house__list {
+  list-style: none;
+  margin: clamp(20px, 5vw, 28px) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@media (min-width: 720px) {
+  .tk-house__diagram {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: clamp(20px, 5vw, 28px);
+    overflow: visible;
+  }
+  .tk-house__list { display: none; }
+}
+
+/* ---------- SVG govde sekilleri ---------- */
+.tk-house__shape {
+  fill: var(--surface);
+  stroke: var(--border);
+  stroke-width: 2;
+  transition: fill 0.2s ease, stroke 0.2s ease;
+}
+
+/* Cati ve temel evi cerceveliyor: kenarlari vurgu renginde. */
+.tk-house__part--roof .tk-house__shape,
+.tk-house__part--foundation .tk-house__shape {
+  stroke: var(--accent);
+}
+
+/* Merkez, evin kalbi: kesikli cerceve ile sutunlardan ayriliyor. */
+.tk-house__part--center .tk-house__shape {
+  stroke-dasharray: 6 5;
+}
+
+.tk-house__part:hover .tk-house__shape,
+.tk-house__part.is-open .tk-house__shape {
+  fill: var(--bg);
+  stroke: var(--accent);
+}
+
+/* ---------- Parca icindeki yazi (foreignObject icinde HTML) ---------- */
+.tk-house__hit,
+.tk-house__row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  color: inherit;
+}
+
+.tk-house__hit:focus-visible,
+.tk-house__row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.tk-house__part-title {
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+.tk-house__part-items {
+  font-family: var(--sans);
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+/* SVG icindeki yazi olculeri viewBox birimindedir: diyagram
+   kucuduginde birlikte kuculur. 720px altinda zaten akordeon
+   gosterildigi icin okunabilirlik korunur. */
+.tk-house__diagram .tk-house__part-title { font-size: 20px; }
+.tk-house__diagram .tk-house__part-items { font-size: 13px; }
+
+/* Sutunlar dar: yazi biraz daha kucuk ve sikisik. */
+.tk-house__diagram .tk-house__part--pillar_left .tk-house__part-title,
+.tk-house__diagram .tk-house__part--pillar_right .tk-house__part-title {
+  font-size: 18px;
+}
+
+/* ---------- Dar ekran: akordeon satiri ---------- */
+.tk-house__row {
+  align-items: flex-start;
+  text-align: left;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: 4px;
+  transition: border-color 0.2s ease;
+}
+.tk-house__row .tk-house__part-title { font-size: 0.95rem; }
+.tk-house__row .tk-house__part-items { font-size: 0.82rem; }
+
+.tk-house__list .tk-house__part.is-open .tk-house__row,
+.tk-house__row:hover {
+  border-left-color: var(--accent);
+}
+
+/* ---------- Aciklama panelleri ---------- */
+.tk-house__panels { margin-top: clamp(14px, 3vw, 18px); }
+
+.tk-house__panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: clamp(16px, 3.5vw, 22px);
+}
+
+.tk-house__panel-title {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.tk-house__panel p {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--muted);
+  font-size: 0.95rem;
+}

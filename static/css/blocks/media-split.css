@@ -1,0 +1,42 @@
+/* ============================================================
+   METIN + GORSEL  (media_split) -- hidrojen vitrini
+   ============================================================ */
+.tk-media-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(18px, 4vw, 28px);
+  margin-top: clamp(18px, 4vw, 24px);
+}
+@media (min-width: 768px) {
+  .tk-media-split {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+  }
+}
+.tk-media-split__text p { margin-top: 0; }
+.tk-media-split__text ul {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.tk-media-split__text li { margin-bottom: 8px; }
+
+.tk-media-split__figure { margin: 0; }
+.tk-media-split__frame {
+  color: var(--accent);
+  background: linear-gradient(135deg, #ffffff, #eeede9);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  aspect-ratio: 16 / 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+.tk-media-split__frame svg { width: 100%; max-width: 320px; height: auto; }
+.tk-media-split__figure figcaption {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}

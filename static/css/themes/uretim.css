@@ -1,0 +1,64 @@
+/* ============================================================
+   TEMA: TPS -- fabrika arka plani
+
+   Hareketli konveyor serit blok CSS'inde (blocks/divider.css);
+   burada yalnizca sayfaya ozel renk / golge / animasyon
+   override'lari var.
+   ============================================================ */
+.tk-bg--uretim {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #dfe3e8 url("../../img/tps-bg.jpg") center center / cover no-repeat;
+}
+.tk-bg--uretim::after {
+  /* fabrika gorseli acik oldugu icin pece daha ince: gorsel net gorunsun,
+     yazinin oldugu orta bant biraz daha yogun kalsin */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(245, 247, 250, 0.66) 0%,
+    rgba(245, 247, 250, 0.78) 30%,
+    rgba(245, 247, 250, 0.80) 70%,
+    rgba(245, 247, 250, 0.66) 100%);
+}
+
+.page-uretim .tk-hero__lede,
+.page-uretim .tk-block > p {
+  color: #23262e;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+.page-uretim .tk-block h1,
+.page-uretim .tk-block h2,
+.page-uretim .tk-card-grid__station-title,
+.page-uretim .tk-card-grid__station-intro {
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.85);
+}
+.page-uretim .tk-card-grid__station-title { color: #1c2430; }
+
+/* Kartlar: beyaz + celik gri golge */
+.page-uretim .tk-card {
+  background: #ffffff;
+  border-color: #e0e3e8;
+  box-shadow: 0 14px 34px rgba(28, 36, 48, 0.14);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.page-uretim .tk-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 46px rgba(28, 36, 48, 0.22);
+}
+
+/* ---------- Kaydirdikca YANDAN girme (hattan akiyormus gibi) ----------
+   base.css'teki asagidan yukari belirmenin yerini alir; bu yuzden
+   tema dosyasi blok dosyalarindan SONRA yuklenmeli.
+   (yukleme sirasi: app/content.py -> PageView.css_files) */
+.js .page-uretim .reveal {
+  opacity: 0;
+  transform: translateX(-34px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.js .page-uretim .reveal.reveal-in {
+  opacity: 1;
+  transform: none;
+}

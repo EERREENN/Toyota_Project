@@ -1,0 +1,48 @@
+/* ============================================================
+   TEMA: Global Toyota -- kuresel ag arka plani (acik tema)
+
+   Gorsel yolu bu klasore (static/css/themes/) gore verilir: ../../img/
+   Eski tek dosyada "img/..." yeterliydi; bolunmeden sonra yol
+   duzeltilmezse arka planlar sessizce kaybolurdu.
+   ============================================================ */
+.tk-bg--global {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #10131c url("../../img/global-bg.jpg") center center / cover no-repeat;
+}
+.tk-bg--global::after {
+  /* acik pece: metnin oldugu orta bolge yogun, kenarlar daha seffaf ->
+     altin dunya haritasi hafifce gorunur ama yazi net kalir */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(125% 110% at 50% 38%,
+    rgba(247, 248, 250, 0.95) 0%,
+    rgba(247, 248, 250, 0.91) 42%,
+    rgba(247, 248, 250, 0.62) 100%);
+}
+
+/* Zemin uzerindeki metin pece uzerinde net kalsin */
+.page-global .tk-hero__lede,
+.page-global .tk-block > p { color: #2c2f38; }
+.page-global .tk-note { color: #6a6d75; }
+
+/* Kartlar: tam beyaz + hafif altin tonlu golge + hover akisi */
+.page-global .tk-card,
+.page-global .tk-card-grid__award-card,
+.page-global .tk-chip-groups__group {
+  background: #ffffff;
+  border-color: #e6e3d9;
+  box-shadow: 0 14px 34px rgba(40, 32, 8, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.page-global .tk-card:hover,
+.page-global .tk-card-grid__award-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 46px rgba(40, 32, 8, 0.18);
+}
+
+/* Milestone rozeti, harita: zeminden ayrilsin */
+.page-global .tk-stat-badge { box-shadow: 0 14px 34px rgba(40, 32, 8, 0.14); }
+.page-global .tk-map__canvas { box-shadow: 0 14px 36px rgba(40, 32, 8, 0.16); }

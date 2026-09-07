@@ -1,0 +1,56 @@
+{# METIN + GORSEL #}
+{% import "admin/_parts.html" as p %}
+
+{%- macro p_satir(k, o) -%}
+{{ p.satir_bas(k, 'Paragraf') }}
+  {{ p.uzun(k, 'text', 'Metin', o.text if o else '') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+{%- macro m_satir(k, o) -%}
+{{ p.satir_bas(k, 'Madde') }}
+  {{ p.uzun(k, 'text', 'Madde metni', o.text if o else '') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+{%- macro g_satir(k, o) -%}
+{{ p.satir_bas(k, 'Görsel') }}
+  {{ p.metin(k, 'title', 'Görsel açıklaması (alt metni)', o.title if o else '',
+             'Görme engelli kullanıcılar ve görsel yüklenmezse görünür.') }}
+  {{ p.uzun(k, 'text', 'Altyazı', o.text if o else '') }}
+  {{ p.oge_gorsel(k, 'Fotoğraf', (o.image_id if o else none), gorseller,
+                  'Seçersen gömülü çizim yerine bu fotoğraf gösterilir.') }}
+  {{ p.metin(k, 'slug', 'Çizim adı', o.slug if o else '',
+             'Fotoğraf seçilmediğinde kullanılacak gömülü çizim.') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">Yerleşim</h2>
+  {{ p.ayar_secim('media_position', 'Görselin yeri', blok.settings.get('media_position'),
+                  [('end', 'Sağda'), ('start', 'Solda')]) }}
+</div>
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('paragraph', 'Paragraflar', 'Paragraf ekle',
+                  blok.items_of('paragraph')|map(attribute='id')|list) }}
+    {% for o in blok.items_of('paragraph') %}{{ p_satir(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ p_satir('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('bullet', 'Madde listesi', 'Madde ekle',
+                  blok.items_of('bullet')|map(attribute='id')|list) }}
+    {% for o in blok.items_of('bullet') %}{{ m_satir(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ m_satir('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('media', 'Görsel', 'Görsel ekle',
+                  blok.items_of('media')|map(attribute='id')|list) }}
+    {% for o in blok.items_of('media') %}{{ g_satir(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ g_satir('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>

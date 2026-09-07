@@ -1,0 +1,27 @@
+{# BUYUK RAKAM ROZETI -- tek oge #}
+{% import "admin/_parts.html" as p %}
+
+{%- macro satir(k, o) -%}
+{{ p.satir_bas(k, 'Rozet') }}
+  {{ p.metin(k, 'value', 'Büyük rakam', o.value if o else '', 'Örnek: 300.000.000+') }}
+  {{ p.metin(k, 'title', 'Etiket', o.title if o else '') }}
+  {{ p.uzun(k, 'text', 'Alt not', o.text if o else '') }}
+  <details class="yn-katla">
+    <summary>Sayarak dolma animasyonu</summary>
+    {{ p.sayi(k, 'count_to', 'Hedef sayı', o.count_to if o else none) }}
+    {{ p.sayi(k, 'count_from', 'Başlangıç sayısı', o.count_from if o else 0) }}
+    {{ p.metin(k, 'count_prefix', 'Ön ek', o.count_prefix if o else '') }}
+    {{ p.metin(k, 'count_suffix', 'Son ek', o.count_suffix if o else '') }}
+    {{ p.onay(k, 'count_group', 'Binlik ayraç kullan', o.count_group if o else false) }}
+  </details>
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('stat', 'Rozet içeriği', 'Rozet ekle',
+                  blok.items_of('stat')|map(attribute='id')|list,
+                  'Bu blok tek bir rozet gösterir; ilk satır kullanılır.') }}
+    {% for o in blok.items_of('stat') %}{{ satir(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ satir('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>

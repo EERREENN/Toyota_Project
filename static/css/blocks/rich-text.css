@@ -1,0 +1,10 @@
+/* ============================================================
+   METIN BLOGU  (rich_text)
+
+   Kendine ait stili YOK: sarmalayicisi base.css'teki .tk-block,
+   paragraf tipografisi de oradaki .tk-block p kuralindan geliyor.
+
+   Dosya bilerek duruyor -- her blok tipinin bir CSS dosyasi olmasi
+   kurali bozulmasin ve ileride bu bloga ozel bir stil gerekirse
+   yeri belli olsun diye.
+   ============================================================ */

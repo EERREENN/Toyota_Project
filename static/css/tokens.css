@@ -1,0 +1,25 @@
+/* ============================================================
+   Tasarim degiskenleri -- renk, yazi tipi, bosluk.
+
+   Sitenin gorunumunu buradan ayarlarsin; baska hicbir dosyada
+   sabit renk kodu olmamali (tema dosyalari haric: onlar sayfaya
+   ozel tonlari tasir).
+   ============================================================ */
+
+:root {
+  --bg: #f2f2f0;
+  --surface: #ffffff;
+  --ink: #1c1c1c;
+  --graphite: #1b1d1f;
+  --accent: #c8102e;
+  --muted: #6a6d70;
+  --border: #dcdcd9;
+
+  --display: "Space Grotesk", sans-serif;
+  --sans: "Inter", sans-serif;
+
+  /* akiskan sayfa ic bosluklari */
+  --pad-x: clamp(16px, 5vw, 24px);
+  --nav-h: 64px;
+  --wrap: 980px;
+}

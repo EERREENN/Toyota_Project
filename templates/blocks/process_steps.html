@@ -1,0 +1,53 @@
+{# ADIM ADIM (SUREC) -- "Fabrikada bir aracin yolculugu"
+
+   Tek DOM, iki yerlesim:
+     genis ekran : adimlar tek sirada (grid satir 1), acilan aciklama
+                   sirenin altinda tam genislikte (grid satir 2)
+     dar ekran   : normal akis -> dikey akordeon
+
+   Adim sayisi CSS'e --adim-sayisi ile veriliyor ki sutun sayisi
+   icerige gore olussun.
+
+   Davranis zaman tuneliyle ayni: static/js/modules/steps.js #}
+{% import "blocks/_macros.html" as m with context %}
+{%- set adimlar = blok.items_of('step') %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  {%- if adimlar %}
+  <ol class="tk-steps" style="--adim-sayisi: {{ adimlar|length }}">
+    {%- for adim in adimlar %}
+    {%- set kimlik = 'adim-' ~ blok.id ~ '-' ~ (adim.slug or loop.index) %}
+    {%- set acik = adim.settings.get('open') %}
+    <li class="tk-steps__item{{ ' is-open' if acik }}">
+      <button type="button" class="tk-steps__button"
+              aria-expanded="{{ 'true' if acik else 'false' }}" aria-controls="{{ kimlik }}">
+        <span class="tk-steps__no">{{ adim.eyebrow or loop.index }}</span>
+        <span class="tk-steps__title">{{ adim.title }}</span>
+        {#- Donem / tarih. `eyebrow` DEGIL: o alan cevrilmiyor (rozetteki
+            numara icin). Bu satir cevriliyor. -#}
+        {%- if adim.subtitle %}
+        <span class="tk-steps__period">{{ adim.subtitle }}</span>
+        {%- endif %}
+      </button>
+      <div class="tk-steps__detail" id="{{ kimlik }}"{{ '' if acik else ' hidden' }}>
+        {#- Gorsel yoksa notr bir kutu; bozuk resim ikonu cikmasin diye
+            bos src'li <img> BASILMAZ. -#}
+        {%- if adim.image %}
+        <img class="tk-steps__image" src="{{ url_for('static', filename=adim.image.path) }}"
+             alt="{{ adim.image.alt or adim.title }}"
+             {%- if adim.image.width %} width="{{ adim.image.width }}" height="{{ adim.image.height }}"{% endif %}>
+        {%- else %}
+        <div class="tk-steps__placeholder" aria-hidden="true">
+          <span>{{ adim.eyebrow or loop.index }}</span>
+        </div>
+        {%- endif %}
+        {%- if adim.text %}
+        <p class="tk-steps__text">{{ adim.text|safe }}</p>
+        {%- endif %}
+      </div>
+    </li>
+    {%- endfor %}
+  </ol>
+  {%- endif %}
+  {{- m.dipnot(blok) }}
+</section>

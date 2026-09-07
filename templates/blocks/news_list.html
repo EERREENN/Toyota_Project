@@ -1,0 +1,37 @@
+{# HABER / BASIN BULTENI LISTESI
+
+   Siralama ve "en yeni N tanesi" secimi sablonda degil sunucuda
+   yapiliyor (content.news_items): tarih ISO metin olarak saklandigi
+   icin karsilastirmayi tek yerde tutmak istiyoruz.
+
+   HIC BULTEN YOKSA BLOK HIC BASILMAZ -- basligiyla birlikte. #}
+{% import "blocks/_macros.html" as m with context %}
+{%- set bultenler = news_items(blok) %}
+{%- if blok.renders %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  <ol class="tk-news-list">
+    {%- for bulten in bultenler %}
+    <li class="tk-news-list__item">
+      {%- if bulten.slug %}
+      <time class="tk-news-list__date" datetime="{{ bulten.slug }}">{{ tarih(bulten.slug) }}</time>
+      {%- endif %}
+      <h3 class="tk-news-list__title">
+        {%- if bulten.url %}<a href="{{ bulten.url }}" target="_blank" rel="noopener">{{ bulten.title }}</a>
+        {%- else %}{{ bulten.title }}{% endif %}
+      </h3>
+      {%- if bulten.text %}
+      <p class="tk-news-list__summary">{{ bulten.text|safe }}</p>
+      {%- endif %}
+    </li>
+    {%- endfor %}
+  </ol>
+  {%- set tumu = blok.first_of('link') %}
+  {%- if tumu and tumu.url and tumu.title %}
+  <p class="tk-news-list__more">
+    <a href="{{ tumu.url }}" target="_blank" rel="noopener">{{ tumu.title }}</a>
+  </p>
+  {%- endif %}
+  {{- m.dipnot(blok) }}
+</section>
+{%- endif %}

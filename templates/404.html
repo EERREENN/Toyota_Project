@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}404{% endblock %}
+{% block body_class %}page-tmmt{% endblock %}
+
+{% block content %}
+<section class="icerik-blok">
+  <h1>404</h1>
+  <p>{{ _('Aradığınız sayfa bulunamadı.') }}</p>
+  <p><a href="{{ ana_sayfa_url }}">{{ _('Ana sayfaya dön') }}</a></p>
+</section>
+{% endblock %}

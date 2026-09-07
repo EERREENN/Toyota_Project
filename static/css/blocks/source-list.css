@@ -1,0 +1,13 @@
+/* ============================================================
+   KAYNAK LISTESI  (source_list)
+   ============================================================ */
+.tk-source-list ul {
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.tk-source-list a {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}

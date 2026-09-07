@@ -1,0 +1,110 @@
+/* ============================================================
+   KARSILASTIRMA TABLOSU  (compare_table)
+
+   Yeni renk yok: yuzey --surface, cizgiler --border, vurgu --accent.
+   Genislik sabit degil; sigmayinca .table-wrap (base.css) yatay
+   kaydiriyor ve SATIR ETIKETLERI solda yapisik kaliyor
+   (position: sticky) -- kaydirirken hangi satirda oldugun kaybolmasin.
+   ============================================================ */
+.tk-compare {
+  margin-top: clamp(24px, 6vw, 36px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.tk-compare__table {
+  border-collapse: separate;
+  border-spacing: 0;
+  /* Sutun sayisi artinca tablo daralmasin: her sutuna alt sinir. */
+  min-width: 100%;
+}
+
+.tk-compare__table th,
+.tk-compare__table td {
+  vertical-align: top;
+  text-align: left;
+  padding: clamp(12px, 2vw, 16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.tk-compare__table tr:last-child th,
+.tk-compare__table tr:last-child td { border-bottom: 0; }
+
+/* ---------- Baslik satiri ---------- */
+.tk-compare__head {
+  min-width: 190px;
+  background: var(--bg);
+  border-bottom: 2px solid var(--accent);
+}
+.tk-compare__tech {
+  display: block;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+  line-height: 1.25;
+}
+.tk-compare__tech-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* ---------- Soldaki sabit sutun ---------- */
+.tk-compare__corner,
+.tk-compare__label {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 132px;
+  background: var(--surface);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--muted);
+  /* Kaydirirken hucrelerin altindan gectigi belli olsun. */
+  box-shadow: 1px 0 0 var(--border);
+}
+.tk-compare__corner {
+  background: var(--bg);
+  border-bottom: 2px solid var(--accent);
+}
+
+/* ---------- Hucreler ---------- */
+.tk-compare__cell {
+  min-width: 190px;
+  font-size: 0.9rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.tk-compare__cell--note { background: var(--bg); }
+
+.tk-compare__note {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.tk-compare__link {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.82rem;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.tk-compare__link:hover,
+.tk-compare__link:focus-visible { border-bottom-color: var(--accent); }
+
+/* ---------- Tablonun altindaki baglam cumlesi ---------- */
+.tk-compare__outro {
+  margin: clamp(14px, 3vw, 18px) 0 0;
+  max-width: 68ch;
+  color: var(--muted);
+  font-size: 0.92rem;
+}

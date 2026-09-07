@@ -1,0 +1,40 @@
+{# ANDON BANDI -- solda metin, sagda uc durum isigi.
+
+   Isik gorseli CIZIM DEGIL, VERIDIR: her isik bir `light` ogesi,
+   rengi `variant` (green / amber / red), etiketi `title`. Boylece
+   editor etiketleri panelden degistirebiliyor.
+
+   Isik kutusu suslemedir, metni tekrar etmez: ekran okuyucuya
+   aria-hidden ile kapatiliyor -- ayni bilgi zaten soldaki
+   paragraflarda ve isiklarin yanindaki etiketlerde yazili. #}
+{% import "blocks/_macros.html" as m with context %}
+{%- set isiklar = blok.items_of('light') %}
+{%- set paragraflar = blok.items_of('paragraph') %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  <div class="tk-andon">
+    <div class="tk-andon__text">
+      {%- for p in paragraflar %}
+      <p>{{ p.text|safe }}</p>
+      {%- endfor %}
+    </div>
+    {%- if isiklar %}
+    <div class="tk-andon__panel">
+      <ul class="tk-andon__lights">
+        {%- for isik in isiklar %}
+        <li class="tk-andon__light tk-andon__light--{{ isik.variant or 'green' }}">
+          <span class="tk-andon__bulb" aria-hidden="true"></span>
+          <span class="tk-andon__label">
+            <strong>{{ isik.title }}</strong>
+            {%- if isik.text %}
+            <span>{{ isik.text }}</span>
+            {%- endif %}
+          </span>
+        </li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- endif %}
+  </div>
+  {{- m.dipnot(blok) }}
+</section>

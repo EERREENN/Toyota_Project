@@ -1,0 +1,11 @@
+{# KAYNAK LISTESI -- .tk-block .tk-source-list #}
+{% import "blocks/_macros.html" as m with context %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block tk-source-list') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  <ul>
+    {%- for baglanti in blok.items_of('link') %}
+    <li><a href="{{ baglanti.url }}"{% if baglanti.variant == 'external' %} target="_blank" rel="noopener"{% endif %}>{{ baglanti.title }}</a></li>
+    {%- endfor %}
+  </ul>
+  {{- m.dipnot(blok) }}
+</section>

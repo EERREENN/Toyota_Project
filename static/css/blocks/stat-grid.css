@@ -1,0 +1,124 @@
+/* ============================================================
+   RAKAM IZGARASI  (stat_grid)
+
+   Iki varyant:
+     card     -> paylasilan .tk-card yuzeyi + buyuk rakam
+     progress -> cevre sayfasindaki ilerleme kutulari
+   ============================================================ */
+
+/* ---------- card varyanti ---------- */
+.tk-card .tk-stat-grid__value {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 5vw, 1.8rem);
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+  overflow-wrap: break-word;
+}
+
+/* ---------- progress varyanti (sayac animasyonlu) ---------- */
+.tk-stat-grid--progress {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: clamp(14px, 3vw, 20px);
+  margin-top: clamp(24px, 6vw, 32px);
+}
+
+.tk-stat-grid__progress-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: clamp(18px, 4vw, 24px);
+}
+.tk-stat-grid__progress-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.tk-stat-grid__progress-value {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 1;
+  font-size: clamp(2rem, 7vw, 2.6rem);
+  color: var(--accent);
+}
+.tk-stat-grid__count-suffix { font-size: 0.55em; }
+
+/* Kartin en ustundeki kucuk hedef adi. Yeni renk yok. */
+.tk-stat-grid__progress-card .tk-stat-grid__goal {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Izgaranin altindaki kompakt liste (rakamsiz maddeler).
+   Mobil oncelikli: ad ustte, cumle altta; 640px ustunde iki sutun. */
+.tk-stat-grid__goals-list {
+  margin: clamp(20px, 4vw, 28px) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--border);
+}
+.tk-stat-grid__goal-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px clamp(16px, 3vw, 28px);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.tk-stat-grid__goal-row dt {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.tk-stat-grid__goal-row dd {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+@media (min-width: 640px) {
+  .tk-stat-grid__goal-row {
+    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+    align-items: baseline;
+  }
+}
+.tk-stat-grid__progress-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- split varyanti ----------
+   Solda rakam kartlari alt alta, sagda blogun giris metni.
+   Dar ekranda tek sutuna doner (once kartlar, sonra metin). */
+.tk-stat-grid--split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(18px, 4vw, 28px);
+  margin-top: clamp(24px, 6vw, 32px);
+}
+@media (min-width: 768px) {
+  .tk-stat-grid--split {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+  }
+}
+.tk-stat-grid__column {
+  display: grid;
+  gap: clamp(12px, 3vw, 16px);
+}
+.tk-stat-grid__aside p {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--ink);
+}

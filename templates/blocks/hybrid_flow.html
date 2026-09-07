@@ -1,0 +1,100 @@
+{# HIBRIT AKIS DIYAGRAMI
+
+   Yapisi tps_house ile AYNI mantikta:
+     >=720px : ustten arac semasi + asama dugmeleri
+     <720px  : ayni hiyerarsiyi koruyan dikey akordeon
+   Ikisi de AYNI aciklama panellerini aciyor (ayni aria-controls);
+   gorunmeyen sunum display:none ile erisilebilirlik agacindan cikar.
+
+   HANGI BILESENIN YANDIGI KODDA SABIT: asamanin `slug`u
+   AKTIF_BILESEN sozlugunden okunuyor, degeri `data-aktif` olarak
+   dugmeye yaziliyor. static/js/modules/hybrid.js acik asamanin bu
+   degerini semanin kabina tasiyor, CSS de [data-aktif~="motor"]
+   gibi kurallarla ilgili parcayi vurguluyor. Boylece editor metni
+   degistirince sema bozulmuyor.
+
+   SVG yalnizca gorsel anlatim; ayni bilgi asama basliklarinda ve
+   aciklamalarinda yazili oldugu icin aria-hidden. #}
+{% import "blocks/_macros.html" as m with context %}
+
+{%- set AKTIF_BILESEN = {
+  'kalkis':   'elektrik batarya',
+  'normal':   'motor batarya',
+  'hizlanma': 'motor elektrik batarya',
+  'fren':     'elektrik batarya',
+} %}
+
+{%- set asamalar = blok.items_of('step') %}
+{%- set kapanis = blok.items_of('outro') %}
+{%- set ozet = blok.first_of('paragraph') %}
+{%- if asamalar %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block tk-hybrid') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+
+  {%- if ozet and ozet.text %}
+  {%- set ozet_id = 'hibrit-ozet-' ~ blok.id %}
+  <p class="tk-gizli-metin" id="{{ ozet_id }}">{{ ozet.text }}</p>
+  {%- endif %}
+
+  {#- ---------- Ustten arac semasi ---------- -#}
+  <div class="tk-hybrid__stage" data-hibrit-sema
+       {% if ozet and ozet.text %}aria-describedby="{{ ozet_id }}" {% endif %}>
+    <svg class="tk-hybrid__car" viewBox="0 0 420 200" aria-hidden="true"
+         preserveAspectRatio="xMidYMid meet">
+      {#- govde -#}
+      <rect class="tk-hybrid__body" x="40" y="26" width="340" height="148" rx="46" />
+      {#- tekerlekler -#}
+      <rect class="tk-hybrid__wheel" x="74" y="8" width="46" height="22" rx="8" />
+      <rect class="tk-hybrid__wheel" x="74" y="170" width="46" height="22" rx="8" />
+      <rect class="tk-hybrid__wheel" x="300" y="8" width="46" height="22" rx="8" />
+      <rect class="tk-hybrid__wheel" x="300" y="170" width="46" height="22" rx="8" />
+      {#- on: icten yanmali motor -#}
+      <g class="tk-hybrid__part tk-hybrid__part--motor">
+        <rect x="62" y="60" width="88" height="80" rx="10" />
+        <text x="106" y="105" text-anchor="middle">{{ _('Motor') }}</text>
+      </g>
+      {#- orta: elektrik motoru -#}
+      <g class="tk-hybrid__part tk-hybrid__part--elektrik">
+        <rect x="166" y="60" width="88" height="80" rx="10" />
+        <text x="210" y="105" text-anchor="middle">{{ _('Elektrik motoru') }}</text>
+      </g>
+      {#- arka: batarya -#}
+      <g class="tk-hybrid__part tk-hybrid__part--batarya">
+        <rect x="270" y="60" width="88" height="80" rx="10" />
+        <text x="314" y="105" text-anchor="middle">{{ _('Batarya') }}</text>
+      </g>
+    </svg>
+  </div>
+
+  {#- ---------- Asama dugmeleri (genis) / akordeon (dar) ---------- -#}
+  <ol class="tk-hybrid__steps" style="--adim-sayisi: {{ asamalar|length }}">
+    {%- for asama in asamalar %}
+    {%- set kimlik = 'hibrit-' ~ blok.id ~ '-' ~ (asama.slug or loop.index) %}
+    <li class="tk-hybrid__step">
+      <button type="button" class="tk-hybrid__button"
+              data-aktif="{{ AKTIF_BILESEN.get(asama.slug, '') }}"
+              aria-expanded="false" aria-controls="{{ kimlik }}">
+        <span class="tk-hybrid__no">{{ asama.eyebrow or loop.index }}</span>
+        <span class="tk-hybrid__title">{{ asama.title }}</span>
+      </button>
+    </li>
+    {%- endfor %}
+  </ol>
+
+  <div class="tk-hybrid__panels">
+    {%- for asama in asamalar %}
+    <div class="tk-hybrid__panel" id="hibrit-{{ blok.id }}-{{ asama.slug or loop.index }}" hidden>
+      <h3 class="tk-hybrid__panel-title">{{ asama.title }}</h3>
+      {%- if asama.text %}
+      <p>{{ asama.text|safe }}</p>
+      {%- endif %}
+    </div>
+    {%- endfor %}
+  </div>
+
+  {%- for oge in kapanis %}
+  <p class="tk-hybrid__note">{{ oge.text|safe }}</p>
+  {%- endfor %}
+  {{- m.dipnot(blok) }}
+</section>
+{%- endif %}

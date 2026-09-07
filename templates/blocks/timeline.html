@@ -1,0 +1,36 @@
+{# ZAMAN TUNELI -- cevre.html'deki <ol class="tk-timeline">.
+   Detay kutusunun id'si zt-<slug>; buton aria-controls ile ona baglaniyor. #}
+{% import "blocks/_macros.html" as m with context %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  <ol class="tk-timeline">
+    {%- for durak in blok.items_of('stop') %}
+    {%- set kimlik = 'zt-' ~ (durak.slug or durak.id) %}
+    <li class="tk-timeline__stop">
+      {#- Aciklamasi ve gorseli olmayan durak acilmaz: bos bir kutu
+          acmak yerine duz metin olarak gosterilir. -#}
+      {%- if durak.text or durak.image %}
+      <button type="button" class="tk-timeline__button" aria-expanded="{{ 'true' if durak.settings.get('open') else 'false' }}" aria-controls="{{ kimlik }}">
+        <span class="tk-timeline__year">{{ durak.eyebrow }}</span>
+        <span class="tk-timeline__title">{{ durak.title }}</span>
+      </button>
+      <div class="tk-timeline__detail" id="{{ kimlik }}"{{ '' if durak.settings.get('open') else ' hidden' }}>
+        {%- if durak.image %}
+        <img class="tk-timeline__image" src="{{ url_for('static', filename=durak.image.path) }}"
+             alt="{{ durak.image.alt }}"{% if durak.image.width %} width="{{ durak.image.width }}" height="{{ durak.image.height }}"{% endif %}>
+        {%- endif %}
+        {%- if durak.text %}
+        <p>{{ durak.text|safe }}</p>
+        {%- endif %}
+      </div>
+      {%- else %}
+      <div class="tk-timeline__button tk-timeline__button--sabit">
+        <span class="tk-timeline__year">{{ durak.eyebrow }}</span>
+        <span class="tk-timeline__title">{{ durak.title }}</span>
+      </div>
+      {%- endif %}
+    </li>
+    {%- endfor %}
+  </ol>
+  {{- m.dipnot(blok) }}
+</section>

@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% block title %}Sayfalar{% endblock %}
+
+{% block content %}
+<h1 class="yn-baslik">Sayfalar</h1>
+<p class="yn-aciklama">
+  Düzenlemek istediğin sayfayı seç. Yeni sayfa eklenemez, mevcut sayfalar silinemez.
+</p>
+
+<ul class="yn-liste">
+  {% for sayfa in sayfalar %}
+  <li class="yn-liste__oge">
+    <a href="{{ url_for('admin.page_edit', sayfa_id=sayfa.id) }}" class="yn-liste__ad">
+      {{ sayfa.nav_label }}
+      {% if not sayfa.is_published %}<span class="yn-rozet yn-rozet--pasif">yayında değil</span>{% endif %}
+    </a>
+    <span class="yn-liste__bilgi">{{ sayfa.url }} · {{ sayfa.blocks|length }} blok</span>
+    <a href="{{ sayfa.url }}" target="_blank" rel="noopener" class="yn-dugme">Gör ↗</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

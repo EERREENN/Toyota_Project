@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ _('Toyota Production System') }}{% endblock %}
+{% block body_class %}page-uretim{% endblock %}
+
+{% block background %}
+<div class="uretim-bg" aria-hidden="true"></div>
+{% endblock %}
+
+{% block content %}
+<section class="icerik-blok reveal">
+  <h1>{{ _('Toyota Production System') }}</h1>
+  <p>
+    {% trans %}Toyota Production System (TPS), İkinci Dünya Savaşı sonrasında Taiichi Ohno
+    öncülüğünde geliştirilen ve Toyota'nın üretim felsefesinin temelini oluşturan
+    yönetim sistemidir. Amacı, israfı (muda) ortadan kaldırarak müşteriye
+    en yüksek kaliteyi, en düşük maliyetle ve en kısa sürede sunmaktır. Bugün
+    dünya genelinde birçok sektörde "yalın üretim" (lean manufacturing)
+    adıyla uygulanan yaklaşımın da temelini oluşturur.{% endtrans %}
+  </p>
+</section>
+
+<div class="hat-serit" aria-hidden="true"></div>
+
+<section class="hat-alani reveal">
+  <h2 class="hat-baslik">{{ _('Hattın iki sütunu') }}</h2>
+  <p class="hat-aciklama">{{ _('Parça hattan akarken her istasyon kendi işini yapar; bu iki sütun tüm hattın üzerine kurulduğu temeldir.') }}</p>
+  <div class="grid grid-2">
+    <div class="kart istasyon">
+      <span class="istasyon-no">1</span>
+      <h3>{{ _('Just-in-Time (JIT)') }}</h3>
+      <p>
+        {% trans %}Bir sonraki sürecin ihtiyaç duyduğu parçayı, ihtiyaç duyduğu anda ve
+        ihtiyaç duyduğu miktarda üretmek. Bu sayede fazla stok, fazla üretim ve
+        bekleme gibi israflar ortadan kalkar.{% endtrans %}
+      </p>
+    </div>
+    <div class="kart istasyon">
+      <span class="istasyon-no">2</span>
+      <h3>{{ _('Jidoka') }}</h3>
+      <p>
+        {% trans %}"İnsan dokunuşlu otomasyon." Bir sorun ya da hata tespit edildiğinde
+        makine ya da hat otomatik olarak durur; böylece hatalı ürün bir sonraki
+        aşamaya asla geçmez.{% endtrans %}
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="hat-serit" aria-hidden="true"></div>
+
+<section class="icerik-blok reveal">
+  <h2>{{ _('Temeldeki iki ilke') }}</h2>
+  <p>
+    {% trans %}Bu iki sütunun altında, sistemi ayakta tutan iki temel ilke yer alır:
+    <strong>Kaizen</strong> — küçük ama sürekli iyileştirme kültürü — ve
+    <strong>insana saygı</strong> — çalışanların fikirlerine değer verilmesi ve
+    sorun çözme sürecine dahil edilmesi. TPS, sadece bir üretim tekniği değil,
+    bu iki ilke üzerine kurulmuş bir çalışma kültürüdür.{% endtrans %}
+  </p>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/uretim.js') }}"></script>
+{% endblock %}

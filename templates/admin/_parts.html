@@ -1,0 +1,168 @@
+{#
+  Panel formlarinin yapi taslari.
+
+  Alan adlari duzeni:  f__<anahtar>__<alan>
+  <anahtar> mevcut oge icin veritabani id'si, yeni satir icin JS'in
+  urettigi "yeni-1" gibi bir deger. Sablonlarda yeni satir kalibinda
+  yer tutucu olarak %K% kullanilir; JS onu gercek anahtarla degistirir.
+#}
+
+{# ---------- Tekil alanlar ---------- #}
+
+{%- macro metin(k, alan, etiket, deger='', ipucu='') -%}
+<div class="yn-alan">
+  <label for="f__{{ k }}__{{ alan }}">{{ etiket }}</label>
+  <input type="text" id="f__{{ k }}__{{ alan }}" name="f__{{ k }}__{{ alan }}"
+         value="{{ deger or '' }}">
+  {%- if ipucu %}<small>{{ ipucu }}</small>{% endif %}
+</div>
+{%- endmacro -%}
+
+{%- macro uzun(k, alan, etiket, deger='', ipucu='') -%}
+<div class="yn-alan">
+  <label for="f__{{ k }}__{{ alan }}">{{ etiket }}</label>
+  <textarea id="f__{{ k }}__{{ alan }}" name="f__{{ k }}__{{ alan }}"
+            rows="3">{{ deger or '' }}</textarea>
+  {%- if ipucu %}<small>{{ ipucu }}</small>{% endif %}
+</div>
+{%- endmacro -%}
+
+{%- macro sayi(k, alan, etiket, deger='', ipucu='', adim='any') -%}
+<div class="yn-alan">
+  <label for="f__{{ k }}__{{ alan }}">{{ etiket }}</label>
+  <input type="number" step="{{ adim }}" id="f__{{ k }}__{{ alan }}"
+         name="f__{{ k }}__{{ alan }}"
+         value="{{ '' if deger is none else deger }}">
+  {%- if ipucu %}<small>{{ ipucu }}</small>{% endif %}
+</div>
+{%- endmacro -%}
+
+{%- macro secim(k, alan, etiket, deger, secenekler, ipucu='') -%}
+<div class="yn-alan">
+  <label for="f__{{ k }}__{{ alan }}">{{ etiket }}</label>
+  <select id="f__{{ k }}__{{ alan }}" name="f__{{ k }}__{{ alan }}">
+    {%- for kod, ad in secenekler %}
+    <option value="{{ kod }}"{{ ' selected' if (deger or '') == kod }}>{{ ad }}</option>
+    {%- endfor %}
+  </select>
+  {%- if ipucu %}<small>{{ ipucu }}</small>{% endif %}
+</div>
+{%- endmacro -%}
+
+{%- macro onay(k, alan, etiket, deger=false, ipucu='') -%}
+<div class="yn-alan yn-alan--onay">
+  <label>
+    <input type="checkbox" name="f__{{ k }}__{{ alan }}" value="1"
+           {{ 'checked' if deger }}>
+    {{ etiket }}
+  </label>
+  {%- if ipucu %}<small>{{ ipucu }}</small>{% endif %}
+</div>
+{%- endmacro -%}
+
+{# ---------- settings JSON alanlari (ayar__<yol>) ---------- #}
+
+{%- macro ayar_metin(yol, etiket, deger='', ipucu='') -%}
+{%- set ad = 'ayar__' ~ yol|replace('.', '__') -%}
+<div class="yn-alan">
+  <label for="{{ ad }}">{{ etiket }}</label>
+  <input type="text" id="{{ ad }}" name="{{ ad }}" value="{{ deger or '' }}">
+  {%- if ipucu %}<small>{{ ipucu }}</small>{% endif %}
+</div>
+{%- endmacro -%}
+
+{%- macro ayar_sayi(yol, etiket, deger='', ipucu='', adim='any') -%}
+{%- set ad = 'ayar__' ~ yol|replace('.', '__') -%}
+<div class="yn-alan">
+  <label for="{{ ad }}">{{ etiket }}</label>
+  <input type="number" step="{{ adim }}" id="{{ ad }}" name="{{ ad }}"
+         value="{{ '' if deger is none else deger }}">
+  {%- if ipucu %}<small>{{ ipucu }}</small>{% endif %}
+</div>
+{%- endmacro -%}
+
+{%- macro ayar_secim(yol, etiket, deger, secenekler, ipucu='') -%}
+{%- set ad = 'ayar__' ~ yol|replace('.', '__') -%}
+<div class="yn-alan">
+  <label for="{{ ad }}">{{ etiket }}</label>
+  <select id="{{ ad }}" name="{{ ad }}">
+    {%- for kod, gorunen in secenekler %}
+    <option value="{{ kod }}"{{ ' selected' if (deger or '') == kod }}>{{ gorunen }}</option>
+    {%- endfor %}
+  </select>
+  {%- if ipucu %}<small>{{ ipucu }}</small>{% endif %}
+</div>
+{%- endmacro -%}
+
+{# ---------- Tekrarlayan satir kabugu ---------- #}
+
+{%- macro satir_bas(k, etiket='') -%}
+<div class="yn-satir" data-anahtar="{{ k }}">
+  <div class="yn-satir__ust">
+    <span class="yn-satir__tut" title="Sürükleyerek sırala" draggable="true">⠿</span>
+    <span class="yn-satir__etiket">{{ etiket }}</span>
+    <button type="button" class="yn-dugme yn-dugme--tehlike yn-satir__sil">Sil</button>
+  </div>
+  <div class="yn-satir__govde">
+{%- endmacro -%}
+
+{%- macro satir_bit() -%}
+  </div>
+</div>
+{%- endmacro -%}
+
+{#
+  Tekrarlayan grup kabugu.
+  caller() once mevcut satirlari, sonra <template> icinde bos satir
+  kalibini basar. JS kalibi kopyalayip %K% yerine yeni anahtar yazar.
+#}
+{%- macro tekrar_bas(grup, baslik, ekle_metni, anahtarlar, aciklama='') -%}
+<section class="yn-tekrar" data-grup="{{ grup }}">
+  <div class="yn-tekrar__ust">
+    <h3>{{ baslik }}</h3>
+    <button type="button" class="yn-dugme yn-tekrar__ekle">+ {{ ekle_metni }}</button>
+  </div>
+  {%- if aciklama %}<p class="yn-tekrar__aciklama">{{ aciklama }}</p>{% endif %}
+  <input type="hidden" name="sira__{{ grup }}" value="{{ anahtarlar|join(',') }}">
+  <div class="yn-tekrar__liste">
+{%- endmacro -%}
+
+{%- macro tekrar_bit() -%}
+  </div>
+</section>
+{%- endmacro -%}
+
+{# ---------- Gorsel secici ----------
+   Basit bir <select>: JS'siz calisir, secili gorselin onizlemesini
+   yaninda gosterir. `gorseller` degiskeni sablon baglaminda olmali. #}
+{%- macro gorsel_secici(ad, etiket, secili_id, gorseller, ipucu='') -%}
+<div class="yn-alan yn-gorsel-alan">
+  <label for="{{ ad }}">{{ etiket }}</label>
+  <div class="yn-gorsel-secim">
+    <select id="{{ ad }}" name="{{ ad }}">
+      <option value="">— görsel yok —</option>
+      {%- for g in gorseller %}
+      <option value="{{ g.id }}"{{ ' selected' if secili_id == g.id }}>
+        {{ g.original_name or g.path }}{% if g.is_builtin %} (projeyle gelen){% endif %}
+      </option>
+      {%- endfor %}
+    </select>
+    {%- for g in gorseller %}{% if secili_id == g.id %}
+    <img class="yn-gorsel-onizleme"
+         src="{{ url_for('static', filename=g.path) }}" alt="">
+    {% endif %}{% endfor %}
+  </div>
+  {%- if ipucu %}<small>{{ ipucu }}</small>{% endif %}
+  <small>Yeni görsel yüklemek için <a href="{{ url_for('admin.media_library') }}" target="_blank">Görseller</a> ekranını kullan.</small>
+</div>
+{%- endmacro -%}
+
+{# Oge icindeki gorsel secici: adi f__<anahtar>__image_id olur #}
+{%- macro oge_gorsel(k, etiket, secili_id, gorseller, ipucu='') -%}
+{{ gorsel_secici('f__' ~ k ~ '__image_id', etiket, secili_id, gorseller, ipucu) }}
+{%- endmacro -%}
+
+{# settings icindeki gorsel secici: adi ayar__image_id olur #}
+{%- macro ayar_gorsel(yol, etiket, secili_id, gorseller, ipucu='') -%}
+{{ gorsel_secici('ayar__' ~ yol|replace('.', '__'), etiket, secili_id, gorseller, ipucu) }}
+{%- endmacro -%}

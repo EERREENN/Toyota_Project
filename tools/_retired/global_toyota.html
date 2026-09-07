@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% block title %}{{ _('Global Toyota') }}{% endblock %}
+{% block body_class %}page-global{% endblock %}
+
+{% block background %}
+<div class="global-bg" aria-hidden="true"></div>
+{% endblock %}
+
+{% block content %}
+<section class="hero reveal">
+  <h1>{{ _('Global Toyota') }}</h1>
+  <p class="lede">
+    {% trans %}1937'de Japonya'da, Sakichi Toyoda'nın otomatik dokuma tezgahı patentinden
+    elde ettiği gelirle Kiichiro Toyoda tarafından kurulan Toyota, bugün
+    dünyanın en büyük otomotiv üreticilerinden biri. Merkezi hâlâ Japonya'daki
+    Toyota City'de bulunuyor, ama üretim ve satış ağı altı kıtaya yayılmış
+    durumda.{% endtrans %}
+  </p>
+</section>
+
+<div class="milestone-badge reveal">
+  <span class="milestone-num" data-count-to="300000000" data-count-suffix="+" data-count-group>{{ _('300.000.000+') }}</span>
+  <span class="milestone-label">{{ _("1935'ten bu yana üretilen toplam araç") }}</span>
+  <span class="milestone-sub">{{ _("Bu kilometre taşına Kasım 2023'te ulaşıldı.") }}</span>
+</div>
+
+<section class="grid reveal">
+  <div class="kart">
+    <span class="stat" data-count-to="390000" data-count-prefix="~" data-count-group>~390.000</span>
+    <h3>{{ _('Çalışan') }}</h3>
+    <p>{{ _('Dünya genelinde, üretimden mühendisliğe pek çok farklı alanda.') }}</p>
+  </div>
+  <div class="kart">
+    <span class="stat" data-count-to="170" data-count-suffix="+">170+</span>
+    <h3>{{ _('Ülke ve bölge') }}</h3>
+    <p>{{ _('Toyota araçlarının satıldığı pazar sayısı.') }}</p>
+  </div>
+  <div class="kart">
+    <span class="stat" data-count-to="70" data-count-suffix="+">70+</span>
+    <h3>{{ _('Üretim şirketi') }}</h3>
+    <p>{{ _('Japonya dışında da onlarca ülkede kurulu fabrika ve iştirak.') }}</p>
+  </div>
+</section>
+
+<section class="icerik-blok reveal">
+  <h2>{{ _('Elektrikli Araç ve Rekabet Ortamı') }}</h2>
+  <p>{{ _("2025'te Toyota'nın sattığı araçların yaklaşık 200 bini tam elektrikliydi — bir önceki yıla göre yüzde 42'lik bir artış. Yine de şirket, elektrikli araçlara topyekûn geçmek yerine hibrit, şarj edilebilir hibrit, tam elektrikli ve hidrojen yakıt hücreli araçları bir arada geliştiren \"çoklu yol\" stratejisine bağlı kalıyor. Bu arada BYD, SAIC ve Geely gibi Çinli üreticilerin özellikle elektrikli araç segmentinde hızla büyümesi, Toyota'nın önümüzdeki yıllarda karşılaşacağı en büyük rekabet baskılarından biri olarak görülüyor.") }}</p>
+</section>
+
+<section class="icerik-blok reveal">
+  <h2>{{ _('Üretim Tesisleri Haritası') }}</h2>
+  <p>
+    {% trans %}Toyota'nın araçlarını sattığı 170'ten fazla ülke ile araçlarını
+    <strong>ürettiği</strong> yerler aynı şey değil. Aşağıdaki harita, altı
+    kıtaya yayılmış başlıca üretim ve montaj tesislerini gösteriyor —
+    fareyle sürükleyerek gezebilir, tekerlekle yakınlaştırabilir, bir
+    noktaya tıklayarak o tesis hakkında bilgi görebilirsin.{% endtrans %}
+  </p>
+  <div id="toyota-map"></div>
+  <p class="map-not">
+    <span class="dot dot-red"></span> <span data-i18n="map.factory">{{ _('Üretim tesisi') }}</span>
+    &nbsp;&nbsp;
+    <span class="dot dot-gold"></span> <span data-i18n="map.turkey">{{ _('Türkiye (TMMT)') }}</span>
+  </p>
+</section>
+
+<section class="icerik-blok reveal">
+  <h2>{{ _('Ödüller, Marka Değeri ve Kalite Sıralamaları') }}</h2>
+  <p>{{ _('Bağımsız kuruluşların 2025-2026 değerlendirmelerinde Toyota, hem marka değeri hem de güvenilirlik tarafında otomotiv sektörünün önünde yer aldı.') }}</p>
+
+  <div class="odul-grid">
+    <article class="odul-kart">
+      <span class="odul-yil">2025</span>
+      <h3>Interbrand</h3>
+      <p>{{ _('Otomotivde kesintisiz 1. sıra; marka değeri 74,2 milyar dolar.') }}</p>
+    </article>
+
+    <article class="odul-kart">
+      <span class="odul-yil">2025–2026</span>
+      <h3>Brand Finance</h3>
+      <p>{{ _('Üst üste 2 yıl dünyanın en değerli ve en güçlü otomobil markası (AAA+).') }}</p>
+    </article>
+
+    <article class="odul-kart">
+      <span class="odul-yil">2023–2026</span>
+      <h3>J.D. Power — Lexus</h3>
+      <p>{{ _('Lexus, 4 yıl üst üste en güvenilir marka seçildi.') }}</p>
+    </article>
+
+    <article class="odul-kart">
+      <span class="odul-yil">2023–2026</span>
+      <h3>J.D. Power — Toyota</h3>
+      <p>{{ _('En çok segment ödülünü alan üretici (6–9 model).') }}</p>
+    </article>
+
+    <article class="odul-kart">
+      <span class="odul-yil">2025</span>
+      <h3>{{ _('En Çok Satan Grup') }}</h3>
+      <p>{{ _('11,3 milyon araçla üst üste 6. kez dünyanın 1.\'si.') }}</p>
+    </article>
+  </div>
+  <p class="kaynak-not">{{ _('Kaynak: Interbrand, Brand Finance, J.D. Power, motor1.com, carexpert.com.au') }}</p>
+</section>
+
+<section class="icerik-blok reveal">
+  <h2>{{ _('Toyota Grubu Marka Ailesi') }}</h2>
+  <p>{{ _('Toyota yalnızca kendi markasından ibaret değil; tamamına sahip olduğu markaların yanında birkaç rakibinde de stratejik hisseler tutuyor.') }}</p>
+
+  <div class="marka-agaci">
+    <div class="marka-grup">
+      <h3>{{ _('Tamamı Toyota\'ya ait') }}</h3>
+      <ul class="marka-cips">
+        <li class="cip">Lexus</li>
+        <li class="cip">Daihatsu</li>
+        <li class="cip">Hino Motors</li>
+      </ul>
+    </div>
+    <div class="marka-grup">
+      <h3>{{ _('Stratejik hisseler') }}</h3>
+      <ul class="marka-cips">
+        <li class="cip">Subaru <span>{{ _('yüzde 20 · oy hakkıyla') }}</span></li>
+        <li class="cip">Suzuki <span>~%4,9</span></li>
+        <li class="cip">Mazda <span>~%5,1</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <p>{{ _('Mazda ortaklığı, ABD Alabama\'daki Mazda Toyota Manufacturing tesisinin temelini oluşturuyor.') }}</p>
+  <p class="milestone-sub">{{ _('Hino Motors\'un önümüzdeki dönemde Mitsubishi Fuso ile yeni bir ittifaka dahil olacağı duyuruldu — grubun yapısının hâlâ hareketli olduğunu gösteren güncel bir detay.') }}</p>
+  <p class="kaynak-not">{{ _('Kaynaklar: toyotaautodealer.com, slashgear.com') }}</p>
+</section>
+
+<section class="icerik-blok reveal">
+  <h2>{{ _('Hidrojen ve Katı Hal Batarya Teknolojisi') }}</h2>
+  <p>{{ _('Toyota\'nın "çoklu yol" stratejisi bataryalı elektrikle sınırlı değil; hidrojen ve yeni nesil batarya kimyaları da paralel olarak geliştiriliyor.') }}</p>
+
+  <section class="grid grid-2">
+    <div class="kart">
+      <span class="stat" data-count-to="647" data-count-prefix="~" data-count-suffix=" km">~647 km</span>
+      <h3>{{ _('Mirai — Hidrojen yakıt hücresi') }}</h3>
+      <p>{{ _('182 beygir güç ve ABD EPA testine göre yaklaşık 647 km (402 mil) menzil. Egzozdan çıkan tek atık su.') }}</p>
+      <p class="kaynak-not">{{ _('Kaynak: pressroom.toyota.com') }}</p>
+    </div>
+    <div class="kart">
+      <span class="stat" data-count-to="1200" data-count-prefix="~" data-count-suffix=" km" data-count-group>~1.200 km</span>
+      <h3>{{ _('Katı hal bataryalar') }}</h3>
+      <p>{{ _('Sumitomo Metal Mining ve Idemitsu ortaklığıyla geliştiriliyor; 2027-2028\'de araçlara girmesi hedefleniyor. Prototip paket yaklaşık 1.200 km menzil ve 10 dakikanın altında hızlı şarj vadediyor.') }}</p>
+      <p class="kaynak-not">{{ _('Kaynak: electrek.co') }}</p>
+    </div>
+  </section>
+</section>
+
+<section class="icerik-blok reveal">
+  <h2>{{ _('Toyota\'nın Sosyal Yüzü') }}</h2>
+
+  <section class="grid grid-2">
+    <div class="kart">
+      <h3>{{ _('Woven City') }}</h3>
+      <ul>
+        <li>{{ _('Fuji Dağı eteğinde inşa edilen deneysel "yaşayan laboratuvar" şehir.') }}</li>
+        <li>{{ _('25 Eylül 2025\'te resmen açıldı; ilk "Weaver" sakinler taşınmaya başladı.') }}</li>
+        <li>{{ _('Faz 1\'de yaklaşık 300 kişilik bir nüfus hedefleniyor.') }}</li>
+        <li>{{ _('Japonya\'nın ilk LEED for Communities Platin sertifikasını aldı.') }}</li>
+      </ul>
+      <p class="kaynak-not">{{ _('Kaynaklar: global.toyota, pressroom.toyota.com') }}</p>
+    </div>
+    <div class="kart">
+      <h3>{{ _('Motorsporları — Toyota Gazoo Racing') }}</h3>
+      <ul>
+        <li>{{ _('Haziran 2026: 94. Le Mans 24 Saat\'te 6. kez zafer; 3 yıllık kazanamama serisi sona erdi (350.105 seyirci).') }}</li>
+        <li>{{ _('Dünya Rallye Şampiyonası\'nda üst üste 4. üretici şampiyonluğu.') }}</li>
+      </ul>
+      <p class="kaynak-not">{{ _('Kaynak: media.toyota.ca') }}</p>
+    </div>
+  </section>
+</section>
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/toyota-map.js') }}"></script>
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+{% endblock %}

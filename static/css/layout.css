@@ -1,0 +1,208 @@
+/* ============================================================
+   Ust bar, hamburger menu ve dil secici.
+
+   Bunlar bir "blok" degil sitenin kabugu; bu yuzden sinif adlari
+   tk- onekiyle degistirilmedi.
+   ============================================================ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--graphite);
+  border-bottom: 3px solid var(--accent);
+}
+
+.nav-inner {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+  min-height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+
+.brand {
+  font-family: var(--display);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  margin-right: auto;
+}
+
+/* ----- hamburger butonu (mobil) ----- */
+.nav-toggle {
+  --bar: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+}
+
+.nav-toggle-box {
+  position: relative;
+  width: 22px;
+  height: var(--bar);
+}
+
+.nav-toggle-bar,
+.nav-toggle-bar::before,
+.nav-toggle-bar::after {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: var(--bar);
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+.nav-toggle-bar { top: 0; }
+.nav-toggle-bar::before { content: ""; top: -7px; }
+.nav-toggle-bar::after  { content: ""; top: 7px; }
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar {
+  transform: rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar::before {
+  transform: translateY(7px) rotate(-90deg);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar::after {
+  opacity: 0;
+}
+
+/* ----- acilir menu (mobil: dikey, gizli) ----- */
+.nav-menu {
+  display: none;
+  flex-basis: 100%;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 12px;
+}
+.nav-menu.is-open { display: flex; }
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-links a {
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 12px 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: color 0.15s ease;
+}
+.nav-links a:hover,
+.nav-links a:focus-visible { color: #fff; }
+.nav-links a.active { color: #fff; }
+.nav-links a.active::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  vertical-align: middle;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ----- dil secici ----- */
+.lang-switch {
+  position: relative;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 10px;
+  padding: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+
+.lang-switch .lang-opt {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  min-height: 34px;
+  padding: 6px 14px;
+  font-family: var(--display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  transition: color 0.2s ease;
+}
+.lang-switch .lang-opt:hover,
+.lang-switch .lang-opt.active { color: #fff; }
+
+.lang-switch .lang-pill {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  height: calc(100% - 6px);
+  width: 46px;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ----- masaustu / genis tablet: yatay menu ----- */
+@media (min-width: 861px) {
+  .nav-inner { flex-wrap: nowrap; }
+
+  .nav-toggle { display: none; }
+
+  .nav-menu {
+    display: flex !important;
+    flex-basis: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 0;
+    margin-left: auto;
+  }
+
+  .nav-links {
+    flex-direction: row;
+    gap: 30px;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+    padding: 22px 2px 18px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .nav-links a.active {
+    border-bottom-color: var(--accent);
+  }
+  .nav-links a.active::before { display: none; }
+
+  .lang-switch { margin-top: 0; align-self: center; }
+  .lang-switch .lang-opt {
+    min-width: 40px;
+    min-height: 0;
+    padding: 5px 10px;
+    font-size: 0.74rem;
+  }
+  .lang-switch .lang-pill { width: 40px; }
+}

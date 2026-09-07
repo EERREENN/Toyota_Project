@@ -1,0 +1,41 @@
+{# DONGUSEL AKIS -- adimlar oklarla birbirine bagli, sonuncudan basa
+   donen bir ok dongoyu gosterir.
+
+   process_steps'ten farki: aciklamalar HEP GORUNUR (tiklanmaz) ve
+   akis kapali bir dongudur. Oklar suslemedir, ekran okuyucuya
+   kapatilir -- sira zaten <ol> ile veriliyor. #}
+{% import "blocks/_macros.html" as m with context %}
+{%- set adimlar = blok.items_of('step') %}
+{%- set kapanis = blok.items_of('outro') %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  {%- if adimlar %}
+  <ol class="tk-cycle" style="--adim-sayisi: {{ adimlar|length }}">
+    {%- for adim in adimlar %}
+    <li class="tk-cycle__step">
+      <span class="tk-cycle__no" aria-hidden="true">{{ adim.eyebrow or loop.index }}</span>
+      <h3 class="tk-cycle__title">{{ adim.title }}</h3>
+      {%- if adim.text %}
+      <p class="tk-cycle__text">{{ adim.text|safe }}</p>
+      {%- endif %}
+      {%- if not loop.last %}
+      <span class="tk-cycle__arrow" aria-hidden="true">→</span>
+      {%- endif %}
+    </li>
+    {%- endfor %}
+  </ol>
+  {#- "Basa doner" seridi yalnizca DONGUSEL akista. Duz bir surecte
+      (ornek: bataryanin ikinci hayati) yaniltici olurdu. -#}
+  {%- if blok.variant != 'linear' %}
+  <p class="tk-cycle__loop" aria-hidden="true">
+    <span class="tk-cycle__loop-line"></span>
+    {#- Sabit arayuz metni: icerik degil, o yuzden CMS'te degil
+        `_()` ile cevriliyor (404.html'deki gibi). -#}
+    <span class="tk-cycle__loop-label">↻ {{ _('döngü baştan başlar') }}</span>
+  </p>
+  {%- endif %}
+  {%- endif %}
+  {{- m.kapanis_kutusu(kapanis) }}
+  {{- m.alt_baglanti(blok.first_of('link')) }}
+  {{- m.dipnot(blok) }}
+</section>

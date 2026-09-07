@@ -1,0 +1,87 @@
+{% extends "admin/base.html" %}
+{% import "admin/_parts.html" as p %}
+{% block title %}{{ sayfa.nav_label }}{% endblock %}
+
+{% block content %}
+<p class="yn-yol"><a href="{{ url_for('admin.pages') }}">Sayfalar</a> › {{ sayfa.nav_label }}</p>
+<h1 class="yn-baslik">{{ sayfa.nav_label }}</h1>
+<p class="yn-aciklama">
+  Adres: <code>{{ sayfa.url }}</code> — değiştirilemez.
+  <a href="{{ sayfa.url }}" target="_blank" rel="noopener">Sayfayı gör ↗</a>
+</p>
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">Sayfa ayarları</h2>
+  <form method="post" class="yn-form">
+    <input type="hidden" name="_csrf" value="{{ csrf }}">
+    <div class="yn-alan">
+      <label for="title">Tarayıcı sekmesinde görünen başlık</label>
+      <input type="text" id="title" name="title" value="{{ sayfa.title }}" required>
+    </div>
+    <div class="yn-alan">
+      <label for="nav_label">Üst menüde görünen adı</label>
+      <input type="text" id="nav_label" name="nav_label" value="{{ sayfa.nav_label }}" required>
+    </div>
+    <div class="yn-alan">
+      <label for="nav_order">Menüdeki sırası</label>
+      <input type="number" id="nav_order" name="nav_order" value="{{ sayfa.nav_order }}" step="1">
+      <small>Küçük sayı önce gelir.</small>
+    </div>
+    {{ p.gorsel_secici('background_image_id', 'Sayfa arka plan görseli',
+                       sayfa.background_image_id, gorseller,
+                       'Tüm sayfanın arkasında, açık bir peçenin altında görünür.') }}
+    <div class="yn-alan yn-alan--onay">
+      <label>
+        <input type="checkbox" name="is_published" value="1" {{ 'checked' if sayfa.is_published }}>
+        Yayında
+      </label>
+      <small>İşareti kaldırırsan sayfa siteden ve menüden kalkar.</small>
+    </div>
+    <button type="submit" class="yn-dugme yn-dugme--birincil">Kaydet</button>
+  </form>
+</div>
+
+<div class="yn-kart">
+  <div class="yn-kart__ust">
+    <h2 class="yn-kart__baslik">Bloklar</h2>
+    <a href="{{ url_for('admin.block_new', sayfa_id=sayfa.id) }}"
+       class="yn-dugme yn-dugme--birincil">+ Blok ekle</a>
+  </div>
+  <p class="yn-tekrar__aciklama">
+    Sıralamayı değiştirmek için satırı ⠿ tutamağından sürükle, sonra
+    “Sırayı kaydet”e bas.
+  </p>
+
+  <form method="post" action="{{ url_for('admin.block_reorder', sayfa_id=sayfa.id) }}"
+        class="yn-bloklar" id="blok-sira-form">
+    <input type="hidden" name="_csrf" value="{{ csrf }}">
+    <input type="hidden" name="sira" id="blok-sira" value="{{ sayfa.blocks|map(attribute='id')|join(',') }}">
+
+    <div class="yn-bloklar__liste" id="blok-liste">
+      {% for blok in sayfa.blocks %}
+      <div class="yn-blok" data-id="{{ blok.id }}">
+        <span class="yn-blok__tut" draggable="true" title="Sürükleyerek sırala">⠿</span>
+        <span class="yn-blok__no">{{ loop.index }}</span>
+        <span class="yn-blok__ad">
+          {{ tip_adi.get(blok.type, blok.type) }}
+          {% if not blok.is_visible %}<span class="yn-rozet yn-rozet--pasif">gizli</span>{% endif %}
+        </span>
+        <span class="yn-blok__baslik">{{ blok.heading or '—' }}</span>
+        <a href="{{ url_for('admin.block_edit', blok_id=blok.id) }}" class="yn-dugme">Düzenle</a>
+        <a href="{{ url_for('admin.block_translations', blok_id=blok.id) }}" class="yn-dugme" title="İngilizce çeviriler">EN</a>
+      </div>
+      {% else %}
+      <p class="yn-bos">Bu sayfada henüz blok yok.</p>
+      {% endfor %}
+    </div>
+
+    {% if sayfa.blocks %}
+    <button type="submit" class="yn-dugme">Sırayı kaydet</button>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin/panel.js') }}"></script>
+{% endblock %}

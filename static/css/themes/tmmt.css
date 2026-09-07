@@ -1,0 +1,47 @@
+/* ============================================================
+   TEMA: TMMT -- Sakarya fabrikasi kus bakisi arka plan
+   ============================================================ */
+.tk-bg--tmmt {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #dfe4e6 url("../../img/tmmt-bg.jpg") center center / cover no-repeat;
+}
+.tk-bg--tmmt::after {
+  /* hava fotografi detayli oldugu icin metnin oldugu orta bolge yogun,
+     kenarlarda fabrika ve cevresi gorunur kalsin */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(125% 108% at 50% 42%,
+    rgba(244, 246, 248, 0.93) 0%,
+    rgba(244, 246, 248, 0.89) 45%,
+    rgba(244, 246, 248, 0.60) 100%);
+}
+
+/* Zemin uzerindeki metin net kalsin */
+.page-tmmt .tk-block h1,
+.page-tmmt .tk-block h2 {
+  color: #14202b;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+}
+.page-tmmt .tk-block > p {
+  color: #23292f;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.65);
+}
+
+/* Kartlar: beyaz + mavi-gri golge */
+.page-tmmt .tk-card {
+  background: #ffffff;
+  border-color: #dfe4e8;
+  box-shadow: 0 14px 34px rgba(20, 40, 60, 0.14);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.page-tmmt .tk-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 46px rgba(20, 40, 60, 0.22);
+}
+
+/* Kaynaklar bloku okunakli kalsin */
+.page-tmmt .tk-source-list ul { color: #3c4650; }
+.page-tmmt .tk-source-list a { color: #14202b; }

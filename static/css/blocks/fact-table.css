@@ -1,0 +1,49 @@
+/* ============================================================
+   KUNYE TABLOSU  (fact_table)
+
+   Yeni bir yuzey tanimlamiyor: kabuk paylasilan .tk-card
+   (card.css) -- beyaz zemin, kirmizi ust cizgi. Buradaki kurallar
+   yalnizca iki sutunlu satir duzenini kuruyor.
+
+   Mobil oncelikli: dar ekranda etiket ustte, deger altta; 640px
+   uzerinde iki sutun.
+   ============================================================ */
+.tk-fact-table {
+  margin: clamp(24px, 6vw, 36px) 0 0;
+  padding-top: clamp(6px, 2vw, 10px);
+  padding-bottom: clamp(6px, 2vw, 10px);
+}
+
+.tk-fact-table__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px clamp(16px, 3vw, 28px);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tk-fact-table__row:last-child {
+  border-bottom: 0;
+}
+
+.tk-fact-table__label {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tk-fact-table__value {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+@media (min-width: 640px) {
+  .tk-fact-table__row {
+    grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+    align-items: baseline;
+  }
+}

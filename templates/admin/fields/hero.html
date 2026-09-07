@@ -1,0 +1,16 @@
+{# KAPAK -- baslik ve giris ortak bolumden; buraya gorsel eklenebilir. #}
+{% import "admin/_parts.html" as p %}
+
+<div class="yn-kart yn-kart--bilgi">
+  <p>
+    Büyük başlık ve altındaki spot yazıyı yukarıdaki
+    <strong>Başlık ve giriş</strong> bölümünden düzenle.
+  </p>
+</div>
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">Görsel</h2>
+  {{ p.ayar_gorsel('image_id', 'Kapak görseli',
+                   (blok.settings or {}).get('image_id'), gorseller,
+                   'Boş bırakırsan kapakta görsel görünmez (şu anki hâli).') }}
+</div>

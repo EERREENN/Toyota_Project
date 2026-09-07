@@ -1,0 +1,75 @@
+{# HARITA -- noktalar koordinat olarak duzenlenir, HTML olarak degil.
+   Ayni form iki haritayi da yonetiyor: global sayfasindaki uretim
+   tesisleri ve TMMT sayfasindaki ihracat pazarlari. Bu yuzden alan
+   etiketleri ikisine de uyacak sekilde genel tutuldu. #}
+{% import "admin/_parts.html" as p %}
+{% set ayar = blok.settings or {} %}
+{% set doseme = ayar.get('tile', {}) %}
+
+{%- macro nokta(k, o) -%}
+{{ p.satir_bas(k, 'Harita noktası') }}
+  <div class="yn-ikili">
+    {{ p.sayi(k, 'lat', 'Enlem', o.lat if o else none, 'Örnek: 40.6971') }}
+    {{ p.sayi(k, 'lon', 'Boylam', o.lon if o else none, 'Örnek: 30.3564') }}
+  </div>
+  {{ p.metin(k, 'title', 'Başlık', o.title if o else '',
+             'Noktaya tıklayınca kalın yazan satır: şehir, tesis ya da ülke adı.') }}
+  {{ p.metin(k, 'subtitle', 'Alt satır', o.subtitle if o else '',
+             'İsteğe bağlı: ülke ya da bölge. Öne çıkan noktada gösterilmez.') }}
+  {{ p.uzun(k, 'text', 'Kısa not', o.text if o else '',
+            'Üretilen modeller, pazar notu vb.') }}
+  {{ p.secim(k, 'variant', 'Nokta tipi', (o.variant if o else 'plant'),
+             [('plant', 'Normal nokta (kırmızı, küçük)'),
+              ('highlight', 'Öne çıkan nokta (altın, büyük)')],
+             'Gösterge satırlarındaki renklerle aynı olsun.') }}
+  <details class="yn-katla">
+    <summary>Popup bağlantısı (isteğe bağlı)</summary>
+    {{ p.metin(k, 'url', 'Bağlantı adresi', o.url if o else '', 'Örnek: /tmmt') }}
+    {{ p.metin(k, 'link_label', 'Bağlantı yazısı', o.link_label if o else '') }}
+  </details>
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+{%- macro gosterge(k, o) -%}
+{{ p.satir_bas(k, 'Gösterge satırı') }}
+  {{ p.secim(k, 'variant', 'Renk', (o.variant if o else 'red'),
+             [('red', 'Kırmızı'), ('gold', 'Altın')]) }}
+  {{ p.metin(k, 'title', 'Yazı', o.title if o else '') }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+<div class="yn-kart">
+  <h2 class="yn-kart__baslik">Harita ayarları</h2>
+  <div class="yn-ikili">
+    {{ p.ayar_sayi('zoom', 'Açılış yakınlığı', ayar.get('zoom'), '', '1') }}
+    {{ p.ayar_metin('map_id', 'HTML kimliği', ayar.get('map_id'),
+                    'Değiştirmene gerek yok.') }}
+  </div>
+  <div class="yn-ikili">
+    {{ p.ayar_sayi('min_zoom', 'En az yakınlık', ayar.get('min_zoom'), '', '1') }}
+    {{ p.ayar_sayi('max_zoom', 'En çok yakınlık', ayar.get('max_zoom'), '', '1') }}
+  </div>
+  {{ p.ayar_metin('tile.url', 'Harita katmanı adresi', doseme.get('url'),
+                  'OpenStreetMap adresi. Bilmiyorsan dokunma.') }}
+  {{ p.ayar_sayi('tile.max_zoom', 'Katman en çok yakınlık', doseme.get('max_zoom'), '', '1') }}
+  {{ p.ayar_metin('tile.attribution', 'Katman künyesi', doseme.get('attribution'),
+                  'Haritanın sağ altında görünen telif yazısı — kaldırma.') }}
+</div>
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('marker', 'Harita noktaları', 'Nokta ekle',
+                  blok.items_of('marker')|map(attribute='id')|list,
+                  'Koordinatları Google Maps’te bir yere sağ tıklayarak alabilirsin.') }}
+    {% for o in blok.items_of('marker') %}{{ nokta(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ nokta('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('legend', 'Gösterge', 'Satır ekle',
+                  blok.items_of('legend')|map(attribute='id')|list,
+                  'Haritanın altındaki renk açıklamaları.') }}
+    {% for o in blok.items_of('legend') %}{{ gosterge(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ gosterge('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>

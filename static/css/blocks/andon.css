@@ -1,0 +1,117 @@
+/* ============================================================
+   ANDON BANDI  (andon)
+
+   Solda metin, sagda uc durum isigi. Mobil oncelikli: dar ekranda
+   alt alta, 760px ustunde yan yana.
+
+   RENKLER: kirmizi mevcut --accent. Yesil ve sari sitede baska
+   yerde bulunmadigi icin burada tanimlanmak zorunda; ikisi de
+   BU BLOGUN icinde yerel degisken olarak duruyor, global palete
+   (tokens.css) girmiyorlar. Sari, stat_badge'de zaten kullanilan
+   #c9a227 tonunun aynisi.
+   ============================================================ */
+.tk-andon {
+  --isik-yesil: #2e7d47;
+  --isik-sari: #c9a227;
+  --isik-kirmizi: var(--accent);
+
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(20px, 4vw, 30px);
+  margin-top: clamp(24px, 6vw, 36px);
+  align-items: start;
+}
+
+@media (min-width: 760px) {
+  .tk-andon { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); }
+}
+
+.tk-andon__text p {
+  margin: 0 0 14px;
+  max-width: 68ch;
+  color: var(--ink);
+}
+.tk-andon__text p:last-child { margin-bottom: 0; }
+
+/* ---------- Isik paneli ---------- */
+.tk-andon__panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: clamp(16px, 3vw, 22px);
+}
+
+.tk-andon__lights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(12px, 2.5vw, 16px);
+}
+
+.tk-andon__light {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.tk-andon__bulb {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid var(--border);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tk-andon__label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.tk-andon__label strong {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+.tk-andon__label span {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ---------- Sirayla yanma ----------
+   Uc isik ayni animasyonu paylasir, yalnizca gecikmeleri farklidir:
+   yesil -> sari -> kirmizi. */
+@keyframes tk-andon-yan {
+  0%, 24%   { background: var(--renk); box-shadow: 0 0 0 4px var(--hale); }
+  34%, 100% { background: var(--border); box-shadow: none; }
+}
+
+.tk-andon__light--green { --renk: var(--isik-yesil);   --hale: rgba(46, 125, 71, 0.18); }
+.tk-andon__light--amber { --renk: var(--isik-sari);    --hale: rgba(201, 162, 39, 0.20); }
+.tk-andon__light--red   { --renk: var(--isik-kirmizi); --hale: rgba(200, 16, 46, 0.18); }
+
+.tk-andon__light .tk-andon__bulb {
+  border-color: var(--renk, var(--border));
+  animation: tk-andon-yan 3.6s infinite;
+}
+.tk-andon__light--green .tk-andon__bulb { animation-delay: 0s; }
+.tk-andon__light--amber .tk-andon__bulb { animation-delay: 1.2s; }
+.tk-andon__light--red   .tk-andon__bulb { animation-delay: 2.4s; }
+
+/* Hareket azaltma tercihi acikken animasyon TAMAMEN durur ve her isik
+   kendi renginde SABIT yanar -- sondurursek bilgi kaybolurdu.
+   (base.css'teki genel kural yalnizca sureyi kisaltiyor; burada
+   animasyonu kaldiriyoruz.) */
+@media (prefers-reduced-motion: reduce) {
+  .tk-andon__light .tk-andon__bulb {
+    animation: none !important;
+    background: var(--renk, var(--border));
+  }
+}

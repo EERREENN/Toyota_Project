@@ -1,0 +1,19 @@
+{# KAYNAK LISTESI #}
+{% import "admin/_parts.html" as p %}
+
+{%- macro satir(k, o) -%}
+{{ p.satir_bas(k, 'Kaynak') }}
+  {{ p.metin(k, 'title', 'Görünen yazı', o.title if o else '') }}
+  {{ p.metin(k, 'url', 'Adres', o.url if o else '', 'https:// ile başlamalı') }}
+  {{ p.secim(k, 'variant', 'Nasıl açılsın', (o.variant if o else 'external'),
+             [('external', 'Yeni sekmede'), ('', 'Aynı sekmede')]) }}
+{{ p.satir_bit() }}
+{%- endmacro -%}
+
+<div class="yn-kart">
+  {{ p.tekrar_bas('link', 'Kaynaklar', 'Kaynak ekle',
+                  blok.items_of('link')|map(attribute='id')|list) }}
+    {% for o in blok.items_of('link') %}{{ satir(o.id, o) }}{% endfor %}
+    <template class="yn-tekrar__sablon">{{ satir('%K%', none) }}</template>
+  {{ p.tekrar_bit() }}
+</div>

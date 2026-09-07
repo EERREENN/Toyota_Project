@@ -1,0 +1,33 @@
+{# ETIKET GRUPLARI -- global_toyota.html'deki <div class="tk-chip-groups">.
+
+   Kapanis paragraflari ayni <section> icinde kaliyor: ayri bir bloga
+   bolunselerdi araya blok boslugu girer ve gorunum degisirdi. #}
+{% import "blocks/_macros.html" as m with context %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-block') }}"{{ m.capa(blok) }}>
+  {{- m.baslik(blok) }}
+  <div class="tk-chip-groups">
+    {%- for grup in blok.items_of('chip_group') %}
+    <div class="tk-chip-groups__group">
+      <h3>{{ grup.title }}</h3>
+      <ul class="tk-chip-groups__list">
+        {%- for cip in grup.children_of('chip') %}
+        {#- Cip icerigi: ad + (kirmizi) kisa aciklama + (soluk) ek not.
+            `note` bugunku alan, gorunumu degismedi; `text` ve `url`
+            sonradan eklendi ve YALNIZCA doluysa cizilir -- mevcut iki
+            kutu birebir ayni kaliyor. -#}
+        <li class="tk-chip-groups__chip">
+          {%- if cip.url %}<a class="tk-chip-groups__link" href="{{ cip.url }}"{% if cip.url.startswith('http') %} target="_blank" rel="noopener"{% endif %}>{{ cip.title }}</a>
+          {%- else %}{{ cip.title }}{% endif %}
+          {%- if cip.note %} <span>{{ cip.note }}</span>{% endif %}
+          {%- if cip.text %} <span class="tk-chip-groups__ek">{{ cip.text }}</span>{% endif %}
+        </li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- endfor %}
+  </div>
+  {%- for kapanis in blok.items_of('outro') %}
+  <p{% if kapanis.variant == 'muted' %} class="tk-subnote"{% endif %}>{{ kapanis.text|safe }}</p>
+  {%- endfor %}
+  {{- m.dipnot(blok) }}
+</section>

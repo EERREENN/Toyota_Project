@@ -1,0 +1,16 @@
+{# KAPAK -- templates/global_toyota.html icindeki <section class="hero"> #}
+{% import "blocks/_macros.html" as m with context %}
+{%- set gorsel = blok.image %}
+<section class="{{ m.kabuk_sinif(blok, 'tk-hero') }}"{{ m.capa(blok) }}>
+  {%- if blok.heading %}
+  <h{{ blok.heading_level }}>{{ blok.heading }}</h{{ blok.heading_level }}>
+  {%- endif %}
+  {%- if blok.intro %}
+  <p class="tk-hero__lede">{{ blok.intro|safe }}</p>
+  {%- endif %}
+  {%- if gorsel %}
+  <img class="tk-hero__image" src="{{ url_for('static', filename=gorsel.path) }}"
+       alt="{{ gorsel.alt }}"{% if gorsel.width %} width="{{ gorsel.width }}" height="{{ gorsel.height }}"{% endif %}>
+  {%- endif %}
+  {{- m.dipnot(blok) }}
+</section>

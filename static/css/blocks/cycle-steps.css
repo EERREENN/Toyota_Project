@@ -1,0 +1,104 @@
+/* ============================================================
+   DONGUSEL AKIS  (cycle_steps)
+
+   Mobil oncelikli: adimlar alt alta, aralarinda asagi bakan ok.
+   860px ustunde yan yana, aralarinda saga bakan ok. En altta
+   dongonun basa dondugunu soyleyen serit.
+
+   Yeni renk yok: kart yuzeyi ve numarali kirmizi rozet, istasyon
+   kartlariyla ayni dilden.
+   ============================================================ */
+.tk-cycle {
+  list-style: none;
+  margin: clamp(24px, 6vw, 36px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(26px, 5vw, 32px);
+}
+
+.tk-cycle__step {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: clamp(18px, 3.5vw, 22px);
+}
+
+/* Numarali kirmizi rozet -- .tk-card-grid__station-no ile ayni olcu. */
+.tk-cycle__no {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 6px 16px rgba(200, 16, 46, 0.4);
+}
+
+.tk-cycle__title {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.tk-cycle__text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* ---------- Adimlar arasi ok ---------- */
+.tk-cycle__arrow {
+  position: absolute;
+  left: 50%;
+  bottom: calc(clamp(26px, 5vw, 32px) * -1);
+  transform: translate(-50%, 2px) rotate(90deg);
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--accent);
+}
+
+/* ---------- Dongo seridi ---------- */
+.tk-cycle__loop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: clamp(20px, 4vw, 26px) 0 0;
+  font-size: 0.85rem;
+}
+.tk-cycle__loop-line {
+  flex: 1;
+  height: 2px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(90deg,
+    var(--border) 0 8px, transparent 8px 14px);
+}
+.tk-cycle__loop-label {
+  flex: none;
+  font-family: var(--display);
+  font-weight: 500;
+  color: var(--accent);
+}
+
+@media (min-width: 860px) {
+  .tk-cycle {
+    grid-template-columns: repeat(var(--adim-sayisi, 4), minmax(0, 1fr));
+    gap: clamp(24px, 3vw, 34px);
+  }
+  .tk-cycle__arrow {
+    left: auto;
+    right: calc(clamp(24px, 3vw, 34px) * -1);
+    bottom: auto;
+    top: 50%;
+    transform: translate(50%, -50%);
+  }
+}
