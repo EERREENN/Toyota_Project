@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-"""Blueprint'ler: public (site) ve admin (panel, Asama 3)."""
+"""Rotalar. Tek blueprint var: public (sitenin kendisi)."""

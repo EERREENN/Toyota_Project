@@ -1,0 +1,454 @@
+{#
+  GLOBAL TOYOTA SAYFASI  --  /global-toyota
+
+  Toyota'nin dunya genelindeki yapisi ve tarihcesi.
+
+  Bolumler asagida, ekrandaki sirasiyla duz HTML olarak duruyor.
+  Cevrilebilir metinler {{ _('...') }} icinde; karsiliklari
+  app/ceviri.py dosyasinda.
+#}
+{% extends "base.html" %}
+{% import "components/macros.html" as c %}
+
+{#- Bu sayfanin yukledigi stil dosyalari, sirasiyla. Tema en sonda:
+    ortak kurallari ezebilsin diye. -#}
+{% set css_files = [
+  "tokens.css",
+  "base.css",
+  "layout.css",
+  "components/card.css",
+  "components/hero.css",
+  "components/section-nav.css",
+  "components/mission.css",
+  "components/stat-badge.css",
+  "components/stat-grid.css",
+  "components/timeline.css",
+  "components/value-columns.css",
+  "components/rich-text.css",
+  "components/map.css",
+  "components/card-grid.css",
+  "components/chip-groups.css",
+  "themes/global.css",
+] %}
+{% set aktif = 'global-toyota' %}
+
+{% block title %}Global Toyota{% endblock %}
+{% block body_class %}page-global{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+{% endblock %}
+
+{% block background %}
+{# Arka plan gorseli tema CSS'inde de tanimli; buradaki satir ici stil onu ezer. #}
+<div class="tk-bg--global" style="background-image:url('/static/img/global-bg.jpg')"
+     aria-hidden="true"></div>
+{% endblock %}
+
+{% block content %}
+
+
+<section class="tk-hero reveal">
+  <h1>Global Toyota</h1>
+  <p class="tk-hero__lede">{{ _('1937\'de Japonya\'da, Sakichi Toyoda\'nın otomatik dokuma tezgahı patentinden elde ettiği gelirle Kiichiro Toyoda tarafından kurulan Toyota, bugün dünyanın en büyük otomotiv üreticilerinden biri. Merkezi hâlâ Japonya\'daki Toyota City\'de bulunuyor, ama üretim ve satış ağı altı kıtaya yayılmış durumda.')|safe }}</p>
+</section>
+
+
+<nav class="tk-section-nav reveal"
+     aria-label="{{ _('Bu sayfada') }}">
+  <span class="tk-section-nav__label">{{ _('Bu sayfada') }}</span>
+  <ul class="tk-section-nav__list">
+    <li><a class="tk-section-nav__link" href="#hikaye">{{ _('Toyota\'nın hikâyesi') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#toyota-way">{{ _('Toyota Way: iki sütun, beş değer') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#elektrikli">{{ _('Elektrikli Araç ve Rekabet Ortamı') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#harita">{{ _('Üretim Tesisleri Haritası') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#avrupa">{{ _('Avrupa\'da Toyota') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#oduller">{{ _('Ödüller, Marka Değeri ve Kalite Sıralamaları') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#marka-ailesi">{{ _('Toyota Grubu Marka Ailesi') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#platform">{{ _('Platform ve teknoloji') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#ar-ge">{{ _('Ar-Ge ve tasarım') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#hidrojen">{{ _('Hidrojen ve Katı Hal Batarya Teknolojisi') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#sosyal">{{ _('Toyota\'nın Sosyal Yüzü') }}</a></li>
+  </ul>
+</nav>
+
+
+<section class="tk-mission reveal">
+  <div class="tk-mission__body">
+  <p class="tk-mission__statement">{{ _('“Mobility for All” arayışıyla “Happiness for All” üretmek.')|safe }}</p>
+  <p class="tk-mission__text">{{ _('Toyota\'nın misyonu, herkes için erişilebilir hareketlilik sağlayarak herkes için mutluluk üretmek. Bu, yalnızca otomobil üretmek değil; insanların özgürce hareket edebildiği bir toplum kurmak anlamına geliyor.')|safe }}</p>
+  <p class="tk-mission__text">{{ _('Şirket bugün kendini bir otomobil üreticisinden bir hareketlilik (mobility) şirketine dönüştürüyor. Bağlantılı, otonom, paylaşımlı ve elektrikli (CASE) teknolojiler bu dönüşümün merkezinde yer alıyor; hedefler Environmental Challenge 2050 ve Birleşmiş Milletler Sürdürülebilir Kalkınma Amaçları ile hizalı.')|safe }}</p>
+  </div>
+</section>
+
+
+<div class="tk-stat-badge reveal">
+  <span class="tk-stat-badge__value" data-count-to="300000000" data-count-suffix="+" data-count-group>{{ _('300.000.000+') }}</span>
+  <span class="tk-stat-badge__label">{{ _('1935\'ten bu yana üretilen toplam araç') }}</span>
+  <span class="tk-subnote">{{ _('Bu kilometre taşına Kasım 2023\'te ulaşıldı.') }}</span>
+</div>
+
+
+<section class="tk-grid reveal">
+  <div class="tk-card">
+      <span class="tk-stat-grid__value" data-count-to="390000" data-count-prefix="~" data-count-group>~390.000</span>
+      <h3>{{ _('Çalışan') }}</h3>
+      <p>{{ _('Dünya genelinde, üretimden mühendisliğe pek çok farklı alanda.')|safe }}</p>
+    </div>
+  <div class="tk-card">
+      <span class="tk-stat-grid__value" data-count-to="170" data-count-suffix="+">170+</span>
+      <h3>{{ _('Ülke ve bölge') }}</h3>
+      <p>{{ _('Toyota araçlarının satıldığı pazar sayısı.')|safe }}</p>
+    </div>
+  <div class="tk-card">
+      <span class="tk-stat-grid__value" data-count-to="70" data-count-suffix="+">70+</span>
+      <h3>{{ _('Üretim şirketi') }}</h3>
+      <p>{{ _('Japonya dışında da onlarca ülkede kurulu fabrika ve iştirak.')|safe }}</p>
+    </div>
+</section>
+
+
+<section class="tk-block reveal" id="hikaye">
+  <h2>{{ _('Toyota\'nın hikâyesi') }}</h2>
+  <p>{{ _('Bir dokuma tezgâhından küresel bir hareketlilik şirketine: Toyota\'nın dönüm noktaları. Bir yıla dokunarak o adımın ayrıntısını görebilirsiniz.')|safe }}</p>
+  <ol class="tk-timeline">
+    <li class="tk-timeline__stop">
+      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1924">
+        <span class="tk-timeline__year">1924</span>
+        <span class="tk-timeline__title">{{ _('Otomatik dokuma tezgâhı') }}</span>
+      </button>
+      <div class="tk-timeline__detail" id="zt-1924" hidden>
+        <p>{{ _('Sakichi Toyoda\'nın geliştirdiği tezgâh, iplik koptuğunda kendi kendini durduruyordu. Bugünkü jidoka ilkesinin kökeni bu makinedir.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1929">
+        <span class="tk-timeline__year">1929</span>
+        <span class="tk-timeline__title">{{ _('Patentin Platt Brothers\'a satılması') }}</span>
+      </button>
+      <div class="tk-timeline__detail" id="zt-1929" hidden>
+        <p>{{ _('Dokuma tezgâhının patenti İngiliz Platt Brothers\'a satıldı; elde edilen gelir otomobil çalışmalarının sermayesi oldu.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1937">
+        <span class="tk-timeline__year">1937</span>
+        <span class="tk-timeline__title">{{ _('Toyota Motor Co. Ltd.\'in kuruluşu') }}</span>
+      </button>
+      <div class="tk-timeline__detail" id="zt-1937" hidden>
+        <p>{{ _('Kiichiro Toyoda liderliğinde, dokuma tezgâhı işinden ayrılan otomobil bölümü bağımsız bir şirkete dönüştü.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1957">
+        <span class="tk-timeline__year">1957</span>
+        <span class="tk-timeline__title">{{ _('İlk denizaşırı adımlar') }}</span>
+      </button>
+      <div class="tk-timeline__detail" id="zt-1957" hidden>
+        <p>{{ _('Toyota\'nın ilk denizaşırı ihracat adımları atıldı ve ABD pazarına giriş yapıldı.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1966">
+        <span class="tk-timeline__year">1966</span>
+        <span class="tk-timeline__title">{{ _('Corolla\'nın tanıtımı') }}</span>
+      </button>
+      <div class="tk-timeline__detail" id="zt-1966" hidden>
+        <p>{{ _('Dünyanın en çok satan otomobil ailesinin başlangıcı.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1997">
+        <span class="tk-timeline__year">1997</span>
+        <span class="tk-timeline__title">Prius</span>
+      </button>
+      <div class="tk-timeline__detail" id="zt-1997" hidden>
+        <p>{{ _('Dünyanın ilk seri üretim hibrit otomobili.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2014">
+        <span class="tk-timeline__year">2014</span>
+        <span class="tk-timeline__title">Mirai</span>
+      </button>
+      <div class="tk-timeline__detail" id="zt-2014" hidden>
+        <p>{{ _('Hidrojen yakıt hücreli seri üretim otomobil.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2021">
+        <span class="tk-timeline__year">2021</span>
+        <span class="tk-timeline__title">{{ _('Woven City\'nin temelinin atılması') }}</span>
+      </button>
+      <div class="tk-timeline__detail" id="zt-2021" hidden>
+        <p>{{ _('Fuji Dağı eteğinde inşa edilen deneysel “yaşayan laboratuvar” şehrin temeli atıldı.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2025">
+        <span class="tk-timeline__year">2025</span>
+        <span class="tk-timeline__title">{{ _('Woven City\'nin açılışı') }}</span>
+      </button>
+      <div class="tk-timeline__detail" id="zt-2025" hidden>
+        <p>{{ _('25 Eylül 2025\'te resmen açıldı; ilk “Weaver” sakinler taşınmaya başladı.')|safe }}</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<section class="tk-block reveal" id="toyota-way">
+  <h2>{{ _('Toyota Way: iki sütun, beş değer') }}</h2>
+  <p>{{ _('Toyota\'nın çalışma kültürü iki sütun üzerine kurulu; bu sütunların altında şirketin her kademesinde tekrarlanan beş temel değer var.')|safe }}</p>
+  <div class="tk-value-columns">
+    <div class="tk-value-columns__column">
+      <h3 class="tk-value-columns__column-title">
+        <span>{{ _('Sürekli İyileştirme') }}</span>
+        {{- c.ozgun_terim(_('Sürekli İyileştirme'), 'Continuous Improvement', 'tk-value-columns__column-alt') }}
+      </h3>
+      <div class="tk-value-columns__list">
+        <div class="tk-card tk-value-columns__value">
+          <h4 class="tk-value-columns__value-title">
+            <span>Challenge</span>
+            {{- c.ozgun_terim('Challenge', _('Meydan okuma'), 'tk-value-columns__value-alt') }}
+          </h4>
+          <p>{{ _('Uzun vadeli bir vizyon kurmak ve hedeflere cesaret ve yaratıcılıkla ilerlemek.')|safe }}</p>
+        </div>
+        <div class="tk-card tk-value-columns__value">
+          <h4 class="tk-value-columns__value-title">
+            <span>Kaizen</span>
+            {{- c.ozgun_terim('Kaizen', _('Sürekli iyileştirme'), 'tk-value-columns__value-alt') }}
+          </h4>
+          <p>{{ _('Hiçbir sürecin mükemmel olmadığını kabul edip her gün küçük adımlarla ilerlemek.')|safe }}</p>
+        </div>
+        <div class="tk-card tk-value-columns__value">
+          <h4 class="tk-value-columns__value-title">
+            <span>Genchi Genbutsu</span>
+            {{- c.ozgun_terim('Genchi Genbutsu', _('Yerinde gör'), 'tk-value-columns__value-alt') }}
+          </h4>
+          <p>{{ _('Karar vermeden önce sorunun yaşandığı yere gidip gerçeği kendi gözünle görmek.')|safe }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="tk-value-columns__column">
+      <h3 class="tk-value-columns__column-title">
+        <span>{{ _('İnsana Saygı') }}</span>
+        {{- c.ozgun_terim(_('İnsana Saygı'), 'Respect for People', 'tk-value-columns__column-alt') }}
+      </h3>
+      <div class="tk-value-columns__list">
+        <div class="tk-card tk-value-columns__value">
+          <h4 class="tk-value-columns__value-title">
+            <span>Respect</span>
+            {{- c.ozgun_terim('Respect', _('Saygı'), 'tk-value-columns__value-alt') }}
+          </h4>
+          <p>{{ _('Paydaşlara saygı duymak, sorumluluk almak, karşılıklı güven inşa etmek.')|safe }}</p>
+        </div>
+        <div class="tk-card tk-value-columns__value">
+          <h4 class="tk-value-columns__value-title">
+            <span>Teamwork</span>
+            {{- c.ozgun_terim('Teamwork', _('Takım çalışması'), 'tk-value-columns__value-alt') }}
+          </h4>
+          <p>{{ _('Bireysel gelişimi teşvik ederek ekip performansını en üst düzeye çıkarmak.')|safe }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="tk-value-columns__link">
+    <a href="/uretim-sistemi">{{ _('Bu ilkelerin üretim hattındaki karşılığı: Toyota Production System') }}</a>
+  </p>
+</section>
+
+
+<section class="tk-block reveal" id="elektrikli">
+  <h2>{{ _('Elektrikli Araç ve Rekabet Ortamı') }}</h2>
+  <p>{{ _('2025\'te Toyota\'nın sattığı araçların yaklaşık 200 bini tam elektrikliydi — bir önceki yıla göre yüzde 42\'lik bir artış. Yine de şirket, elektrikli araçlara topyekûn geçmek yerine hibrit, şarj edilebilir hibrit, tam elektrikli ve hidrojen yakıt hücreli araçları bir arada geliştiren "çoklu yol" stratejisine bağlı kalıyor. Bu arada BYD, SAIC ve Geely gibi Çinli üreticilerin özellikle elektrikli araç segmentinde hızla büyümesi, Toyota\'nın önümüzdeki yıllarda karşılaşacağı en büyük rekabet baskılarından biri olarak görülüyor.')|safe }}</p>
+</section>
+
+
+<section class="tk-block reveal" id="harita">
+  <h2>{{ _('Üretim Tesisleri Haritası') }}</h2>
+  <p>{{ _('Toyota\'nın araçlarını sattığı 170\'ten fazla ülke ile araçlarını <strong>ürettiği</strong> yerler aynı şey değil. Aşağıdaki harita, altı kıtaya yayılmış başlıca üretim ve montaj tesislerini gösteriyor — fareyle sürükleyerek gezebilir, tekerlekle yakınlaştırabilir, bir noktaya tıklayarak o tesis hakkında bilgi görebilirsin.')|safe }}</p>
+  <div id="toyota-map" class="tk-map__canvas"></div>
+  <p class="tk-map__legend">
+    <span class="tk-map__dot tk-map__dot--red"></span> <span>{{ _('Üretim tesisi') }}</span>
+    &nbsp;&nbsp;
+    <span class="tk-map__dot tk-map__dot--gold"></span> <span>Türkiye (TMMT)</span>
+  </p>
+  <script type="application/json" id="toyota-map-data">{"center": [20, 20], "mapId": "toyota-map", "markers": [{"kind": "plant", "lat": 35.0833, "linkLabel": "", "lon": 137.1561, "open": false, "subtitle": "Japonya", "text": {{ _('Ana üretim kümesi: Honsha, Motomachi, Tsutsumi, Tahara ve daha fazlası')|tojson }}, "title": "Toyota City, Aichi", "url": ""}, {"kind": "plant", "lat": 33.766, "linkLabel": "", "lon": 130.769, "open": false, "subtitle": "Japonya", "text": {{ _('Lexus ES / RX / NX / UX, motor')|tojson }}, "title": "Miyawaka, Fukuoka", "url": ""}, {"kind": "plant", "lat": 42.6337, "linkLabel": "", "lon": 141.6044, "open": false, "subtitle": "Japonya", "text": {{ _('Şanzıman ve aktarma organları')|tojson }}, "title": "Tomakomai, Hokkaido", "url": ""}, {"kind": "plant", "lat": 39.2306, "linkLabel": "", "lon": 141.1464, "open": false, "subtitle": "Japonya", "text": "Yaris, Yaris Cross, Aqua", "title": "Kanegasaki, Iwate", "url": ""}, {"kind": "plant", "lat": 38.2098, "linkLabel": "", "lon": -84.5588, "open": false, "subtitle": "ABD", "text": {{ _('Camry, RAV4, motor')|tojson }}, "title": "Georgetown, Kentucky", "url": ""}, {"kind": "plant", "lat": 38.3559, "linkLabel": "", "lon": -87.5661, "open": false, "subtitle": "ABD", "text": "Highlander, Grand Highlander, Sienna", "title": "Princeton, Indiana", "url": ""}, {"kind": "plant", "lat": 34.7304, "linkLabel": "", "lon": -86.5861, "open": false, "subtitle": "ABD", "text": {{ _('Motor, Corolla Cross (Mazda ortak girişimi)')|tojson }}, "title": "Huntsville, Alabama", "url": ""}, {"kind": "plant", "lat": 34.4078, "linkLabel": "", "lon": -88.8945, "open": false, "subtitle": "ABD", "text": "Corolla", "title": "Blue Springs, Mississippi", "url": ""}, {"kind": "plant", "lat": 29.4241, "linkLabel": "", "lon": -98.4936, "open": false, "subtitle": "ABD", "text": "Tundra, Sequoia", "title": {{ _('San Antonio, Teksas')|tojson }}, "url": ""}, {"kind": "plant", "lat": 38.6151, "linkLabel": "", "lon": -81.9887, "open": false, "subtitle": "ABD", "text": {{ _('Motor, şanzıman')|tojson }}, "title": {{ _('Buffalo, Batı Virginia')|tojson }}, "url": ""}, {"kind": "plant", "lat": 38.9792, "linkLabel": "", "lon": -90.9807, "open": false, "subtitle": "ABD", "text": {{ _('Alüminyum silindir kapağı')|tojson }}, "title": "Troy, Missouri", "url": ""}, {"kind": "plant", "lat": 35.8493, "linkLabel": "", "lon": -79.5687, "open": false, "subtitle": "ABD", "text": {{ _('Batarya paketleri (2025)')|tojson }}, "title": {{ _('Liberty, Kuzey Karolina')|tojson }}, "url": ""}, {"kind": "plant", "lat": 43.36, "linkLabel": "", "lon": -80.31, "open": false, "subtitle": "Kanada", "text": {{ _('RAV4, Lexus RX / NX')|tojson }}, "title": {{ _('Cambridge / Woodstock, Ontario')|tojson }}, "url": ""}, {"kind": "plant", "lat": 32.5149, "linkLabel": "", "lon": -117.0382, "open": false, "subtitle": "Meksika", "text": {{ _('Tacoma kasası')|tojson }}, "title": "Tijuana, Baja California", "url": ""}, {"kind": "plant", "lat": 20.5667, "linkLabel": "", "lon": -100.6167, "open": false, "subtitle": "Meksika", "text": "Tacoma", "title": "Apaseo el Grande, Guanajuato", "url": ""}, {"kind": "plant", "lat": -34.0967, "linkLabel": "", "lon": -59.0272, "open": false, "subtitle": "Arjantin", "text": "Hilux, SW4 (Fortuner), HiAce", "title": "Z\u00e1rate, Buenos Aires", "url": ""}, {"kind": "plant", "lat": -23.5015, "linkLabel": "", "lon": -47.4526, "open": false, "subtitle": "Brezilya", "text": "Corolla Cross, Yaris", "title": "Sorocaba, S\u00e3o Paulo", "url": ""}, {"kind": "plant", "lat": -29.9633, "linkLabel": "", "lon": 30.9581, "open": false, "subtitle": {{ _('Güney Afrika')|tojson }}, "text": "Corolla, Corolla Cross, Fortuner, Hilux", "title": "Prospecton, Durban", "url": ""}, {"kind": "plant", "lat": 40.8613, "linkLabel": "", "lon": -8.6291, "open": false, "subtitle": "Portekiz", "text": {{ _('Dyna, Land Cruiser, Toyota Sora otobüsü')|tojson }}, "title": "Ovar", "url": ""}, {"kind": "plant", "lat": 52.8408, "linkLabel": "", "lon": -1.6683, "open": false, "subtitle": {{ _('Birleşik Krallık')|tojson }}, "text": {{ _('Corolla hatchback / estate')|tojson }}, "title": "Burnaston, Derbyshire", "url": ""}, {"kind": "plant", "lat": 53.2205, "linkLabel": "", "lon": -3.0505, "open": false, "subtitle": {{ _('Birleşik Krallık')|tojson }}, "text": "Motor", "title": {{ _('Deeside, Galler')|tojson }}, "url": ""}, {"kind": "plant", "lat": 50.3833, "linkLabel": "", "lon": 3.5333, "open": false, "subtitle": "Fransa", "text": "Yaris", "title": "Onnaing", "url": ""}, {"kind": "plant", "lat": 50.0281, "linkLabel": "", "lon": 15.1998, "open": false, "subtitle": {{ _('Çekya')|tojson }}, "text": "Aygo X, Yaris", "title": "Kol\u00edn", "url": ""}, {"kind": "plant", "lat": 50.7716, "linkLabel": "", "lon": 16.2845, "open": false, "subtitle": "Polonya", "text": "Motor", "title": "Wa\u0142brzych", "url": ""}, {"kind": "plant", "lat": 39.3434, "linkLabel": "", "lon": 117.3616, "open": false, "subtitle": "\u00c7in", "text": "bZ3, Corolla, Crown Kluger", "title": "Tianjin (FAW Toyota)", "url": ""}, {"kind": "plant", "lat": 30.5728, "linkLabel": "", "lon": 104.0668, "open": false, "subtitle": "\u00c7in", "text": "Land Cruiser Prado, Coaster", "title": "Chengdu (FAW Toyota)", "url": ""}, {"kind": "plant", "lat": 43.8171, "linkLabel": "", "lon": 125.3235, "open": false, "subtitle": "\u00c7in", "text": "RAV4", "title": "Changchun (FAW Toyota)", "url": ""}, {"kind": "plant", "lat": 23.1291, "linkLabel": "", "lon": 113.2644, "open": false, "subtitle": "\u00c7in", "text": "Camry, Highlander, bZ4X", "title": "Guangzhou (GAC Toyota)", "url": ""}, {"kind": "plant", "lat": 12.798, "linkLabel": "", "lon": 77.3903, "open": false, "subtitle": "Hindistan", "text": "Innova, Fortuner, Camry", "title": {{ _('Bidadi, Karnataka')|tojson }}, "url": ""}, {"kind": "plant", "lat": 24.8607, "linkLabel": "", "lon": 67.0011, "open": false, "subtitle": "Pakistan", "text": "Corolla Altis, Fortuner", "title": "Kara\u00e7i", "url": ""}, {"kind": "plant", "lat": 24.967, "linkLabel": "", "lon": 121.236, "open": false, "subtitle": "Tayvan", "text": "Corolla Altis, Yaris Cross", "title": "Zhongli, Taoyuan", "url": ""}, {"kind": "plant", "lat": -6.3227, "linkLabel": "", "lon": 107.3376, "open": false, "subtitle": "Endonezya", "text": "Fortuner, Innova, bZ4X", "title": {{ _('Karawang, Batı Java')|tojson }}, "url": ""}, {"kind": "plant", "lat": 13.6904, "linkLabel": "", "lon": 101.077, "open": false, "subtitle": "Tayland", "text": "Camry, Corolla, Yaris", "title": "Chachoengsao", "url": ""}, {"kind": "plant", "lat": 21.2333, "linkLabel": "", "lon": 105.7333, "open": false, "subtitle": "Vietnam", "text": "Fortuner, Innova, Veloz", "title": "Ph\u00fac Y\u00ean", "url": ""}, {"kind": "plant", "lat": 3.0738, "linkLabel": "", "lon": 101.5183, "open": false, "subtitle": "Malezya", "text": "Corolla Cross, Vios", "title": "Shah Alam / Bukit Raja, Selangor", "url": ""}, {"kind": "plant", "lat": 14.3122, "linkLabel": "", "lon": 121.0997, "open": false, "subtitle": "Filipinler", "text": "Vios, Innova, Hilux", "title": "Santa Rosa, Laguna", "url": ""}, {"kind": "highlight", "lat": 40.6971, "linkLabel": {{ _('Detaylı bilgi için tıkla →')|tojson }}, "lon": 30.3564, "open": true, "subtitle": "", "text": "C-HR, Corolla Sedan", "title": "TMMT \u2014 Sakarya, T\u00fcrkiye", "url": "/tmmt"}], "maxZoom": 8, "minZoom": 2, "tile": {"attribution": "\u0026copy; OpenStreetMap katk\u0131da bulunanlar", "maxZoom": 18, "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}, "worldCopyJump": true, "zoom": 2}</script>
+</section>
+
+
+<section class="tk-block reveal" id="avrupa">
+  <h2>{{ _('Avrupa\'da Toyota') }}</h2>
+  <p>{{ _('Toyota\'nın Avrupa operasyonları, merkezi Brüksel\'de bulunan Toyota Motor Europe tarafından yürütülüyor. Şirketin Avrupa genelinde birden fazla üretim tesisi, Ar-Ge ve tasarım merkezi bulunuyor. Sakarya\'daki TMMT, bu yapının en yüksek hacimli üretim tesislerinden biri ve Toyota\'nın Avrupa\'daki elektrifikasyon dönüşümünde merkezi bir rol üstleniyor.')|safe }}</p>
+  <section class="tk-grid">
+  </section>
+  <p class="tk-more-link">
+    <a href="/tmmt">{{ _('Türkiye\'deki fabrikamız: TMMT →') }}</a>
+  </p>
+</section>
+
+
+<section class="tk-block reveal" id="oduller">
+  <h2>{{ _('Ödüller, Marka Değeri ve Kalite Sıralamaları') }}</h2>
+  <p>{{ _('Bağımsız kuruluşların 2025-2026 değerlendirmelerinde Toyota, hem marka değeri hem de güvenilirlik tarafında otomotiv sektörünün önünde yer aldı.')|safe }}</p>
+  <div class="tk-card-grid--award">
+    <article class="tk-card-grid__award-card">
+      <span class="tk-card-grid__year">2025</span>
+      <h3>Interbrand</h3>
+      <p>{{ _('Otomotivde kesintisiz 1. sıra; marka değeri 74,2 milyar dolar.')|safe }}</p>
+    </article>
+    <article class="tk-card-grid__award-card">
+      <span class="tk-card-grid__year">2025–2026</span>
+      <h3>Brand Finance</h3>
+      <p>{{ _('Üst üste 2 yıl dünyanın en değerli ve en güçlü otomobil markası (AAA+).')|safe }}</p>
+    </article>
+    <article class="tk-card-grid__award-card">
+      <span class="tk-card-grid__year">2023–2026</span>
+      <h3>{{ _('J.D. Power — Lexus') }}</h3>
+      <p>{{ _('Lexus, 4 yıl üst üste en güvenilir marka seçildi.')|safe }}</p>
+    </article>
+    <article class="tk-card-grid__award-card">
+      <span class="tk-card-grid__year">2023–2026</span>
+      <h3>{{ _('J.D. Power — Toyota') }}</h3>
+      <p>{{ _('En çok segment ödülünü alan üretici (6–9 model).')|safe }}</p>
+    </article>
+    <article class="tk-card-grid__award-card">
+      <span class="tk-card-grid__year">2025</span>
+      <h3>{{ _('En Çok Satan Grup') }}</h3>
+      <p>{{ _('11,3 milyon araçla üst üste 6. kez dünyanın 1.\'si.')|safe }}</p>
+    </article>
+  </div>
+  <p class="tk-note">{{ _('Kaynak: Interbrand, Brand Finance, J.D. Power, motor1.com, carexpert.com.au') }}</p>
+</section>
+
+
+<section class="tk-block reveal" id="marka-ailesi">
+  <h2>{{ _('Toyota Grubu Marka Ailesi') }}</h2>
+  <p>{{ _('Toyota yalnızca kendi markasından ibaret değil; tamamına sahip olduğu markaların yanında birkaç rakibinde de stratejik hisseler tutuyor.')|safe }}</p>
+  <div class="tk-chip-groups">
+    <div class="tk-chip-groups__group">
+      <h3>{{ _('Tamamı Toyota\'ya ait') }}</h3>
+      <ul class="tk-chip-groups__list"><li class="tk-chip-groups__chip">Lexus
+        </li><li class="tk-chip-groups__chip">Daihatsu
+        </li><li class="tk-chip-groups__chip">Hino Motors
+        </li>
+      </ul>
+    </div>
+    <div class="tk-chip-groups__group">
+      <h3>{{ _('Stratejik hisseler') }}</h3>
+      <ul class="tk-chip-groups__list"><li class="tk-chip-groups__chip">Subaru <span>{{ _('yüzde 20 · oy hakkıyla') }}</span>
+        </li><li class="tk-chip-groups__chip">Suzuki <span>~%4,9</span>
+        </li><li class="tk-chip-groups__chip">Mazda <span>~%5,1</span>
+        </li>
+      </ul>
+    </div>
+    <div class="tk-chip-groups__group">
+      <h3>{{ _('Markalar ve hizmetler') }}</h3>
+      <ul class="tk-chip-groups__list"><li class="tk-chip-groups__chip">Toyota <span>{{ _('Ana marka; binek ve ticari araç ailesi') }}</span>
+        </li><li class="tk-chip-groups__chip">Toyota Professional <span>{{ _('Avrupa\'da ticari araç ve filo müşterilerine yönelik marka') }}</span>
+        </li><li class="tk-chip-groups__chip">Toyota Gazoo Racing <span>{{ _('Motorsporları ve performans araçları markası') }}</span>
+        </li><li class="tk-chip-groups__chip">KINTO <span>{{ _('Abonelik, kiralama ve paylaşımlı mobilite hizmetleri markası') }}</span>
+        </li><li class="tk-chip-groups__chip">Woven by Toyota <span>{{ _('Yazılım, otonom sürüş ve Woven City projesini yürüten iştirak') }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <p>{{ _('Mazda ortaklığı, ABD Alabama\'daki Mazda Toyota Manufacturing tesisinin temelini oluşturuyor.')|safe }}</p>
+  <p class="tk-subnote">{{ _('Hino Motors\'un önümüzdeki dönemde Mitsubishi Fuso ile yeni bir ittifaka dahil olacağı duyuruldu — grubun yapısının hâlâ hareketli olduğunu gösteren güncel bir detay.')|safe }}</p>
+  <p class="tk-note">{{ _('Kaynaklar: toyotaautodealer.com, slashgear.com') }}</p>
+</section>
+
+
+<section class="tk-block reveal" id="platform">
+  <h2>{{ _('Platform ve teknoloji') }}</h2>
+  <section class="tk-grid tk-grid--2">
+    <div class="tk-card">
+      <h3>TNGA</h3>{{- c.kart_alt_basligi('TNGA', 'Toyota New Global Architecture') }}
+      <p>{{ _('Toyota\'nın küresel araç platformu. Ortak bir mimari üzerinden farklı segmentlerde araç geliştirmeyi mümkün kılıyor; daha düşük ağırlık merkezi, daha iyi sürüş dinamiği ve daha verimli üretim sağlıyor. TMMT\'de üretilen yeni nesil C-HR de bu platformun TNGA-2 versiyonu üzerinde üretiliyor.')|safe }}</p><a class="tk-card__link" href="/tmmt">{{ _('TMMT\'de TNGA-2 üretimi →') }}</a>
+    </div>
+    <div class="tk-card">
+      <h3>Toyota Safety Sense</h3>
+      <p>{{ _('Toyota\'nın standart olarak sunduğu sürücü destek ve aktif güvenlik teknolojileri paketi. Şirketin uzun vadeli hedefi trafikte sıfır kaza; teknolojiler bu hedefe yönelik olarak sürekli geliştiriliyor.')|safe }}</p>
+    </div>
+  </section>
+</section>
+
+
+<section class="tk-block reveal" id="ar-ge">
+  <h2>{{ _('Ar-Ge ve tasarım') }}</h2>
+  <p>{{ _('Toyota\'nın araştırma ve tasarım faaliyetleri Japonya ile sınırlı değil; Avrupa, Kuzey Amerika ve Asya\'ya yayılmış merkezlerde yürütülüyor.')|safe }}</p>
+  <section class="tk-grid">
+    <div class="tk-card">
+      <h3>{{ _('Toyota Motor Europe Ar-Ge Merkezi') }}</h3>{{- c.kart_alt_basligi(_('Toyota Motor Europe Ar-Ge Merkezi'), _('Zaventem, Belçika')) }}
+      <p>{{ _('Avrupa pazarına yönelik araç geliştirme ve mühendislik.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>ED² (Toyota Europe Design Development)</h3>{{- c.kart_alt_basligi('ED² (Toyota Europe Design Development)', _('Nice, Fransa')) }}
+      <p>{{ _('Avrupa\'ya yönelik ileri tasarım stüdyosu.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>Toyota Gazoo Racing Europe</h3>{{- c.kart_alt_basligi('Toyota Gazoo Racing Europe', _('Köln, Almanya')) }}
+      <p>{{ _('Motorsporları geliştirme ve yüksek performans mühendisliği.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>Toyota Research Institute</h3>{{- c.kart_alt_basligi('Toyota Research Institute', _('Kaliforniya, ABD')) }}
+      <p>{{ _('Yapay zekâ, otonom sürüş ve robotik araştırmaları.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>Woven by Toyota</h3>{{- c.kart_alt_basligi('Woven by Toyota', _('Tokyo, Japonya')) }}
+      <p>{{ _('Yazılım tanımlı araç ve Woven City projesi.')|safe }}</p>
+    </div>
+  </section>
+</section>
+
+
+<section class="tk-block reveal" id="hidrojen">
+  <h2>{{ _('Hidrojen ve Katı Hal Batarya Teknolojisi') }}</h2>
+  <p>{{ _('Toyota\'nın "çoklu yol" stratejisi bataryalı elektrikle sınırlı değil; hidrojen ve yeni nesil batarya kimyaları da paralel olarak geliştiriliyor.')|safe }}</p>
+  <section class="tk-grid tk-grid--2">
+    <div class="tk-card">
+      <span class="tk-stat-grid__value" data-count-to="647" data-count-prefix="~" data-count-suffix=" km">~647 km</span>
+      <h3>{{ _('Mirai — Hidrojen yakıt hücresi') }}</h3>
+      <p>{{ _('182 beygir güç ve ABD EPA testine göre yaklaşık 647 km (402 mil) menzil. Egzozdan çıkan tek atık su.')|safe }}</p>
+      <p class="tk-note">{{ _('Kaynak: pressroom.toyota.com') }}</p>
+    </div>
+    <div class="tk-card">
+      <span class="tk-stat-grid__value" data-count-to="1200" data-count-prefix="~" data-count-suffix=" km" data-count-group>{{ _('~1.200 km') }}</span>
+      <h3>{{ _('Katı hal bataryalar') }}</h3>
+      <p>{{ _('Sumitomo Metal Mining ve Idemitsu ortaklığıyla geliştiriliyor; 2027-2028\'de araçlara girmesi hedefleniyor. Prototip paket yaklaşık 1.200 km menzil ve 10 dakikanın altında hızlı şarj vadediyor.')|safe }}</p>
+      <p class="tk-note">{{ _('Kaynak: electrek.co') }}</p>
+    </div>
+  </section>
+</section>
+
+
+<section class="tk-block reveal" id="sosyal">
+  <h2>{{ _('Toyota\'nın Sosyal Yüzü') }}</h2>
+  <section class="tk-grid tk-grid--2">
+    <div class="tk-card">
+      <h3>{{ _('Woven City') }}</h3>
+      <ul>
+        <li>{{ _('Fuji Dağı eteğinde inşa edilen deneysel "yaşayan laboratuvar" şehir.')|safe }}</li>
+        <li>{{ _('25 Eylül 2025\'te resmen açıldı; ilk "Weaver" sakinler taşınmaya başladı.')|safe }}</li>
+        <li>{{ _('Faz 1\'de yaklaşık 300 kişilik bir nüfus hedefleniyor.')|safe }}</li>
+        <li>{{ _('Japonya\'nın ilk LEED for Communities Platin sertifikasını aldı.')|safe }}</li>
+      </ul>
+      <p class="tk-note">{{ _('Kaynaklar: global.toyota, pressroom.toyota.com') }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>{{ _('Motorsporları — Toyota Gazoo Racing') }}</h3>
+      <ul>
+        <li>{{ _('Haziran 2026: 94. Le Mans 24 Saat\'te 6. kez zafer; 3 yıllık kazanamama serisi sona erdi (350.105 seyirci).')|safe }}</li>
+        <li>{{ _('Dünya Rallye Şampiyonası\'nda üst üste 4. üretici şampiyonluğu.')|safe }}</li>
+      </ul>
+      <p class="tk-note">{{ _('Kaynak: media.toyota.ca') }}</p>
+    </div>
+  </section>
+</section>
+
+
+{% endblock %}
+
+{% block vendor_scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}

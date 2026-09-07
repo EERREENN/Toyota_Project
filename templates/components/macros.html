@@ -1,0 +1,42 @@
+{#
+  SAYFALARIN PAYLASTIGI KUCUK PARCALAR
+
+  Sayfa sablonlari icerigi duz HTML olarak yazar; buraya yalnizca
+  birden fazla sayfada tekrar eden ve KOSULU olan parcalar giriyor.
+  Kosulsuz, sabit bir HTML parcasi icin makro yazmaya gerek yok --
+  onu sayfaya dogrudan yaz.
+
+  Kullanimi:
+      {% import "components/macros.html" as c %}
+      {{- c.kart_alt_basligi('Redesign', _('Yeniden tasarla')) }}
+#}
+
+{#
+  ORIJINAL TERIM SATIRI  --  "Turkce ad / ozgun terim" ciftleri icin.
+
+  Sayfalarda Turkce ad ile ozgun (Ingilizce/Japonca) terim yan yana
+  duruyor: "Yeniden tasarla / Redesign", "Sürekli İyileştirme /
+  Continuous Improvement". Sayfa Ingilizce'ye gecince bu cift
+  "Redesign / redesign" haline gelir -- ayni sey iki kez yazilmis
+  olur.
+
+  Bu yuzden terim yalnizca BASLIKTAN FARKLIYSA basilir. Icerme de
+  sayilir: "Reuse / Remanufacture" basliginin altina "reuse" yazmanin
+  anlami yok.
+
+  Cagirirken {{- ... }} kullan: satiri hic basmadigi durumda geride
+  bos satir kalmasin.
+#}
+{%- macro ozgun_terim(baslik, terim, sinif) -%}
+{%- if terim and terim|lower|trim not in baslik|lower|trim %}
+<span class="{{ sinif }}">{{ terim }}</span>
+{%- endif -%}
+{%- endmacro -%}
+
+
+{# Ayni kural, kart yuzeyindeki alt baslik satiri icin. #}
+{%- macro kart_alt_basligi(baslik, terim) -%}
+{%- if terim and terim|lower|trim not in baslik|lower|trim %}
+      <p class="tk-card__meta">{{ terim }}</p>
+{%- endif -%}
+{%- endmacro -%}

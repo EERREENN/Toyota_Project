@@ -1,0 +1,41 @@
+{#
+  UST BAR -- marka, mobil menu dugmesi, sayfa baglantilari, dil secici.
+
+  Her sayfada aynidir; hangi baglantinin vurgulanacagini sayfa sablonundaki
+  `{% set aktif = '...' %}` belirler (bkz. templates/pages/*.html).
+
+  Menu dort sabit baglantidan olusuyor -- veritabanindan ya da bir listeden
+  uretilmiyor. Sayfa eklendiginde buraya bir satir eklenir.
+#}
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="{{ url_for('public.tmmt') }}" class="brand">TOYOTA</a>
+
+      <button class="nav-toggle" type="button"
+              aria-expanded="false" aria-controls="nav-menu"
+              aria-label="{{ _('Menü') }}">
+        <span class="nav-toggle-box">
+          <span class="nav-toggle-bar"></span>
+        </span>
+      </button>
+
+      <div class="nav-menu" id="nav-menu">
+        <nav class="nav-links">
+          <a href="{{ url_for('public.tmmt') }}" class="{{ 'active' if aktif == 'tmmt' }}">TMMT</a>
+          <a href="{{ url_for('public.global_toyota') }}" class="{{ 'active' if aktif == 'global-toyota' }}">Global Toyota</a>
+          <a href="{{ url_for('public.uretim_sistemi') }}" class="{{ 'active' if aktif == 'uretim-sistemi' }}">Toyota Production System</a>
+          <a href="{{ url_for('public.cevre') }}" class="{{ 'active' if aktif == 'cevre' }}">{{ _('Toyota ve Çevre') }}</a>
+        </nav>
+        {# ---------- Dil secici ---------- #}
+        <div class="lang-switch" role="group" aria-label="{{ _('Dil seçimi') }}">
+          <span class="lang-pill" aria-hidden="true"></span>
+          <a href="{{ url_for('public.dil_degistir', lang='tr') }}"
+             class="lang-opt {{ 'active' if AKTIF_DIL == 'tr' }}"
+             data-lang="tr">TR</a>
+          <a href="{{ url_for('public.dil_degistir', lang='en') }}"
+             class="lang-opt {{ 'active' if AKTIF_DIL == 'en' }}"
+             data-lang="en">ENG</a>
+        </div>
+      </div>
+    </div>
+  </header>

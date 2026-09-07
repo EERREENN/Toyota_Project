@@ -3,6 +3,9 @@
 Siteyi kendi bilgisayarından çıkarıp internete koyarken sırayla bunları yap.
 Atlanması en tehlikeli olanlar **kalın** yazıldı.
 
+Site statik içerikle çalışır: **veritabanı yok, yönetim paneli yok, kurulum
+adımı yok.** Kod neyse yayındaki site odur.
+
 ---
 
 ## 1. Sunucuda kurulum
@@ -14,43 +17,30 @@ python -m venv venv
 venv/bin/pip install -r requirements.txt
 ```
 
-`instance/toyota.db` ve `static/uploads/` **git'e girmez**. Sunucuda ilk kez
-kuruyorsan içeriği oluştur:
-
-```bash
-venv/bin/python tools/seed.py
-```
-
-Zaten çalışan bir siten varsa bunun yerine kendi bilgisayarındaki
-`instance/toyota.db` ve `static/uploads/` klasörünü sunucuya kopyala —
-seed script'i **mevcut veritabanının üstüne yazmaz**, uyarıp durur.
+Bu kadar. Ayrıca içerik oluşturmak, veritabanı taşımak ya da bir betik
+çalıştırmak gerekmez — sayfaların tamamı `templates/pages/` altındaki
+Jinja şablonlarında.
 
 ---
 
 ## 2. `.env` dosyası
 
+Zorunlu değil; yalnızca dil çerezini imzalayan anahtar için.
+
 ```bash
 cp .env.example .env
-venv/bin/python tools/hash_password.py --anahtar   # FLASK_SECRET_KEY
-venv/bin/python tools/hash_password.py --yol       # ADMIN_PATH
-venv/bin/python tools/hash_password.py             # ADMIN_PASSWORD_HASH
+python -c "import secrets; print(secrets.token_urlsafe(48))"   # FLASK_SECRET_KEY
 ```
 
-Üç çıktıyı `.env`'ye yapıştır, sonra **yayına özel** üç ayarı değiştir:
+Çıktıyı `.env`'ye yapıştır, sonra **yayına özel** iki ayarı değiştir:
 
 ```bash
 SESSION_COOKIE_SECURE=true     # HTTPS kurulduktan SONRA
 TRUST_PROXY=true               # nginx / Caddy arkasındaysan
-SQLITE_WAL=true                # senkronize edilen klasörde DEĞİLSE
 ```
 
-> ⚠️ **`SESSION_COOKIE_SECURE=true`'yu HTTPS çalışmadan açma.** Güvenli çerez
-> HTTP üzerinden gönderilmez; panele giremezsin.
-
-Dosya izinleri:
 ```bash
 chmod 600 .env
-chmod 600 instance/toyota.db
 ```
 
 ---
@@ -68,10 +58,8 @@ toyota.example.com {
 nginx kullanacaksan `certbot --nginx` ile sertifika al ve HTTP → HTTPS
 yönlendirmesini ekle.
 
-**`TRUST_PROXY=true` yapmayı unutma.** Bu olmadan:
-- IP kilidi tüm ziyaretçileri tek IP sanar → bir kişi yanlış şifre girince
-  herkes kilitlenir
-- Flask kendini HTTP zanneder, güvenli çerez çalışmaz
+**`TRUST_PROXY=true` yapmayı unutma.** Bu olmadan Flask kendini HTTP zanneder
+ve güvenli çerez çalışmaz.
 
 HTTPS sorunsuz çalıştığını gördükten **sonra** HSTS ekle (geri dönüşü zor):
 ```
@@ -86,14 +74,14 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 
 ```bash
 # Linux
-venv/bin/gunicorn -w 1 -b 127.0.0.1:8000 "app:create_app()"
+venv/bin/gunicorn -b 127.0.0.1:8000 "app:create_app()"
 
 # Windows
 venv\Scripts\waitress-serve --port=8000 "app:create_app()"
 ```
 
-**`-w 1` (tek işçi)** — SQLite yazma kilidi yüzünden. Trafiğin artarsa
-`SQLITE_WAL=true` çoklu okuyucuyu kaldırır; yine de tek yazıcı kalmalı.
+Yazılacak bir durum olmadığı için işçi sayısı serbesttir; birden fazla işçi
+çalıştırabilirsin.
 
 Sistem servisi olarak kur (systemd örneği):
 
@@ -104,7 +92,7 @@ After=network.target
 
 [Service]
 WorkingDirectory=/srv/toyota_project
-ExecStart=/srv/toyota_project/venv/bin/gunicorn -w 1 -b 127.0.0.1:8000 "app:create_app()"
+ExecStart=/srv/toyota_project/venv/bin/gunicorn -b 127.0.0.1:8000 "app:create_app()"
 Restart=always
 User=toyota
 
@@ -114,64 +102,43 @@ WantedBy=multi-user.target
 
 ---
 
-## 5. Yükleme klasörü güvenliği
+## 5. Yedekleme
 
-`static/uploads/` içindeki dosyalar ziyaretçiye sunulur. Proxy'nin bu
-klasörde **hiçbir şey çalıştırmadığından** emin ol:
+Yedeklenecek ayrı bir veri yok: içerik ve görseller depoda duruyor, dolayısıyla
+**git deposunun kendisi yedektir.**
 
-```nginx
-location /static/uploads/ {
-    add_header X-Content-Type-Options nosniff;
-    location ~ \.(php|py|cgi|pl|sh)$ { deny all; }
-}
-```
-
-Uygulama zaten dosyayı Pillow ile açıp gerçekten resim olduğunu doğruluyor ve
-rastgele bir adla kaydediyor; bu ikinci savunma hattı.
+`FLASK_SECRET_KEY`'i bir yere not et — değişirse ziyaretçilerin seçtiği dil
+sıfırlanır (kalıcı `lang` çerezi yine de tutar).
 
 ---
 
-## 6. Yedekleme
-
-Üç şey yedeklenirse site tamamen geri gelir:
-
-```
-instance/toyota.db              ← tüm içerik ve çeviriler
-static/uploads/                 ← yüklenen görseller
-translations/auto_cache.json    ← çeviri önbelleği
-```
-
-Günlük yedek için basit bir cron:
-
-```bash
-0 3 * * * cd /srv/toyota_project && tar czf /yedek/toyota-$(date +\%F).tar.gz \
-          instance/toyota.db static/uploads translations/auto_cache.json
-```
-
-`FLASK_SECRET_KEY`'i de bir yere not et — değişirse tüm oturumlar düşer.
-
----
-
-## 7. Yayına aldıktan sonra kontrol et
+## 6. Yayına aldıktan sonra kontrol et
 
 ```bash
 curl -I https://toyota.example.com/                    # 200, HTTPS
-curl     https://toyota.example.com/robots.txt         # gizli adres GEÇMEMELİ
-curl -I  https://toyota.example.com/<ADMIN_PATH>/      # X-Robots-Tag: noindex
+curl     https://toyota.example.com/robots.txt
 ```
 
-- Panele gir, bir blok kaydet, sitede göründüğünü doğrula
-- Yanlış şifreyle gir → **404** almalısın
-- Görsel yükle, sayfada göründüğünü doğrula
+- Dört sayfa da açılıyor: `/tmmt`, `/global-toyota`, `/uretim-sistemi`, `/cevre`
+- TR/EN geçişi çalışıyor, sayfayı yenileyince seçim korunuyor
+- Harita, CO2 hesaplayıcı ve sözlük araması çalışıyor
+- Dar pencerede hamburger menü açılıyor
 
 ---
 
-## 8. Bakım
+## 7. İçerik güncelleme
+
+Her sayfa kendi şablonudur: `templates/pages/tmmt.html`, `global.html`,
+`tps.html`, `cevre.html`. Bölümler düz HTML olarak duruyor — düzenle,
+sunucuyu yeniden başlat.
+
+Çevrilebilir metinler `{{ _('Türkçe metin') }}` içinde; İngilizce
+karşılıkları `app/ceviri.py` dosyasında. Yeni bir metin eklerken
+karşılığını oraya da yaz, yoksa İngilizce sayfada Türkçe görünür.
 
 | Ne zaman | Ne yap |
 |---|---|
-| Çeviriler bozulursa | Panelde blok → **İngilizce çeviriler** → elle düzelt |
-| Toplu çeviri tazeleme | `venv/bin/python tools/ceviri_yenile.py` (elle düzeltilenlere dokunmaz) |
-| Şifre değişimi | Panelden **Şifre** ekranı (`.env`'ye dokunma) |
-| İçerik bozulursa | Yedekten `instance/toyota.db` geri koy |
-| Kod güncellemesi sonrası | `venv/bin/python tools/kontrol.py` |
+| Metin/rakam güncellemesi | İlgili `templates/pages/*.html` dosyasını düzenle |
+| Yeni İngilizce karşılık | `app/ceviri.py` içine ekle |
+| Değişiklik sonrası kontrol | `python tools/kontrol.py` |
+| Sayfa çıktısı karşılaştırma | `python tools/snapshot.py before` → değiştir → `... diff` |

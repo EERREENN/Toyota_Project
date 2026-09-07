@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
-"""Dil secimi ve Jinja ceviri kurulumu.
+"""Dil secimi ve sablon cevirisi.
 
-get_locale() legacy_app.py'den BIREBIR tasindi -- sira ayni:
-URL parametresi -> session -> cookie -> tarayici basligi -> varsayilan.
+get_locale() sirasi:
+    URL parametresi -> session -> cookie -> tarayici basligi -> varsayilan.
 
-Icerik metinleri artik content.py tarafindan cozuluyor; buradaki
-`_()` / `{% trans %}` altyapisi yalnizca sablonlarda kalan az sayidaki
-sabit metin ve ileride eklenecek panel arayuzu icin duruyor.
+Sablonlardaki her {{ _('...') }} cagrisi app/ceviri.py -> EN sozlugune
+bakar. Ag uzerinden calisma zamani cevirisi YOK; karsiligi yazilmamis
+metin Turkce haliyle gosterilir.
 """
 
 from __future__ import annotations
 
 from flask import current_app, request, session
 
-import auto_translate
+from .ceviri import EN
 
 
 def get_locale() -> str:
@@ -35,15 +35,20 @@ def get_locale() -> str:
     return request.accept_languages.best_match(list(diller.keys())) or varsayilan
 
 
+def cevir(metin: str) -> str:
+    """Metnin aktif dildeki karsiligi. Karsiligi yoksa Turkcesi doner."""
+    return EN.get(metin, metin) if get_locale() == "en" else metin
+
+
 def install(app) -> None:
-    """Jinja i18n eklentisini legacy_app.py ile ayni politikalarla kurar."""
+    """Jinja i18n eklentisi -- {{ _('...') }} ve {% trans %}."""
     app.jinja_env.add_extension("jinja2.ext.i18n")
     # {% trans %} bloklarindaki girinti/satir sonlarini kirp
     app.jinja_env.policies["ext.i18n.trimmed"] = True
     # newstyle=False -> jinja metni "%" ile bicimlemez, yani icerikte
     # "%30" gibi ifadeler sorunsuz kullanilabilir.
     app.jinja_env.install_gettext_callables(
-        gettext=lambda s: auto_translate.translate(s, get_locale()),
-        ngettext=lambda s, p, n: auto_translate.translate(s if n == 1 else p, get_locale()),
+        gettext=cevir,
+        ngettext=lambda s, p, n: cevir(s if n == 1 else p),
         newstyle=False,
     )

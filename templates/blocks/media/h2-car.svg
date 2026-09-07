@@ -1,6 +1,0 @@
-<svg viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M18 78 L40 78 L54 54 L128 54 L150 78 L182 78 L182 90 L18 90 Z" fill="currentColor" opacity="0.9"/>
-          <circle cx="58" cy="90" r="12" fill="#1b1d1f"/>
-          <circle cx="142" cy="90" r="12" fill="#1b1d1f"/>
-          <text x="100" y="40" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="20" fill="currentColor">H₂</text>
-        </svg>

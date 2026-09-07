@@ -1,9 +1,11 @@
 {#
   Sitenin kabugu: <head>, ust bar, dil secici, ana govde.
 
-  Icerik artik sablonda degil veritabaninda. Buradaki tek sabit metin
-  yok; marka adi ve erisilebilirlik etiketleri site ayarlarindan,
-  menu ise sayfa kayitlarindan geliyor.
+  Her sayfa bunu genisletir ve kendi bolumlerini {% block content %}
+  icinde duz HTML olarak verir (templates/pages/*.html). Yuklenecek stil
+  dosyalarini da sayfa kendisi bildirir:
+
+      {% set css_files = ["tokens.css", ...] %}
 #}
 <!DOCTYPE html>
 <html lang="{{ AKTIF_DIL }}">
@@ -13,9 +15,9 @@
   <title>{% block title %}Toyota{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  {# CSS bloklara bolundu: her sayfa yalnizca kullandigi blok tiplerinin
-     dosyasini yukler. Sira onemli -- tema dosyasi en sonda, blok
-     kurallarini ezebilsin diye. Liste app/content.py -> css_files. #}
+  {# CSS parcalara bolundu: her sayfa yalnizca kullandigi parcalarin
+     dosyasini yukler. Sira onemli -- tema dosyasi en sonda, ortak
+     kurallari ezebilsin diye. Liste sayfa sablonunun basinda. #}
   {%- for dosya in css_files %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/' ~ dosya) }}">
   {%- endfor %}
@@ -25,37 +27,7 @@
 <body class="{% block body_class %}{% endblock %}">
 
   {% block background %}{% endblock %}
-
-  <header class="navbar">
-    <div class="nav-inner">
-      <a href="{{ ana_sayfa_url }}" class="brand">{{ site.brand }}</a>
-
-      <button class="nav-toggle" type="button"
-              aria-expanded="false" aria-controls="nav-menu"
-              aria-label="{{ site.nav_toggle_label }}">
-        <span class="nav-toggle-box">
-          <span class="nav-toggle-bar"></span>
-        </span>
-      </button>
-
-      <div class="nav-menu" id="nav-menu">
-        <nav class="nav-links">
-          {%- for madde in nav %}
-          <a href="{{ madde.url }}" class="{{ 'active' if madde.is_active }}">{{ madde.label }}</a>
-          {%- endfor %}
-        </nav>
-        {# ---------- Dil secici ---------- #}
-        <div class="lang-switch" role="group" aria-label="{{ site.lang_group_label }}">
-          <span class="lang-pill" aria-hidden="true"></span>
-          {%- for kod in LANGUAGES %}
-          <a href="{{ url_for('public.dil_degistir', lang=kod) }}"
-             class="lang-opt {{ 'active' if AKTIF_DIL == kod }}"
-             data-lang="{{ kod }}">{{ site['lang_short_' ~ kod] or kod|upper }}</a>
-          {%- endfor %}
-        </div>
-      </div>
-    </div>
-  </header>
+{% include "components/navbar.html" %}
 
   <main class="page">
     {% block content %}{% endblock %}

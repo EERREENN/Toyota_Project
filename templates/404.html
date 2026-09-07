@@ -1,4 +1,16 @@
 {% extends "base.html" %}
+{#
+  Bulunamayan adres. Kabugu (menu, dil secici) korur; govdesi tek bir
+  kisa bolumdur, o yuzden yalnizca ortak stil dosyalarini yukler.
+#}
+
+{% set css_files = [
+  "tokens.css",
+  "base.css",
+  "layout.css",
+  "components/card.css",
+] %}
+{% set aktif = '' %}
 
 {% block title %}404{% endblock %}
 {% block body_class %}page-tmmt{% endblock %}
@@ -7,6 +19,6 @@
 <section class="icerik-blok">
   <h1>404</h1>
   <p>{{ _('Aradığınız sayfa bulunamadı.') }}</p>
-  <p><a href="{{ ana_sayfa_url }}">{{ _('Ana sayfaya dön') }}</a></p>
+  <p><a href="{{ url_for('public.tmmt') }}">{{ _('Ana sayfaya dön') }}</a></p>
 </section>
 {% endblock %}

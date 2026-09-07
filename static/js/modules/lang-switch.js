@@ -3,7 +3,8 @@
 
    NOT: eski i18n.js ayrica data-i18n ozniteligi tasiyan elemanlarin
    metnini JS ile dolduruyordu. Artik gerek yok -- harita gostergesi
-   dahil butun metinler sunucuda, veritabanindaki ceviriden basiliyor. */
+   dahil butun metinler sunucuda, app/icerik/ altindaki karsiliktan
+   basiliyor. */
 
 export function init() {
   const kutu = document.querySelector(".lang-switch");

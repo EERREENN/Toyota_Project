@@ -4,7 +4,7 @@
   //
   //  Bicimlendirici, etiket icindeki {% if a == b %} ifadesini
   //  satirlara bolup == isaretini bozuyor ve sablon calismaz hale
-  //  geliyor (templates/admin/base.html bir kez boyle kirildi).
+  //  geliyor (bir sablon bir kez boyle kirildi).
   //
   //  Bu ayar templates/ altindaki .html dosyalarinda kaydederken
   //  bicimlendirmeyi kapatir.

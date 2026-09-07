@@ -3,8 +3,8 @@
 
     python tools/kontrol.py
 
-Her adim bagimsiz bir soruyu yanitlar. Hepsi yesilse tasima sirasinda
-hicbir sey kaybolmamis demektir.
+Her adim bagimsiz bir soruyu yanitlar. Hepsi yesilse yapilan degisiklik
+sayfalarin gorunumunu bozmamis demektir.
 """
 
 from __future__ import annotations
@@ -17,21 +17,13 @@ ROOT = Path(__file__).resolve().parent.parent
 PY = sys.executable
 
 ADIMLAR = [
-    ("Icerik butunlugu",
-     "Tasima oncesi sablonlardaki her metin veritabaninda var mi?",
-     ["tools/verify_seed.py"]),
-
     ("Site ciktisi",
-     "Sayfalarda gorunen metin, tasimadan onceki haliyle ayni mi?",
+     "Sayfalarda gorunen metin, onceki haliyle ayni mi?",
      ["tools/snapshot.py", "diff", "--text"]),
 
     ("CSS bolunmesi",
      "1162 satirlik eski CSS'in her kurali yeni dosyalarda duruyor mu?",
      ["tools/css_check.py"]),
-
-    ("Panel gidis-donus",
-     "Panelden kaydetmek veriyi bozuyor mu?",
-     ["tools/panel_roundtrip.py"]),
 ]
 
 
@@ -64,7 +56,7 @@ def calistir(betik: list[str]) -> tuple[int, str]:
 def main() -> int:
     print()
     print("=" * 64)
-    print("  TOYOTA CMS -- OTOMATIK DOGRULAMA")
+    print("  TOYOTA SITESI -- OTOMATIK DOGRULAMA")
     print("=" * 64)
 
     # Once guncel anlik goruntuyu al (site ciktisi karsilastirmasi icin)
@@ -102,7 +94,7 @@ def main() -> int:
     print()
     print("  Geriye elle bakilmasi gerekenler:")
     print("   - sayfalarin gorunumu (arka planlar, renkler, animasyonlar)")
-    print("   - panelde suruk-birak siralama")
+    print("   - harita, hesaplayici, sozluk aramasi")
     print("   - mobil goruntu (dar pencere)")
     return 0
 

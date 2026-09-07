@@ -1,7 +1,9 @@
 # --- gizli / makineye ozel ---
 .env
+
+# Tasima oncesi CMS veritabani. Uygulama ARTIK OKUMUYOR -- icerik
+# app/icerik/ altinda. Elindeki kopya yedek olarak duruyor.
 instance/
-static/uploads/
 
 # --- python ---
 __pycache__/

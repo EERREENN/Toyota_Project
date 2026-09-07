@@ -1,0 +1,582 @@
+{#
+  TOYOTA PRODUCTION SYSTEM SAYFASI  --  /uretim-sistemi
+
+  Toyota Production System: TPS Evi, akis, andon, sozluk.
+
+  Bolumler asagida, ekrandaki sirasiyla duz HTML olarak duruyor.
+  Cevrilebilir metinler {{ _('...') }} icinde; karsiliklari
+  app/ceviri.py dosyasinda.
+#}
+{% extends "base.html" %}
+
+{#- Bu sayfanin yukledigi stil dosyalari, sirasiyla. Tema en sonda:
+    ortak kurallari ezebilsin diye. -#}
+{% set css_files = [
+  "tokens.css",
+  "base.css",
+  "layout.css",
+  "components/card.css",
+  "components/rich-text.css",
+  "components/section-nav.css",
+  "components/tps-house.css",
+  "components/process-steps.css",
+  "components/divider.css",
+  "components/card-grid.css",
+  "components/andon.css",
+  "components/cycle-steps.css",
+  "components/glossary.css",
+  "components/mission.css",
+  "themes/uretim.css",
+] %}
+{% set aktif = 'uretim-sistemi' %}
+
+{% block title %}Toyota Production System{% endblock %}
+{% block body_class %}page-uretim{% endblock %}
+
+{% block extra_head %}{#- Harici kutuphane yok. #}
+{% endblock %}
+
+{% block background %}
+{# Arka plan gorseli tema CSS'inde de tanimli; buradaki satir ici stil onu ezer. #}
+<div class="tk-bg--uretim" style="background-image:url('/static/img/tps-bg.jpg')"
+     aria-hidden="true"></div>
+{% endblock %}
+
+{% block content %}
+
+
+<section class="tk-block reveal">
+  <h1>Toyota Production System</h1>
+  <p>{{ _('Toyota Production System (TPS), İkinci Dünya Savaşı sonrasında Taiichi Ohno öncülüğünde geliştirilen ve Toyota\'nın üretim felsefesinin temelini oluşturan yönetim sistemidir. Amacı, israfı (muda) ortadan kaldırarak müşteriye en yüksek kaliteyi, en düşük maliyetle ve en kısa sürede sunmaktır. Bugün dünya genelinde birçok sektörde "yalın üretim" (lean manufacturing) adıyla uygulanan yaklaşımın da temelini oluşturur.')|safe }}</p>
+</section>
+
+
+<nav class="tk-section-nav reveal"
+     aria-label="{{ _('Bu sayfada') }}">
+  <span class="tk-section-nav__label">{{ _('Bu sayfada') }}</span>
+  <ul class="tk-section-nav__list">
+    <li><a class="tk-section-nav__link" href="#tps-evi">{{ _('TPS Evi') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#dogus">{{ _('TPS nasıl doğdu') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#iki-sutun">{{ _('Hattın iki sütunu') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#iki-ilke">{{ _('Temeldeki iki ilke') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#muda">{{ _('Yedi israf (muda)') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#andon">{{ _('Yerinde kalite ve andon') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#kaizen">{{ _('Kaizen döngüsü') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#sozluk">{{ _('TPS kavram sözlüğü') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#bugun">{{ _('TPS bugün nerede') }}</a></li>
+  </ul>
+</nav>
+
+
+<section class="tk-block tk-house reveal" id="tps-evi">
+  <h2>{{ _('TPS Evi') }}</h2>
+  <p>{{ _('TPS\'i anlatmanın en bilinen yolu bir eve benzetmektir: çatı hedefleri, iki sütun sistemi taşıyan ilkeleri, temel ise hepsini mümkün kılan istikrarı gösterir. Bir parçaya dokunarak ayrıntısını görebilirsiniz.')|safe }}</p>
+  <p class="tk-gizli-metin" id="ev-ozet-45">{{ _('Ev şeklinde bir şema. En üstteki çatıda hedefler yer alır. Çatıyı iki sütun taşır: solda Just-in-Time, sağda Jidoka. İki sütunun arasında, evin merkezinde insan ve takım çalışması bulunur. Hepsinin altında, evi ayakta tutan temel vardır. Aşağıdaki listeden her parçanın açıklamasını açabilirsiniz.') }}</p><svg class="tk-house__diagram" viewBox="0 0 800 640"
+       role="group" aria-label="{{ _('TPS Evi') }}"
+       aria-describedby="ev-ozet-45" 
+       preserveAspectRatio="xMidYMid meet">
+    <title>{{ _('TPS Evi') }}</title>
+    <g class="tk-house__part tk-house__part--roof">
+      <polygon class="tk-house__shape" points="400,10 792,120 792,196 8,196 8,120" />
+      <foreignObject x="24" y="126"
+                     width="752" height="64">
+        <button type="button" class="tk-house__hit"
+                aria-expanded="false" aria-controls="ev-45-roof">
+          <span class="tk-house__part-title">{{ _('Hedefler') }}</span>
+          <span class="tk-house__part-items">{{ _('En yüksek kalite · en düşük maliyet · en kısa teslim süresi · en yüksek güvenlik · en yüksek çalışan morali') }}</span>
+        </button>
+      </foreignObject>
+    </g>
+    <g class="tk-house__part tk-house__part--pillar_left">
+      <rect class="tk-house__shape" x="8" y="212"
+            width="208" height="310" rx="4" />
+      <foreignObject x="20" y="224"
+                     width="184" height="286">
+        <button type="button" class="tk-house__hit"
+                aria-expanded="false" aria-controls="ev-45-pillar_left">
+          <span class="tk-house__part-title">{{ _('Just-in-Time (tam zamanında üretim)') }}</span>
+          <span class="tk-house__part-items">{{ _('Sürekli akış · çekme sistemi · takt zamanı · kanban') }}</span>
+        </button>
+      </foreignObject>
+    </g>
+    <g class="tk-house__part tk-house__part--center">
+      <rect class="tk-house__shape" x="232" y="212"
+            width="336" height="310" rx="4" />
+      <foreignObject x="246" y="224"
+                     width="308" height="286">
+        <button type="button" class="tk-house__hit"
+                aria-expanded="false" aria-controls="ev-45-center">
+          <span class="tk-house__part-title">{{ _('İnsan ve takım çalışması') }}</span>
+          <span class="tk-house__part-items">{{ _('Sürekli iyileştirme · israfın ortadan kaldırılması') }}</span>
+        </button>
+      </foreignObject>
+    </g>
+    <g class="tk-house__part tk-house__part--pillar_right">
+      <rect class="tk-house__shape" x="584" y="212"
+            width="208" height="310" rx="4" />
+      <foreignObject x="596" y="224"
+                     width="184" height="286">
+        <button type="button" class="tk-house__hit"
+                aria-expanded="false" aria-controls="ev-45-pillar_right">
+          <span class="tk-house__part-title">{{ _('Jidoka (otonomasyon)') }}</span>
+          <span class="tk-house__part-items">{{ _('Otomatik durdurma · andon · poka-yoke · yerinde kalite') }}</span>
+        </button>
+      </foreignObject>
+    </g>
+    <g class="tk-house__part tk-house__part--foundation">
+      <rect class="tk-house__shape" x="8" y="538"
+            width="784" height="94" rx="4" />
+      <foreignObject x="24" y="550"
+                     width="752" height="70">
+        <button type="button" class="tk-house__hit"
+                aria-expanded="false" aria-controls="ev-45-foundation">
+          <span class="tk-house__part-title">{{ _('Temel') }}</span>
+          <span class="tk-house__part-items">{{ _('Heijunka · standart iş · kaizen · görsel yönetim · istikrarlı süreçler') }}</span>
+        </button>
+      </foreignObject>
+    </g>
+  </svg><ul class="tk-house__list">
+    <li class="tk-house__part tk-house__part--roof">
+      <button type="button" class="tk-house__row"
+              aria-expanded="false" aria-controls="ev-45-roof">
+        <span class="tk-house__part-title">{{ _('Hedefler') }}</span>
+        <span class="tk-house__part-items">{{ _('En yüksek kalite · en düşük maliyet · en kısa teslim süresi · en yüksek güvenlik · en yüksek çalışan morali') }}</span>
+      </button>
+    </li>
+    <li class="tk-house__part tk-house__part--pillar_left">
+      <button type="button" class="tk-house__row"
+              aria-expanded="false" aria-controls="ev-45-pillar_left">
+        <span class="tk-house__part-title">{{ _('Just-in-Time (tam zamanında üretim)') }}</span>
+        <span class="tk-house__part-items">{{ _('Sürekli akış · çekme sistemi · takt zamanı · kanban') }}</span>
+      </button>
+    </li>
+    <li class="tk-house__part tk-house__part--center">
+      <button type="button" class="tk-house__row"
+              aria-expanded="false" aria-controls="ev-45-center">
+        <span class="tk-house__part-title">{{ _('İnsan ve takım çalışması') }}</span>
+        <span class="tk-house__part-items">{{ _('Sürekli iyileştirme · israfın ortadan kaldırılması') }}</span>
+      </button>
+    </li>
+    <li class="tk-house__part tk-house__part--pillar_right">
+      <button type="button" class="tk-house__row"
+              aria-expanded="false" aria-controls="ev-45-pillar_right">
+        <span class="tk-house__part-title">{{ _('Jidoka (otonomasyon)') }}</span>
+        <span class="tk-house__part-items">{{ _('Otomatik durdurma · andon · poka-yoke · yerinde kalite') }}</span>
+      </button>
+    </li>
+    <li class="tk-house__part tk-house__part--foundation">
+      <button type="button" class="tk-house__row"
+              aria-expanded="false" aria-controls="ev-45-foundation">
+        <span class="tk-house__part-title">{{ _('Temel') }}</span>
+        <span class="tk-house__part-items">{{ _('Heijunka · standart iş · kaizen · görsel yönetim · istikrarlı süreçler') }}</span>
+      </button>
+    </li>
+  </ul><div class="tk-house__panels">
+    <div class="tk-house__panel" id="ev-45-roof" hidden>
+      <h3 class="tk-house__panel-title">{{ _('Hedefler') }}</h3>
+      <p>{{ _('Evin çatısı, tüm sistemin neye hizmet ettiğini söyler. Bu beş hedef birbirinden bağımsız değildir: kaliteyi yükselten bir iyileştirme genellikle maliyeti de düşürür, güvenli ve düzenli bir hat ise çalışan moralini yükseltir.')|safe }}</p>
+    </div>
+    <div class="tk-house__panel" id="ev-45-pillar_left" hidden>
+      <h3 class="tk-house__panel-title">{{ _('Just-in-Time (tam zamanında üretim)') }}</h3>
+      <p>{{ _('Doğru parçanın, doğru anda, doğru miktarda hatta ulaşması. Üretimi başlatan şey tahmin değil, bir sonraki sürecin gerçek talebidir — buna çekme sistemi denir. Takt zamanı müşteri talebinin belirlediği üretim temposudur; kanban (çekme kartı) ise hangi parçadan ne zaman ne kadar gerektiğini hat üzerinde görünür kılar.')|safe }}</p>
+    </div>
+    <div class="tk-house__panel" id="ev-45-center" hidden>
+      <h3 class="tk-house__panel-title">{{ _('İnsan ve takım çalışması') }}</h3>
+      <p>{{ _('İki sütunun arasındaki boşluk boş değildir: sistemi çalıştıran insandır. Sorunu gören, durduran ve çözen kişi hattın başındaki çalışandır. Sürekli iyileştirme ve israfın ortadan kaldırılması bir departmanın işi değil, her kademedeki takımın ortak sorumluluğudur.')|safe }}</p>
+    </div>
+    <div class="tk-house__panel" id="ev-45-pillar_right" hidden>
+      <h3 class="tk-house__panel-title">{{ _('Jidoka (otonomasyon)') }}</h3>
+      <p>{{ _('"İnsan dokunuşlu otomasyon": makine bir sorun sezdiğinde kendi kendine durur, böylece hatalı ürün bir sonraki sürece geçmez. Andon (uyarı panosu) sorunu anında görünür kılar; poka-yoke (hata önleme) yanlış işlemi baştan imkânsız hale getiren basit düzeneklerdir. Kalite en sonda denetlenmez, oluştuğu yerde sağlanır.')|safe }}</p>
+    </div>
+    <div class="tk-house__panel" id="ev-45-foundation" hidden>
+      <h3 class="tk-house__panel-title">{{ _('Temel') }}</h3>
+      <p>{{ _('Sütunlar ancak sağlam bir zemin üzerinde durur. Heijunka (üretim dengeleme) iş yükünü zamana ve ürün çeşidine yayar; standart iş her işin bilinen en iyi yolunu tanımlar; kaizen (sürekli iyileştirme) o standardı her gün biraz daha ileri taşır; görsel yönetim ise hattın durumunu bakışta anlaşılır kılar.')|safe }}</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="tk-block reveal" id="dogus">
+  <h2>{{ _('TPS nasıl doğdu') }}</h2>
+  <p>{{ _('Sistem bir günde tasarlanmadı; üç kuşağın birbirini tamamlayan fikirlerinden oluştu. Bir adıma dokunarak ayrıntısını görebilirsiniz.')|safe }}</p>
+  <ol class="tk-steps" style="--adim-sayisi: 3">
+    <li class="tk-steps__item">
+      <button type="button" class="tk-steps__button"
+              aria-expanded="false" aria-controls="adim-46-sakichi">
+        <span class="tk-steps__no">1</span>
+        <span class="tk-steps__title">{{ _('Sakichi Toyoda ve dokuma tezgâhı') }}</span>
+        <span class="tk-steps__period">{{ _('1920\'ler') }}</span>
+      </button>
+      <div class="tk-steps__detail" id="adim-46-sakichi" hidden>
+        <div class="tk-steps__placeholder" aria-hidden="true">
+          <span>1</span>
+        </div>
+        <p class="tk-steps__text">{{ _('Sakichi Toyoda, ipliği koptuğunda kendi kendini durduran bir otomatik dokuma tezgâhı geliştirdi. Böylece bir işçinin tek bir tezgâhın başında beklemesi gerekmiyor, hatalı kumaş üretilmiyordu. Bu fikir, bugün jidoka olarak bilinen "insan dokunuşlu otomasyon" ilkesinin kökeni oldu.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-steps__item">
+      <button type="button" class="tk-steps__button"
+              aria-expanded="false" aria-controls="adim-46-kiichiro">
+        <span class="tk-steps__no">2</span>
+        <span class="tk-steps__title">{{ _('Kiichiro Toyoda ve tam zamanında üretim') }}</span>
+        <span class="tk-steps__period">{{ _('1930\'lar') }}</span>
+      </button>
+      <div class="tk-steps__detail" id="adim-46-kiichiro" hidden>
+        <div class="tk-steps__placeholder" aria-hidden="true">
+          <span>2</span>
+        </div>
+        <p class="tk-steps__text">{{ _('Sakichi\'nin oğlu Kiichiro Toyoda, otomobil üretimine geçerken her parçanın tam gerektiği anda ve tam gerektiği miktarda hatta ulaşması gerektiğini savundu. "Just-in-Time" kavramı bu yaklaşımdan doğdu.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-steps__item">
+      <button type="button" class="tk-steps__button"
+              aria-expanded="false" aria-controls="adim-46-ohno">
+        <span class="tk-steps__no">3</span>
+        <span class="tk-steps__title">{{ _('Taiichi Ohno ve sistemin kurulması') }}</span>
+        <span class="tk-steps__period">{{ _('1945 sonrası') }}</span>
+      </button>
+      <div class="tk-steps__detail" id="adim-46-ohno" hidden>
+        <div class="tk-steps__placeholder" aria-hidden="true">
+          <span>3</span>
+        </div>
+        <p class="tk-steps__text">{{ _('İkinci Dünya Savaşı sonrasında Taiichi Ohno, bu iki fikri tutarlı bir üretim sistemine dönüştürdü. Amerikan süpermarketlerinde rafın yalnızca satılan kadar doldurulmasından esinlenerek çekme sistemini ve kanban\'ı geliştirdi. Kaynakların kıt olduğu bir dönemde israfı ortadan kaldırmak zorunluluktu; bu zorunluluk bir yönetim felsefesine dönüştü.')|safe }}</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<div class="tk-divider--conveyor" aria-hidden="true"></div>
+
+
+<section class="tk-card-grid--station reveal" id="iki-sutun">
+  <p class="tk-lead">{{ _('Evi ayakta tutan iki sütuna yakından bakalım.')|safe }}</p>
+  <h2 class="tk-card-grid__station-title">{{ _('Hattın iki sütunu') }}</h2>
+  <p class="tk-card-grid__station-intro">{{ _('Parça hattan akarken her istasyon kendi işini yapar; bu iki sütun tüm hattın üzerine kurulduğu temeldir.')|safe }}</p>
+  <div class="tk-grid tk-grid--2">
+    <div class="tk-card tk-card-grid__station">
+      <span class="tk-card-grid__station-no">1</span>
+      <h3>Just-in-Time (JIT)</h3>
+      <p>{{ _('Bir sonraki sürecin ihtiyaç duyduğu parçayı, ihtiyaç duyduğu anda ve ihtiyaç duyduğu miktarda üretmek. Bu sayede fazla stok, fazla üretim ve bekleme gibi israflar ortadan kalkar.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card-grid__station">
+      <span class="tk-card-grid__station-no">2</span>
+      <h3>Jidoka</h3>
+      <p>{{ _('"İnsan dokunuşlu otomasyon." Bir sorun ya da hata tespit edildiğinde makine ya da hat otomatik olarak durur; böylece hatalı ürün bir sonraki aşamaya asla geçmez.')|safe }}</p>
+    </div>
+  </div>
+</section>
+
+<div class="tk-divider--conveyor" aria-hidden="true"></div>
+
+
+<section class="tk-block reveal" id="iki-ilke">
+  <h2>{{ _('Temeldeki iki ilke') }}</h2>
+  <p>{{ _('Bu iki sütunun altında, sistemi ayakta tutan iki temel ilke yer alır: <strong>Kaizen</strong> — küçük ama sürekli iyileştirme kültürü — ve <strong>insana saygı</strong> — çalışanların fikirlerine değer verilmesi ve sorun çözme sürecine dahil edilmesi. TPS, sadece bir üretim tekniği değil, bu iki ilke üzerine kurulmuş bir çalışma kültürüdür.')|safe }}</p>
+</section>
+
+
+<section class="tk-card-grid--station reveal" id="muda">
+  <h2 class="tk-card-grid__station-title">{{ _('Yedi israf (muda)') }}</h2>
+  <p class="tk-card-grid__station-intro">{{ _('TPS, değer katmayan her şeyi israf sayar ve yedi başlıkta toplar. Hattı iyileştirmenin ilk adımı bunları görebilmektir.')|safe }}</p>
+  <div class="tk-grid tk-grid--4">
+    <div class="tk-card tk-card-grid__station">
+      <span class="tk-card-grid__station-no">1</span>
+      <h3>{{ _('Fazla üretim') }}</h3>
+      <p>{{ _('İhtiyaçtan fazla veya erken üretmek. Diğer tüm israfları besleyen temel israf.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card-grid__station">
+      <span class="tk-card-grid__station-no">2</span>
+      <h3>{{ _('Bekleme') }}</h3>
+      <p>{{ _('Parça, bilgi, onay veya makine beklerken geçen zaman.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card-grid__station">
+      <span class="tk-card-grid__station-no">3</span>
+      <h3>{{ _('Taşıma') }}</h3>
+      <p>{{ _('Ürünün süreçler arasında gereksiz yere hareket ettirilmesi.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card-grid__station">
+      <span class="tk-card-grid__station-no">4</span>
+      <h3>{{ _('Gereksiz işlem') }}</h3>
+      <p>{{ _('Müşteriye değer katmayan fazladan işlem adımları.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card-grid__station">
+      <span class="tk-card-grid__station-no">5</span>
+      <h3>{{ _('Stok') }}</h3>
+      <p>{{ _('Hatta veya depoda bekleyen, sermayeyi bağlayan ve sorunları gizleyen fazla malzeme.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card-grid__station">
+      <span class="tk-card-grid__station-no">6</span>
+      <h3>{{ _('Gereksiz hareket') }}</h3>
+      <p>{{ _('Çalışanın uzanma, eğilme, yürüme gibi değer katmayan hareketleri.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card-grid__station">
+      <span class="tk-card-grid__station-no">7</span>
+      <h3>{{ _('Hatalı ürün') }}</h3>
+      <p>{{ _('Yeniden işleme, hurda ve müşteriye ulaşan hatalar.')|safe }}</p>
+    </div>
+  </div>
+  <div class="tk-card tk-callout">
+    <h3>Muda, Mura, Muri</h3>
+    <p>{{ _('TPS yalnızca israfı (muda) değil, dengesizliği (mura) ve aşırı yüklenmeyi (muri) de hedef alır. Üçü birbirini besler: dengesiz bir üretim planı aşırı yüklenmeye, aşırı yüklenme hataya yol açar.')|safe }}</p>
+  </div>
+</section>
+
+
+<section class="tk-block reveal" id="andon">
+  <h2>{{ _('Yerinde kalite ve andon') }}</h2>
+  <div class="tk-andon">
+    <div class="tk-andon__text">
+      <p>{{ _('TPS\'te mükemmel kaliteye ulaşmanın temel prensibi "yerinde kalite"dir: hata, tespit edildiği yerde ve o anda çözülür, bir sonraki sürece asla aktarılmaz.')|safe }}</p>
+      <p>{{ _('Bunu mümkün kılan en çarpıcı uygulama andon\'dur. Hattaki her çalışan, bir sorun fark ettiğinde andon ipini çekerek üretim hattını durdurma yetkisine sahiptir. Hattı durdurmak bir başarısızlık değil, sorumluluğun gereğidir. Sorun anında ekipçe incelenir, kök nedeni bulunur ve tekrar etmemesi için önlem alınır.')|safe }}</p>
+    </div>
+    <div class="tk-andon__panel">
+      <ul class="tk-andon__lights">
+        <li class="tk-andon__light tk-andon__light--green">
+          <span class="tk-andon__bulb" aria-hidden="true"></span>
+          <span class="tk-andon__label">
+            <strong>{{ _('Yeşil ışık') }}</strong>
+            <span>{{ _('Süreç normal akışında.') }}</span>
+          </span>
+        </li>
+        <li class="tk-andon__light tk-andon__light--amber">
+          <span class="tk-andon__bulb" aria-hidden="true"></span>
+          <span class="tk-andon__label">
+            <strong>{{ _('Sarı ışık') }}</strong>
+            <span>{{ _('Çalışan yardım çağırdı, hat henüz duruyor değil.') }}</span>
+          </span>
+        </li>
+        <li class="tk-andon__light tk-andon__light--red">
+          <span class="tk-andon__bulb" aria-hidden="true"></span>
+          <span class="tk-andon__label">
+            <strong>{{ _('Kırmızı ışık') }}</strong>
+            <span>{{ _('Sorun çözülemedi, hat durdu.') }}</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<section class="tk-block reveal" id="kaizen">
+  <h2>{{ _('Kaizen döngüsü') }}</h2>
+  <p>{{ _('İyileştirme tek seferlik bir proje değil, kapanmayan bir döngüdür. Her tur, bir sonrakinin başlangıç noktasını yükseltir.')|safe }}</p>
+  <ol class="tk-cycle" style="--adim-sayisi: 4">
+    <li class="tk-cycle__step">
+      <span class="tk-cycle__no" aria-hidden="true">1</span>
+      <h3 class="tk-cycle__title">{{ _('Planla') }}</h3>
+      <p class="tk-cycle__text">{{ _('Sorunu yerinde gör (genchi genbutsu), kök nedeni "5 Neden" ile araştır, bir iyileştirme önerisi geliştir.')|safe }}</p>
+      <span class="tk-cycle__arrow" aria-hidden="true">→</span>
+    </li>
+    <li class="tk-cycle__step">
+      <span class="tk-cycle__no" aria-hidden="true">2</span>
+      <h3 class="tk-cycle__title">{{ _('Uygula') }}</h3>
+      <p class="tk-cycle__text">{{ _('Öneriyi küçük ölçekte, hızlıca dene.')|safe }}</p>
+      <span class="tk-cycle__arrow" aria-hidden="true">→</span>
+    </li>
+    <li class="tk-cycle__step">
+      <span class="tk-cycle__no" aria-hidden="true">3</span>
+      <h3 class="tk-cycle__title">{{ _('Kontrol Et') }}</h3>
+      <p class="tk-cycle__text">{{ _('Sonucu ölç. Beklenen iyileşme gerçekleşti mi?')|safe }}</p>
+      <span class="tk-cycle__arrow" aria-hidden="true">→</span>
+    </li>
+    <li class="tk-cycle__step">
+      <span class="tk-cycle__no" aria-hidden="true">4</span>
+      <h3 class="tk-cycle__title">{{ _('Önlem Al') }}</h3>
+      <p class="tk-cycle__text">{{ _('İşe yarıyorsa standart iş haline getir ve yokoten ile diğer hatlara yay. Yaramıyorsa döngüye geri dön.')|safe }}</p>
+    </li>
+  </ol>
+  <p class="tk-cycle__loop" aria-hidden="true">
+    <span class="tk-cycle__loop-line"></span><span class="tk-cycle__loop-label">↻ {{ _('döngü baştan başlar') }}</span>
+  </p>
+  <div class="tk-card tk-callout">
+    <p>{{ _('Kaizen büyük atılımlarla değil, her gün yapılan küçük iyileştirmelerle ilerler. TPS\'te iyileştirme fikrinin kaynağı çoğunlukla yönetim değil, işi bizzat yapan çalışandır.')|safe }}</p>
+  </div>
+</section>
+
+
+<section class="tk-block reveal" id="sozluk">
+  <h2>{{ _('TPS kavram sözlüğü') }}</h2>
+  <p>{{ _('Sayfada geçen terimlerin kısa karşılıkları. Aramak için kutuya yazmaya başlayın.')|safe }}</p>
+  <div class="tk-glossary" data-sozluk>
+    <div class="tk-glossary__search">
+      <label class="tk-gizli-metin" for="sozluk-ara-51">Terim ara</label>
+      <input type="search" id="sozluk-ara-51" class="tk-glossary__input"
+             placeholder="Terim ara"
+             autocomplete="off" data-sozluk-arama>
+      <p class="tk-glossary__count" role="status" data-sozluk-sayac></p>
+    </div>
+    <ul class="tk-glossary__list">
+      <li class="tk-glossary__item" data-arama="kanban {{ _('Bir sonraki sürecin ihtiyacını önceki sürece bildiren üretim kartı. Çekme sisteminin işleyiş aracı.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-kanban">
+            <span class="tk-glossary__term">Kanban</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-kanban" hidden>
+          <p>{{ _('Bir sonraki sürecin ihtiyacını önceki sürece bildiren üretim kartı. Çekme sisteminin işleyiş aracı.')|safe }}</p>
+        </div>
+      </li>
+      <li class="tk-glossary__item" data-arama="heijunka {{ _('Üretimin tür ve miktar olarak dengelenmesi; dalgalanmayı azaltarak hattı ve tedarikçileri istikrarlı çalıştırır.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-heijunka">
+            <span class="tk-glossary__term">Heijunka</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-heijunka" hidden>
+          <p>{{ _('Üretimin tür ve miktar olarak dengelenmesi; dalgalanmayı azaltarak hattı ve tedarikçileri istikrarlı çalıştırır.')|safe }}</p>
+        </div>
+      </li>
+      <li class="tk-glossary__item" data-arama="{{ _('Takt zamanı')|striptags|sadelestir }} {{ _('Müşteri talebini karşılamak için bir aracın hattan çıkması gereken süre. Üretimin ritmini belirler.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-takt">
+            <span class="tk-glossary__term">{{ _('Takt zamanı') }}</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-takt" hidden>
+          <p>{{ _('Müşteri talebini karşılamak için bir aracın hattan çıkması gereken süre. Üretimin ritmini belirler.')|safe }}</p>
+        </div>
+      </li>
+      <li class="tk-glossary__item" data-arama="poka-yoke {{ _('Hatayı en baştan imkânsız kılan basit tasarım önlemleri; yanlış parçanın takılamayacağı bir aparat gibi.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-poka-yoke">
+            <span class="tk-glossary__term">Poka-yoke</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-poka-yoke" hidden>
+          <p>{{ _('Hatayı en baştan imkânsız kılan basit tasarım önlemleri; yanlış parçanın takılamayacağı bir aparat gibi.')|safe }}</p>
+        </div>
+      </li>
+      <li class="tk-glossary__item" data-arama="genchi genbutsu {{ _('Karar vermeden önce sahaya gidip gerçeği kendi gözünle görmek.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-genchi-genbutsu">
+            <span class="tk-glossary__term">Genchi Genbutsu</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-genchi-genbutsu" hidden>
+          <p>{{ _('Karar vermeden önce sahaya gidip gerçeği kendi gözünle görmek.')|safe }}</p>
+        </div>
+      </li>
+      <li class="tk-glossary__item" data-arama="{{ _('Standart iş')|striptags|sadelestir }} {{ _('Bir işin bilinen en iyi, en güvenli ve en tutarlı yapılış biçimi. Kaizen\'in başlangıç noktasıdır; standart yoksa iyileştirme ölçülemez.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-standart-is">
+            <span class="tk-glossary__term">{{ _('Standart iş') }}</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-standart-is" hidden>
+          <p>{{ _('Bir işin bilinen en iyi, en güvenli ve en tutarlı yapılış biçimi. Kaizen\'in başlangıç noktasıdır; standart yoksa iyileştirme ölçülemez.')|safe }}</p>
+        </div>
+      </li>
+      <li class="tk-glossary__item" data-arama="5s {{ _('Ayıkla, düzenle, temizle, standartlaştır, disiplini sürdür. Görsel ve düzenli bir çalışma alanı.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-5s">
+            <span class="tk-glossary__term">5S</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-5s" hidden>
+          <p>{{ _('Ayıkla, düzenle, temizle, standartlaştır, disiplini sürdür. Görsel ve düzenli bir çalışma alanı.')|safe }}</p>
+        </div>
+      </li>
+      <li class="tk-glossary__item" data-arama="{{ _('5 Neden')|striptags|sadelestir }} {{ _('Bir sorunun kök nedenine ulaşana kadar arka arkaya "neden?" diye sormak.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-5-neden">
+            <span class="tk-glossary__term">{{ _('5 Neden') }}</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-5-neden" hidden>
+          <p>{{ _('Bir sorunun kök nedenine ulaşana kadar arka arkaya "neden?" diye sormak.')|safe }}</p>
+        </div>
+      </li>
+      <li class="tk-glossary__item" data-arama="yokoten {{ _('Bir yerde işe yarayan iyileştirmenin diğer hatlara ve fabrikalara yatay olarak yayılması.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-yokoten">
+            <span class="tk-glossary__term">Yokoten</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-yokoten" hidden>
+          <p>{{ _('Bir yerde işe yarayan iyileştirmenin diğer hatlara ve fabrikalara yatay olarak yayılması.')|safe }}</p>
+        </div>
+      </li>
+      <li class="tk-glossary__item" data-arama="andon {{ _('Hattaki sorunu görünür kılan ve gerektiğinde hattı durduran uyarı sistemi.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-andon">
+            <span class="tk-glossary__term">Andon</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-andon" hidden>
+          <p>{{ _('Hattaki sorunu görünür kılan ve gerektiğinde hattı durduran uyarı sistemi.')|safe }}</p>
+        </div>
+      </li>
+      <li class="tk-glossary__item" data-arama="muda / mura / muri {{ _('İsraf, dengesizlik ve aşırı yüklenme.')|striptags|sadelestir }}">
+        <h3 class="tk-glossary__heading">
+          <button type="button" class="tk-glossary__button"
+                  aria-expanded="false" aria-controls="terim-51-muda-mura-muri">
+            <span class="tk-glossary__term">Muda / Mura / Muri</span>
+            <span class="tk-glossary__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="tk-glossary__detail" id="terim-51-muda-mura-muri" hidden>
+          <p>{{ _('İsraf, dengesizlik ve aşırı yüklenme.')|safe }}</p>
+        </div>
+      </li>
+    </ul>
+    <p class="tk-glossary__empty" data-sozluk-bos hidden>
+      Aramanla eşleşen terim yok.
+    </p>
+  </div>
+</section>
+
+
+<section class="tk-block reveal" id="bugun">
+  <h2>{{ _('TPS bugün nerede') }}</h2>
+  <p>{{ _('TPS, önce otomotiv sektöründe, ardından üretimin çok ötesinde yayıldı. Bugün "yalın (lean)" adıyla bilinen yaklaşımın temelini oluşturuyor ve üretimle hiç ilgisi olmayan alanlarda uygulanıyor.')|safe }}</p>
+  <section class="tk-grid">
+    <div class="tk-card">
+      <h3>{{ _('Sağlık') }}</h3>
+      <p>{{ _('Hastanelerde hasta akışının düzenlenmesi, bekleme sürelerinin kısaltılması ve ilaç hatalarının önlenmesinde yalın yöntemler kullanılıyor.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>{{ _('Yazılım') }}</h3>
+      <p>{{ _('Kanban panoları, sürekli teslimat ve küçük artımlı iyileştirme, çevik yazılım geliştirmenin temel araçları arasında.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>{{ _('Hizmet ve lojistik') }}</h3>
+      <p>{{ _('Depo yönetiminden bankacılık süreçlerine kadar, değer katmayan adımların ayıklanmasında aynı mantık işliyor.')|safe }}</p>
+    </div>
+  </section>
+</section>
+
+
+<section class="tk-mission reveal" id="tmmt">
+  <div class="tk-mission__body">
+  <p class="tk-mission__statement">{{ _('TPS\'i Sakarya\'daki hatta çalışırken görün.')|safe }}</p>
+  <p class="tk-mission__text">{{ _('TMMT, kurulduğu ilk günden bu yana TPS ilkeleriyle çalışıyor. Sakarya\'daki fabrikada bir aracın presten montaja uzanan yolculuğunu inceleyin.')|safe }}</p>
+  </div>
+  <p class="tk-mission__action">
+    <a class="tk-button" href="/tmmt#yolculuk">{{ _('TMMT üretim sürecine göz atın') }}</a>
+  </p>
+</section>
+{% endblock %}
+
+{% block vendor_scripts %}{#- Harici kutuphane yok. #}
+{% endblock %}

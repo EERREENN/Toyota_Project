@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 """Gorunum regresyonu icin HTML anlik goruntusu.
 
-Amac: yeniden yapilandirma sirasinda sayfalarin ciktisinin degismedigini
-kanitlamak. Once mevcut (eski) uygulamadan "before" alinir, her asamadan
-sonra yeni uygulamadan "after" alinip ikisi karsilastirilir.
+Amac: bir degisiklikten sonra sayfalarin ciktisinin degismedigini
+kanitlamak. Once "before" alinir, degisiklikten sonra "after" alinip
+ikisi karsilastirilir.
 
     python tools/snapshot.py before      # mevcut durumu kaydet
     python tools/snapshot.py after       # yeni durumu kaydet
     python tools/snapshot.py diff        # ikisini karsilastir
     python tools/snapshot.py diff --text # sadece METIN farki (etiketler haric)
 
-Ceviri icin agi kullanmaz (--online demedikce): onbellekte olmayan metin
-Turkce kalir. Boylece anlik goruntu her calistirmada ayni cikar.
+Icerik statik oldugu icin anlik goruntu her calistirmada ayni cikar.
 """
 
 from __future__ import annotations
@@ -41,34 +40,11 @@ LANGS = ["tr", "en"]
 
 
 def load_app():
-    """Once yeni yapiyi (app paketi + create_app), yoksa eskisini yukle."""
-    try:
-        mod = importlib.import_module("app")
-        if hasattr(mod, "create_app"):
-            return mod.create_app(), "app.create_app()"
-        if hasattr(mod, "app"):
-            return mod.app, "app.app (eski)"
-    except ImportError:
-        pass
-    mod = importlib.import_module("legacy_app")
-    return mod.app, "legacy_app.app (eski)"
+    mod = importlib.import_module("app")
+    return mod.create_app(), "app.create_app()"
 
 
-def force_offline() -> str:
-    """Ceviri icin agi kapat -- anlik goruntu deterministik olsun."""
-    for name in ("app.auto_translate", "auto_translate"):
-        try:
-            mod = importlib.import_module(name)
-        except ImportError:
-            continue
-        mod._remote_translate = lambda text, target: None
-        return name
-    return "(auto_translate bulunamadi)"
-
-
-def capture(tag: str, online: bool) -> Path:
-    if not online:
-        force_offline()
+def capture(tag: str) -> Path:
     flask_app, kaynak = load_app()
     flask_app.config["SERVER_NAME"] = None
     out = SNAP_DIR / tag
@@ -212,7 +188,6 @@ def diff(sadece_metin: bool, dom: bool = False) -> int:
 def main() -> int:
     p = argparse.ArgumentParser(description="Gorunum regresyon anlik goruntusu")
     p.add_argument("komut", choices=["before", "after", "diff"])
-    p.add_argument("--online", action="store_true", help="cevirt icin agi kullan")
     p.add_argument("--text", action="store_true",
                    help="diff: sadece gorunen metni karsilastir")
     p.add_argument("--dom", action="store_true",
@@ -221,7 +196,7 @@ def main() -> int:
 
     if a.komut == "diff":
         return diff(a.text, a.dom)
-    capture(a.komut, a.online)
+    capture(a.komut)
     return 0
 
 

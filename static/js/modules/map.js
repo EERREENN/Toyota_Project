@@ -3,7 +3,7 @@
 
    FARK: 37 tesis noktasi artik bu dosyada SABIT DEGIL. Sunucu, blogun
    verisini <script type="application/json" id="<mapId>-data"> icine
-   basiyor; burasi onu okuyup ciziyor. Boylece editor panelden koordinat
+   basiyor; burasi onu okuyup ciziyor. Boylece icerikte koordinat
    ekleyip silebiliyor.
 
    Modul sayfadaki HER .tk-map__canvas icin ayri bir harita kurar:

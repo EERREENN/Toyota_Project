@@ -5,7 +5,7 @@
 
 Yayinda BU DOSYAYI KULLANMA. Bunun yerine:
     waitress-serve --port=8000 "app:create_app()"     # Windows
-    gunicorn -w 1 "app:create_app()"                  # Linux
+    gunicorn "app:create_app()"                       # Linux
 """
 
 from app import create_app

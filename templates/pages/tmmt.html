@@ -1,0 +1,392 @@
+{#
+  TMMT SAYFASI  --  /tmmt
+
+  Toyota Motor Manufacturing Turkiye tanitim sayfasi.
+
+  Bolumler asagida, ekrandaki sirasiyla duz HTML olarak duruyor.
+  Cevrilebilir metinler {{ _('...') }} icinde; karsiliklari
+  app/ceviri.py dosyasinda.
+#}
+{% extends "base.html" %}
+
+{#- Bu sayfanin yukledigi stil dosyalari, sirasiyla. Tema en sonda:
+    ortak kurallari ezebilsin diye. -#}
+{% set css_files = [
+  "tokens.css",
+  "base.css",
+  "layout.css",
+  "components/card.css",
+  "components/rich-text.css",
+  "components/stat-grid.css",
+  "components/fact-table.css",
+  "components/process-steps.css",
+  "components/timeline.css",
+  "components/map.css",
+  "components/card-grid.css",
+  "components/badge-strip.css",
+  "components/source-list.css",
+  "themes/tmmt.css",
+] %}
+{% set aktif = 'tmmt' %}
+
+{% block title %}TMMT — Toyota Motor Manufacturing Türkiye{% endblock %}
+{% block body_class %}page-tmmt{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+{% endblock %}
+
+{% block background %}
+{# Arka plan gorseli tema CSS'inde de tanimli; buradaki satir ici stil onu ezer. #}
+<div class="tk-bg--tmmt" style="background-image:url('/static/img/tmmt-bg.jpg')"
+     aria-hidden="true"></div>
+{% endblock %}
+
+{% block content %}
+
+
+<section class="tk-block">
+  <h1>TMMT — Toyota Motor Manufacturing Türkiye</h1>
+  <p>{{ _('TMMT (Toyota Motor Manufacturing Türkiye), 1990 yılında "Toyotasa" adıyla kuruldu ve üretime 1994\'te Corolla Sedan ile başladı. Fabrika, Sakarya\'nın Arifiye ilçesinde yer alıyor ve bugün Toyota\'nın Avrupa\'daki en önemli üretim üslerinden biri konumunda.')|safe }}</p>
+  <p>{{ _('Şirketin bugünkü ortaklık yapısı <strong>Toyota Motor Europe NV/SA (%90)</strong> ve <strong>Mitsui &amp; Co. (%10)</strong> şeklinde.')|safe }}</p>
+</section>
+
+
+<section class="tk-block">
+  <h2>{{ _('Vizyon ve Misyon') }}</h2>
+  <section class="tk-grid tk-grid--2">
+    <div class="tk-card">
+      <span class="tk-stat-grid__value">{{ _('Vizyon') }}</span>
+      <h3>Global Excellence in Manufacturing</h3>
+      <p>{{ _('Üretimde küresel mükemmellik.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <span class="tk-stat-grid__value">{{ _('Misyon') }}</span>
+      <h3>Produce Admired Products with Premium Quality</h3>
+      <p>{{ _('Üstün kaliteyle beğeni toplayan ürünler üretmek.')|safe }}</p>
+    </div>
+  </section>
+</section>
+
+
+<section class="tk-block">
+  <h2>{{ _('Kurumsal bilgiler') }}</h2>
+  <dl class="tk-card tk-fact-table">
+    <div class="tk-fact-table__row">
+      <dt class="tk-fact-table__label">{{ _('Konum') }}</dt>
+      <dd class="tk-fact-table__value">Arifiye / Sakarya, Türkiye</dd>
+    </div>
+    <div class="tk-fact-table__row">
+      <dt class="tk-fact-table__label">{{ _('Kuruluş') }}</dt>
+      <dd class="tk-fact-table__value">1990</dd>
+    </div>
+    <div class="tk-fact-table__row">
+      <dt class="tk-fact-table__label">{{ _('Üretimin başlangıcı') }}</dt>
+      <dd class="tk-fact-table__value">1994</dd>
+    </div>
+    <div class="tk-fact-table__row">
+      <dt class="tk-fact-table__label">{{ _('Ortaklık yapısı') }}</dt>
+      <dd class="tk-fact-table__value">{{ _('Toyota Motor Europe NV/SA (%90), Mitsui &amp; Co. Ltd. (%10)')|safe }}</dd>
+    </div>
+    <div class="tk-fact-table__row">
+      <dt class="tk-fact-table__label">{{ _('Toplam yatırım') }}</dt>
+      <dd class="tk-fact-table__value">{{ _('yaklaşık 2,5 milyar €')|safe }}</dd>
+    </div>
+    <div class="tk-fact-table__row">
+      <dt class="tk-fact-table__label">{{ _('Yıllık üretim kapasitesi') }}</dt>
+      <dd class="tk-fact-table__value">{{ _('280.000 araç')|safe }}</dd>
+    </div>
+    <div class="tk-fact-table__row">
+      <dt class="tk-fact-table__label">{{ _('Çalışan sayısı') }}</dt>
+      <dd class="tk-fact-table__value">{{ _('yaklaşık 5.000–5.400')|safe }}</dd>
+    </div>
+    <div class="tk-fact-table__row">
+      <dt class="tk-fact-table__label">{{ _('Üretilen modeller') }}</dt>
+      <dd class="tk-fact-table__value">Toyota Corolla Sedan, Toyota C-HR (HEV / PHEV)</dd>
+    </div>
+  </dl>
+</section>
+
+
+<section class="tk-grid">
+  <div class="tk-card">
+      <span class="tk-stat-grid__value">280.000</span>
+      <h3>{{ _('Yıllık üretim kapasitesi') }}</h3>
+      <p>{{ _('Bu kapasiteyle TMMT, Avrupa\'daki en yüksek hacimli Toyota fabrikası.')|safe }}</p>
+    </div>
+  <div class="tk-card">
+      <span class="tk-stat-grid__value">~5.000–5.400</span>
+      <h3>{{ _('Çalışan') }}</h3>
+      <p>{{ _('Üretimden mühendisliğe pek çok farklı alanda istihdam.')|safe }}</p>
+    </div>
+  <div class="tk-card">
+      <span class="tk-stat-grid__value">215.645</span>
+      <h3>{{ _('2024 üretim adedi') }}</h3>
+      <p>{{ _('Fabrikanın 2024 yılında ürettiği toplam araç sayısı.')|safe }}</p>
+    </div>
+</section>
+
+
+<section class="tk-block">
+  <h2>{{ _('Üretilen modeller') }}</h2>
+  <p>{{ _('TMMT bugün başlıca iki model ailesi üretiyor: <strong>Toyota Corolla Sedan</strong> ve <strong>Toyota C-HR</strong> (klasik hibrit ve şarj edilebilir hibrit / PHEV versiyonlarıyla). Kasım 2023\'ten bu yana fabrika, C-HR PHEV\'in bataryasını da üretiyor; bu, Toyota\'nın Avrupa\'da PHEV bataryası üreten ilk fabrikası olması anlamına geliyor.')|safe }}</p>
+</section>
+
+
+<section class="tk-block" id="yolculuk">
+  <h2>{{ _('Fabrikada bir aracın yolculuğu') }}</h2>
+  <p>{{ _('Bir aracın çelik rulodan yola çıkıp fabrikadan tamamlanmış olarak ayrılmasına kadar geçtiği altı durak. Bir adıma dokunarak o bölümde ne yapıldığını görebilirsiniz.')|safe }}</p>
+  <ol class="tk-steps" style="--adim-sayisi: 6">
+    <li class="tk-steps__item">
+      <button type="button" class="tk-steps__button"
+              aria-expanded="false" aria-controls="adim-4-1">
+        <span class="tk-steps__no">1</span>
+        <span class="tk-steps__title">{{ _('Pres Fabrikası') }}</span>
+      </button>
+      <div class="tk-steps__detail" id="adim-4-1" hidden>
+        <div class="tk-steps__placeholder" aria-hidden="true">
+          <span>1</span>
+        </div>
+        <p class="tk-steps__text">{{ _('Çelik rulolar düz plakalara dönüştürülür ve pres hatlarında aracın kaput, kapı, tavan gibi gövde panellerine şekillendirilir.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-steps__item">
+      <button type="button" class="tk-steps__button"
+              aria-expanded="false" aria-controls="adim-4-2">
+        <span class="tk-steps__no">2</span>
+        <span class="tk-steps__title">{{ _('Kaynak Fabrikası') }}</span>
+      </button>
+      <div class="tk-steps__detail" id="adim-4-2" hidden>
+        <div class="tk-steps__placeholder" aria-hidden="true">
+          <span>2</span>
+        </div>
+        <p class="tk-steps__text">{{ _('Preste şekillenen paneller, yüksek hassasiyetli robotlar ve deneyimli ekiplerle birleştirilerek aracın gövdesi oluşturulur.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-steps__item">
+      <button type="button" class="tk-steps__button"
+              aria-expanded="false" aria-controls="adim-4-3">
+        <span class="tk-steps__no">3</span>
+        <span class="tk-steps__title">{{ _('Boya Fabrikası') }}</span>
+      </button>
+      <div class="tk-steps__detail" id="adim-4-3" hidden>
+        <div class="tk-steps__placeholder" aria-hidden="true">
+          <span>3</span>
+        </div>
+        <p class="tk-steps__text">{{ _('Gövde yalnızca renklendirilmez; korozyona karşı korunur ve ses yalıtımı sağlanır. Çok katmanlı bir süreçtir.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-steps__item">
+      <button type="button" class="tk-steps__button"
+              aria-expanded="false" aria-controls="adim-4-4">
+        <span class="tk-steps__no">4</span>
+        <span class="tk-steps__title">{{ _('Montaj Fabrikası') }}</span>
+      </button>
+      <div class="tk-steps__detail" id="adim-4-4" hidden>
+        <div class="tk-steps__placeholder" aria-hidden="true">
+          <span>4</span>
+        </div>
+        <p class="tk-steps__text">{{ _('Boyalı gövde hatta girer; motor, iç döşeme, cam ve elektronik parçalar "tam zamanında" prensibiyle istasyonlara ulaştırılarak monte edilir.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-steps__item">
+      <button type="button" class="tk-steps__button"
+              aria-expanded="false" aria-controls="adim-4-5">
+        <span class="tk-steps__no">5</span>
+        <span class="tk-steps__title">{{ _('Kalite') }}</span>
+      </button>
+      <div class="tk-steps__detail" id="adim-4-5" hidden>
+        <div class="tk-steps__placeholder" aria-hidden="true">
+          <span>5</span>
+        </div>
+        <p class="tk-steps__text">{{ _('Temel prensip "yerinde kalite": hata tespit edildiği anda çözülür, bir sonraki sürece asla geçmez.')|safe }}</p>
+      </div>
+    </li>
+    <li class="tk-steps__item">
+      <button type="button" class="tk-steps__button"
+              aria-expanded="false" aria-controls="adim-4-6">
+        <span class="tk-steps__no">6</span>
+        <span class="tk-steps__title">{{ _('Üretim Kontrol') }}</span>
+      </button>
+      <div class="tk-steps__detail" id="adim-4-6" hidden>
+        <div class="tk-steps__placeholder" aria-hidden="true">
+          <span>6</span>
+        </div>
+        <p class="tk-steps__text">{{ _('Günlük üretim planının takibi ve binlerce parçanın tedarikçilerden hatta kadar senkronizasyonu bu grup tarafından yürütülür.')|safe }}</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+
+<section class="tk-block">
+  <h2>{{ _('İhracat ve kilometre taşları') }}</h2>
+  <p>{{ _('Üretimin büyük bölümü, ağırlıklı olarak Avrupa\'ya, ayrıca Orta Doğu ve Afrika\'ya ihraç ediliyor. Fabrika, 2021 yılında 3 milyonuncu aracını üretti ve Türkiye\'nin en büyük ihracatçı sanayi kuruluşlarından biri.')|safe }}</p>
+  <ol class="tk-timeline">
+    <li class="tk-timeline__stop">
+      <div class="tk-timeline__button tk-timeline__button--sabit">
+        <span class="tk-timeline__year">1990</span>
+        <span class="tk-timeline__title">{{ _('Şirketin "Toyotasa" adıyla kuruluşu') }}</span>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <div class="tk-timeline__button tk-timeline__button--sabit">
+        <span class="tk-timeline__year">1994</span>
+        <span class="tk-timeline__title">{{ _('Corolla Sedan ile üretimin başlaması') }}</span>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <div class="tk-timeline__button tk-timeline__button--sabit">
+        <span class="tk-timeline__year">2016</span>
+        <span class="tk-timeline__title">{{ _('Toyota C-HR üretiminin başlaması') }}</span>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <div class="tk-timeline__button tk-timeline__button--sabit">
+        <span class="tk-timeline__year">2021</span>
+        <span class="tk-timeline__title">{{ _('3 milyonuncu aracın üretimi') }}</span>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <div class="tk-timeline__button tk-timeline__button--sabit">
+        <span class="tk-timeline__year">2023</span>
+        <span class="tk-timeline__title">{{ _('Yeni nesil C-HR ve Avrupa\'daki ilk PHEV batarya hattı') }}</span>
+      </div>
+    </li>
+    <li class="tk-timeline__stop">
+      <div class="tk-timeline__button tk-timeline__button--sabit">
+        <span class="tk-timeline__year">2024</span>
+        <span class="tk-timeline__title">{{ _('215.645 araç üretimi') }}</span>
+      </div>
+    </li>
+  </ol>
+</section>
+
+
+<section class="tk-block">
+  <h2>{{ _('İhracat pazarları') }}</h2>
+  <p>{{ _('Arifiye\'deki fabrikada üretilen araçların büyük bölümü yurt dışına gönderiliyor; başlıca pazarlar Avrupa ülkeleri ile Orta Doğu ve Kuzey Afrika. Haritada üretim tesisi ve başlıca ihracat pazarları işaretli — bir noktaya tıklayarak ülke adını ve kısa notu görebilirsin.')|safe }}</p>
+  <div id="tmmt-ihracat-haritasi" class="tk-map__canvas"></div>
+  <p class="tk-map__legend">
+    <span class="tk-map__dot tk-map__dot--gold"></span> <span>{{ _('Üretim tesisi (Sakarya)') }}</span>
+    &nbsp;&nbsp;
+    <span class="tk-map__dot tk-map__dot--red"></span> <span>{{ _('Başlıca ihracat pazarı') }}</span>
+  </p>
+  <script type="application/json" id="tmmt-ihracat-haritasi-data">{"center": [34, 18], "mapId": "tmmt-ihracat-haritasi", "markers": [{"kind": "highlight", "lat": 40.6971, "linkLabel": "", "lon": 30.3564, "open": true, "subtitle": "", "text": {{ _('Corolla Sedan ve C-HR (HEV / PHEV) üretim tesisi')|tojson }}, "title": "TMMT \u2014 Arifiye, Sakarya", "url": ""}, {"kind": "plant", "lat": 52.52, "linkLabel": "", "lon": 13.405, "open": false, "subtitle": {{ _('Batı Avrupa')|tojson }}, "text": {{ _('Avrupa\'nın en büyük otomobil pazarı.')|tojson }}, "title": {{ _('Almanya')|tojson }}, "url": ""}, {"kind": "plant", "lat": 51.5074, "linkLabel": "", "lon": -0.1278, "open": false, "subtitle": {{ _('Batı Avrupa')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('Birleşik Krallık')|tojson }}, "url": ""}, {"kind": "plant", "lat": 48.8566, "linkLabel": "", "lon": 2.3522, "open": false, "subtitle": {{ _('Batı Avrupa')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('Fransa')|tojson }}, "url": ""}, {"kind": "plant", "lat": 50.8503, "linkLabel": "", "lon": 4.3517, "open": false, "subtitle": {{ _('Batı Avrupa')|tojson }}, "text": {{ _('Toyota Motor Europe\'un merkezi Brüksel\'de.')|tojson }}, "title": {{ _('Belçika')|tojson }}, "url": ""}, {"kind": "plant", "lat": 52.3676, "linkLabel": "", "lon": 4.9041, "open": false, "subtitle": {{ _('Batı Avrupa')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('Hollanda')|tojson }}, "url": ""}, {"kind": "plant", "lat": 41.9028, "linkLabel": "", "lon": 12.4964, "open": false, "subtitle": {{ _('Güney Avrupa')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('İtalya')|tojson }}, "url": ""}, {"kind": "plant", "lat": 40.4168, "linkLabel": "", "lon": -3.7038, "open": false, "subtitle": {{ _('Güney Avrupa')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('İspanya')|tojson }}, "url": ""}, {"kind": "plant", "lat": 52.2297, "linkLabel": "", "lon": 21.0122, "open": false, "subtitle": {{ _('Orta Avrupa')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('Polonya')|tojson }}, "url": ""}, {"kind": "plant", "lat": 50.0755, "linkLabel": "", "lon": 14.4378, "open": false, "subtitle": {{ _('Orta Avrupa')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('Çekya')|tojson }}, "url": ""}, {"kind": "plant", "lat": 32.0853, "linkLabel": "", "lon": 34.7818, "open": false, "subtitle": {{ _('Orta Doğu')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('İsrail')|tojson }}, "url": ""}, {"kind": "plant", "lat": 25.2048, "linkLabel": "", "lon": 55.2708, "open": false, "subtitle": {{ _('Orta Doğu')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('Birleşik Arap Emirlikleri')|tojson }}, "url": ""}, {"kind": "plant", "lat": 24.7136, "linkLabel": "", "lon": 46.6753, "open": false, "subtitle": {{ _('Orta Doğu')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('Suudi Arabistan')|tojson }}, "url": ""}, {"kind": "plant", "lat": 30.0444, "linkLabel": "", "lon": 31.2357, "open": false, "subtitle": {{ _('Kuzey Afrika')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('Mısır')|tojson }}, "url": ""}, {"kind": "plant", "lat": 33.9716, "linkLabel": "", "lon": -6.8498, "open": false, "subtitle": {{ _('Kuzey Afrika')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('Fas')|tojson }}, "url": ""}, {"kind": "plant", "lat": -25.7479, "linkLabel": "", "lon": 28.2293, "open": false, "subtitle": {{ _('Güney Afrika')|tojson }}, "text": {{ _('Başlıca ihracat pazarlarından biri.')|tojson }}, "title": {{ _('Güney Afrika')|tojson }}, "url": ""}], "maxZoom": 8, "minZoom": 2, "tile": {"attribution": "\u0026copy; OpenStreetMap katk\u0131da bulunanlar", "maxZoom": 18, "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}, "worldCopyJump": true, "zoom": 3}</script>
+</section>
+
+<section class="tk-block" id="phev">
+  <h2>{{ _('PHEV Batarya Hattı') }}</h2>
+  <div class="tk-stat-grid--split">
+    <div class="tk-stat-grid__column">
+      <div class="tk-card">
+      <span class="tk-stat-grid__value">{{ _('308 milyon €') }}</span>
+      <h3>{{ _('Yeni nesil C-HR ve batarya hattı için yapılan ek yatırım') }}</h3>
+    </div>
+      <div class="tk-card">
+      <span class="tk-stat-grid__value">{{ _('75.000') }}</span>
+      <h3>{{ _('Yıllık batarya üretim kapasitesi (adet)') }}</h3>
+    </div>
+      <div class="tk-card">
+      <span class="tk-stat-grid__value">60</span>
+      <h3>{{ _('Hat için istihdam edilen ek uzman çalışan') }}</h3>
+    </div>
+    </div>
+    <div class="tk-stat-grid__aside">
+      <p>{{ _('Kasım 2023\'ten bu yana TMMT, C-HR\'ın şarj edilebilir hibrit (PHEV) versiyonunun bataryasını da üretiyor. Bu, Toyota\'nın Avrupa\'daki tesisleri arasında bir ilk: Sakarya fabrikası hem şarj edilebilir otomobil hem de bataryasını üreten ilk Toyota Avrupa fabrikası. Üretim, Toyota\'nın TNGA-2 platformu üzerinde yapılıyor ve fabrika, Toyota\'nın Avrupa\'daki elektrifikasyon dönüşümünde merkezi bir rol üstleniyor.')|safe }}</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="tk-block">
+  <h2>{{ _('Üretim yaklaşımı ve çevre') }}</h2>
+  <p>{{ _('TMMT, kuruluşundan bu yana <strong>Toyota Production System (TPS)</strong> ilkeleriyle çalışıyor. Fabrika 1999\'dan beri ISO 14001 çevre yönetim sistemi sertifikasına sahip ve enerji/su verimliliği ile atık azaltımına yönelik sürekli iyileştirme (kaizen) projeleri yürütüyor.')|safe }}</p>
+</section>
+
+
+<section class="tk-block">
+  <h2>{{ _('Toplumla birlikte') }}</h2>
+  <p>{{ _('TMMT\'nin Sakarya ve çevresinde yıllardır sürdürdüğü sosyal sorumluluk çalışmalarından dördü.')|safe }}</p>
+  <section class="tk-grid tk-grid--4">
+    <div class="tk-card">
+      <h3>{{ _('Trafik Güvenliği Resim Yarışması') }}</h3>
+      <p>{{ _('Genç yeteneklerin trafik güvenliği bilincini görsel sanatlarla ifade ettiği yarışma.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>{{ _('Teknik Proje Yarışması') }}</h3>
+      <p>{{ _('Sakarya İl Millî Eğitim Müdürlüğü iş birliğiyle ilköğretim ve lise öğrencileri arasında düzenlenen proje yarışması.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>{{ _('“Önce Bağış Sonra Fabrika Turu”') }}</h3>
+      <p>{{ _('Bağış yapan ziyaretçilere fabrika turu imkânı sunan sosyal sorumluluk projesi.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>{{ _('Kan Bağışı Kampanyası') }}</h3>
+      <p>{{ _('Kızılay\'ın Güvenli Kan Temini Projesi kapsamında her yıl tekrarlanan çalışan kan bağışı kampanyası.')|safe }}</p>
+    </div>
+  </section>
+</section>
+
+
+<section class="tk-block">
+  <h2>{{ _('Kariyer') }}</h2>
+  <p>{{ _('TMMT, üretimden mühendisliğe, kalite kontrolden lojistiğe kadar çok farklı alanda binlerce kişiye istihdam sağlıyor. Gerçek anlamda küresel bir şirkette çalışma ve gelişme imkânı sunuyor.')|safe }}</p>
+  <section class="tk-grid">
+    <div class="tk-card">
+      <h3>{{ _('Toyota Türkiye\'de Çalışmak') }}</h3>
+      <p>{{ _('Üretim, mühendislik, kalite ve lojistik alanlarındaki kariyer imkânları ve çalışan deneyimi.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>{{ _('Staj Programı') }}</h3>
+      <p>{{ _('Üniversite öğrencilerine yönelik staj başvuruları ve program takvimi.')|safe }}</p>
+    </div>
+    <div class="tk-card">
+      <h3>{{ _('Açık Pozisyonlar') }}</h3>
+      <p>{{ _('Güncel iş ilanları ve başvuru adımları.')|safe }}</p>
+    </div>
+  </section>
+</section>
+
+
+<section class="tk-block">
+  <h2>{{ _('Sertifikalar ve ödüller') }}</h2>
+  <ul class="tk-badge-strip">
+    <li class="tk-badge-strip__badge">
+      <span class="tk-badge-strip__metin">
+        <span class="tk-badge-strip__baslik">{{ _('ISO 14001 Çevre Yönetim Sistemi') }}</span>
+        <span class="tk-badge-strip__aciklama">{{ _('1999\'dan bu yana') }}</span>
+      </span>
+    </li>
+    <li class="tk-badge-strip__badge">
+      <span class="tk-badge-strip__metin">
+        <span class="tk-badge-strip__baslik">{{ _('TİM İhracat Ödülü') }}</span>
+      </span>
+    </li>
+    <li class="tk-badge-strip__badge">
+      <span class="tk-badge-strip__metin">
+        <span class="tk-badge-strip__baslik">{{ _('Toyota Avrupa\'nın en yüksek hacimli fabrikası') }}</span>
+      </span>
+    </li>
+    <li class="tk-badge-strip__badge">
+      <span class="tk-badge-strip__metin">
+        <span class="tk-badge-strip__baslik">{{ _('Toyota iç değerlendirmesinde en üst “lider fabrika” seviyesi') }}</span>
+      </span>
+    </li>
+  </ul>
+</section>
+
+
+<section class="tk-block tk-source-list">
+  <h2>{{ _('Kaynaklar') }}</h2>
+  <ul>
+    <li><a href="https://en.wikipedia.org/wiki/Toyota_Motor_Manufacturing_T%C3%BCrkiye" target="_blank" rel="noopener">Wikipedia – Toyota Motor Manufacturing Türkiye</a></li>
+    <li><a href="https://grokipedia.com/page/Toyota_Motor_Manufacturing_Turkey" target="_blank" rel="noopener">Grokipedia – Toyota Motor Manufacturing Turkey</a></li>
+    <li><a href="https://global.toyota/en/" target="_blank" rel="noopener">{{ _('global.toyota – resmi haber duyuruları') }}</a></li>
+  </ul>
+</section>
+{% endblock %}
+
+{% block vendor_scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}

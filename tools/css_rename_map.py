@@ -24,7 +24,7 @@ Kabuk ve durum siniflari bir bloga ait degil, oldugu gibi kaliyor:
 from __future__ import annotations
 
 RENAME = {
-    # --- paylasilan yuzeyler (blocks/card.css, base.css) ---
+    # --- paylasilan yuzeyler (components/card.css, base.css) ---
     "icerik-blok": "tk-block",
     "grid": "tk-grid",
     "grid-2": "tk-grid--2",
@@ -186,8 +186,8 @@ EDITORE_BAGLI = {
 }
 
 # #id -> .class donusumu.
-# Harita kabinin id'si artik ayarlanabilir (block.settings.map_id);
-# stil bir id'ye baglanamaz, bu yuzden sinifa tasindi.
+# Harita kabinin id'sini JS kullaniyor; stil bir id'ye baglanamaz,
+# bu yuzden gorunum sinifa tasindi.
 ID_TO_CLASS = {
     "toyota-map": "tk-map__canvas",
 }
