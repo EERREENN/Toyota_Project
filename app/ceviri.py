@@ -433,10 +433,10 @@ EN: dict[str, str] = {
     "Üst üste 2 yıl dünyanın en değerli ve en güçlü otomobil markası (AAA+).":
         "The world's most valuable and most powerful automobile brand (AAA+) for 2 "
         "years in a row.",
-    "J.D. Power — Lexus": "J.D. Power—Lexus",
+    "J.D. Power — Lexus": "J.D. Power — Lexus",
     "Lexus, 4 yıl üst üste en güvenilir marka seçildi.":
         "Lexus was chosen as the most reliable brand for 4 consecutive years.",
-    "J.D. Power — Toyota": "J.D. Power—Toyota",
+    "J.D. Power — Toyota": "J.D. Power — Toyota",
     "En çok segment ödülünü alan üretici (6–9 model).":
         "Manufacturer with the most segment awards (6–9 models).",
     "En Çok Satan Grup": "Best Selling Group",
@@ -806,6 +806,9 @@ EN: dict[str, str] = {
     "Sayfada geçen terimlerin kısa karşılıkları. Aramak için kutuya yazmaya başlayın.":
         "Short equivalents of the terms mentioned on the page. Start typing in the box "
         "to search.",
+    "Terim ara": "Search terms",
+    "Aramanla eşleşen terim yok.": "No terms match your search.",
+    "terim": "terms",
     "Bir sonraki sürecin ihtiyacını önceki sürece bildiren üretim kartı. Çekme "
     "sisteminin işleyiş aracı.":
         "Production card that informs the previous process of the need of the next "
@@ -834,9 +837,9 @@ EN: dict[str, str] = {
     "bir çalışma alanı.":
         "Sort, organize, clean, standardize, maintain discipline. A visual and "
         "organized workspace.",
-    "5 Neden": "5 Reasons",
+    "5 Neden": "5 Whys",
     "Bir sorunun kök nedenine ulaşana kadar arka arkaya \"neden?\" diye sormak.":
-        "Ask “why?” repeatedly until you get to the root cause of a problem. to ask.",
+        "Ask “why?” repeatedly until you reach the root cause of a problem.",
     "Bir yerde işe yarayan iyileştirmenin diğer hatlara ve fabrikalara yatay "
     "olarak yayılması.":
         "Horizontal spread of an improvement that works in one place to other lines "

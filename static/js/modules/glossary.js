@@ -40,6 +40,11 @@ function sozlugu_kur(kap) {
   if (!kutu || !satirlar.length) return;
 
   const toplam = satirlar.length;
+  // Sayac birimi sablondan geliyor: JS app/ceviri.py sozlugunu
+  // goremiyor, bu yuzden metin data-sozluk-birim ile aktariliyor.
+  // Oznitelik yoksa Turkce varsayilana dusuyoruz ki bilesen baska
+  // bir sayfada oznitelisiz kullanilirsa bozulmasin.
+  const birim = kap.getAttribute("data-sozluk-birim") || "terim";
 
   function kapat(satir) {
     const btn = satir.querySelector(".tk-glossary__button");
@@ -67,7 +72,7 @@ function sozlugu_kur(kap) {
     if (bos) bos.hidden = gorunen !== 0;
     if (sayac) {
       sayac.textContent = sorgu
-        ? gorunen + " / " + toplam + " terim"
+        ? gorunen + " / " + toplam + " " + birim
         : "";
     }
   }

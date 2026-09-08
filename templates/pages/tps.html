@@ -398,11 +398,11 @@
 <section class="tk-block reveal" id="sozluk">
   <h2>{{ _('TPS kavram sözlüğü') }}</h2>
   <p>{{ _('Sayfada geçen terimlerin kısa karşılıkları. Aramak için kutuya yazmaya başlayın.')|safe }}</p>
-  <div class="tk-glossary" data-sozluk>
+  <div class="tk-glossary" data-sozluk data-sozluk-birim="{{ _('terim') }}">
     <div class="tk-glossary__search">
-      <label class="tk-gizli-metin" for="sozluk-ara-51">Terim ara</label>
+      <label class="tk-gizli-metin" for="sozluk-ara-51">{{ _('Terim ara') }}</label>
       <input type="search" id="sozluk-ara-51" class="tk-glossary__input"
-             placeholder="Terim ara"
+             placeholder="{{ _('Terim ara') }}"
              autocomplete="off" data-sozluk-arama>
       <p class="tk-glossary__count" role="status" data-sozluk-sayac></p>
     </div>
@@ -541,7 +541,7 @@
       </li>
     </ul>
     <p class="tk-glossary__empty" data-sozluk-bos hidden>
-      Aramanla eşleşen terim yok.
+      {{ _('Aramanla eşleşen terim yok.') }}
     </p>
   </div>
 </section>
