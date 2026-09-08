@@ -75,12 +75,17 @@
   .tk-section-nav {
     position: fixed;
     z-index: 5;
-    top: calc(var(--nav-h) + 32px);
+    /* 40px = stajyer uyari seridi (.tk-notice, layout.css): 10+10
+       padding + ~20px tek satir. Serit ust bara sticky oldugu icin
+       bu bant her kaydirma konumunda dolu -- menu ALTINDAN baslamali,
+       yoksa yazilar ust uste biner. Seridin dolgusu/yazi olcusu
+       degisirse bu sayi da guncellenmeli. */
+    top: calc(var(--nav-h) + 40px + 32px);
     /* Sag kenari, icerik kabinin sol kenarindan 24px solda biter. */
     right: calc(50% + (var(--wrap) / 2) + 24px);
     width: clamp(150px, calc(50vw - (var(--wrap) / 2) - 48px), 210px);
     /* Uzun listelerde ekrandan tasmasin. */
-    max-height: calc(100vh - var(--nav-h) - 64px);
+    max-height: calc(100vh - var(--nav-h) - 40px - 64px);
     overflow-y: auto;
     overscroll-behavior: contain;
 

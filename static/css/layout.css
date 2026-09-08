@@ -227,3 +227,65 @@
   .nav-links { gap: 18px; }
   .nav-links a { font-size: 0.9rem; }
 }
+
+/* ============================================================
+   Stajyer uyari seridi.
+
+   Kabugun parcasi (navbar gibi), o yuzden burada: her sayfa
+   layout.css yukluyor. Ayri bir components/ dosyasi olsaydi
+   sayfalarin css_files listesine tek tek eklenmesi gerekirdi ve
+   404.html gibi kisa listeler kolayca unutulurdu.
+
+   RENKLER: yalnizca mevcut degiskenlerden. tokens.css'teki :root
+   bilerek ellenmedi -- css_check.py eski CSS'in :root kuralini
+   birebir karsilastiriyor; oraya yeni degisken eklemek kurali
+   "FARKLI" yapip DEGISTIRILEN listesine madde eklemeyi gerektirirdi,
+   o da :root'u kalici olarak denetim disi birakirdi.
+
+   Koyu zemin secildi: ust bar bilerek beyaz oldugu icin (bkz.
+   .navbar notu) hemen altindaki koyu serit kendiliginden ayrisiyor.
+   Marka kirmizisi kullanilmadi -- bu bir uyari, markanin parcasi
+   degil; kirmizi serit "resmi duyuru" gibi okunurdu.
+
+   Sticky DEGIL: girerken bir kez gorunup sayfayla birlikte kayiyor.
+   Arka plan fotografli sayfalarda (tk-bg--*, position:fixed
+   z-index:-1) okunakli kalsin diye zemin opak.
+   ============================================================ */
+.tk-notice {
+  /* Ust barin hemen ALTINA yapisir. Akista biraksaydik serit kayip
+     giderdi ve solda `fixed` duran bolum menusu (components/
+     section-nav.css, >=1360px) kaydirma konumuna gore bazen seridin
+     ustune biner, bazen 72px bosluk birakirdi. Sticky olunca "ust bar +
+     serit" blogunun yuksekligi her an ayni: menu de sabit bir degerle
+     onun altina yerlesebiliyor. Uyarinin surekli gorunur kalmasi da
+     istenen sey -- site Toyota'ya benzedigi icin. */
+  position: sticky;
+  top: var(--nav-h);
+  /* Ust bardan (100) dusuk: mobilde menu acilinca bar normal akista
+     buyuyup seridin uzerine cizsin. Bolum menusunden (5) yuksek. */
+  z-index: 90;
+  background: var(--graphite);
+  color: var(--surface);
+}
+
+/* Ic sarmalayici .nav-inner ile ayni olculeri kullaniyor ki serit
+   kenardan kenara uzansa da yazi ust bardaki menuyle hizali dursun. */
+.tk-notice__inner {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 10px var(--pad-x);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: clamp(0.78rem, 0.4vw + 0.72rem, 0.86rem);
+  line-height: 1.45;
+}
+
+/* Ikon dekoratif (aria-hidden): metin tek basina anlasilir.
+   flex:none -- dar ekranda yazi sarildiginda ikon kucultulmesin. */
+.tk-notice__icon {
+  flex: none;
+  line-height: inherit;
+}
+
+.tk-notice__text { margin: 0; }

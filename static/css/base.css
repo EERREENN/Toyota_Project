@@ -79,7 +79,9 @@ table { border-collapse: collapse; width: 100%; }
 /* Sayfa ici baglanti hedefi (section_nav) sabit ust barin altinda
    kalmasin: tarayici kaydirirken ustte nav yuksekligi kadar pay birakir. */
 .page > [id] {
-  scroll-margin-top: calc(var(--nav-h) + 16px);
+  /* +40px: ust bara yapisan stajyer uyari seridi (.tk-notice).
+     Olmazsa bolum basliklari seridin altinda kalir. */
+  scroll-margin-top: calc(var(--nav-h) + 40px + 16px);
 }
 
 /* Bolum menusundeki baglantilar yumusak kaysin. Hareketi azaltilmis

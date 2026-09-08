@@ -21,6 +21,9 @@ EN: dict[str, str] = {
     # ----------------------------------------------------------
     "Menü": "Menu",
     "Dil seçimi": "Language selection",
+    "Bu site bir staj çalışmasıdır; resmi bir Toyota sitesi değildir.":
+        "This site is an internship project; it is not an official Toyota "
+        "website.",
 
     # ----------------------------------------------------------
     #  TMMT sayfasi

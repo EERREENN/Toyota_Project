@@ -29,6 +29,16 @@
   {% block background %}{% endblock %}
 {% include "components/navbar.html" %}
 
+  {# Sitenin resmi bir Toyota sayfasi sanilmamasi icin. Kabukta
+     duruyor ki tek yerden yonetilsin ve butun sayfalarda ayni
+     sekilde ciksin; stili layout.css icinde. #}
+  <aside class="tk-notice" role="note">
+    <div class="tk-notice__inner">
+      <span class="tk-notice__icon" aria-hidden="true">⚠</span>
+      <p class="tk-notice__text">{{ _('Bu site bir staj çalışmasıdır; resmi bir Toyota sitesi değildir.') }}</p>
+    </div>
+  </aside>
+
   <main class="page">
     {% block content %}{% endblock %}
   </main>
