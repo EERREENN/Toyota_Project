@@ -18,6 +18,7 @@
   "layout.css",
   "components/card.css",
   "components/rich-text.css",
+  "components/section-nav.css",
   "components/stat-grid.css",
   "components/fact-table.css",
   "components/process-steps.css",
@@ -53,7 +54,26 @@
 </section>
 
 
-<section class="tk-block">
+<nav class="tk-section-nav"
+     aria-label="{{ _('Bu sayfada') }}">
+  <span class="tk-section-nav__label">{{ _('Bu sayfada') }}</span>
+  <ul class="tk-section-nav__list">
+    <li><a class="tk-section-nav__link" href="#vizyon">{{ _('Vizyon ve Misyon') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#kurumsal">{{ _('Kurumsal bilgiler') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#modeller">{{ _('Üretilen modeller') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#yolculuk">{{ _('Fabrikada bir aracın yolculuğu') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#kilometre-taslari">{{ _('İhracat ve kilometre taşları') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#pazarlar">{{ _('İhracat pazarları') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#phev">{{ _('PHEV Batarya Hattı') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#uretim-cevre">{{ _('Üretim yaklaşımı ve çevre') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#toplum">{{ _('Toplumla birlikte') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#kariyer">{{ _('Kariyer') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#oduller">{{ _('Sertifikalar ve ödüller') }}</a></li>
+  </ul>
+</nav>
+
+
+<section class="tk-block" id="vizyon">
   <h2>{{ _('Vizyon ve Misyon') }}</h2>
   <section class="tk-grid tk-grid--2">
     <div class="tk-card">
@@ -70,7 +90,7 @@
 </section>
 
 
-<section class="tk-block">
+<section class="tk-block" id="kurumsal">
   <h2>{{ _('Kurumsal bilgiler') }}</h2>
   <dl class="tk-card tk-fact-table">
     <div class="tk-fact-table__row">
@@ -128,9 +148,23 @@
 </section>
 
 
-<section class="tk-block">
+<section class="tk-block" id="modeller">
   <h2>{{ _('Üretilen modeller') }}</h2>
   <p>{{ _('TMMT bugün başlıca iki model ailesi üretiyor: <strong>Toyota Corolla Sedan</strong> ve <strong>Toyota C-HR</strong> (klasik hibrit ve şarj edilebilir hibrit / PHEV versiyonlarıyla). Kasım 2023\'ten bu yana fabrika, C-HR PHEV\'in bataryasını da üretiyor; bu, Toyota\'nın Avrupa\'da PHEV bataryası üreten ilk fabrikası olması anlamına geliyor.')|safe }}</p>
+  <section class="tk-grid">
+    <div class="tk-card">
+      <img class="tk-card__image"
+           src="{{ url_for('static', filename='img/tmmt_img/corolla.jpg') }}"
+           alt="" loading="lazy" decoding="async">
+      <h3>Toyota Corolla Sedan</h3>
+    </div>
+    <div class="tk-card">
+      <img class="tk-card__image"
+           src="{{ url_for('static', filename='img/tmmt_img/CHR.jpg') }}"
+           alt="" loading="lazy" decoding="async">
+      <h3>Toyota C-HR</h3>
+    </div>
+  </section>
 </section>
 
 
@@ -145,9 +179,9 @@
         <span class="tk-steps__title">{{ _('Pres Fabrikası') }}</span>
       </button>
       <div class="tk-steps__detail" id="adim-4-1" hidden>
-        <div class="tk-steps__placeholder" aria-hidden="true">
-          <span>1</span>
-        </div>
+        <img class="tk-steps__image"
+             src="{{ url_for('static', filename='img/tmmt_img/pres.jpg') }}"
+             alt="" loading="lazy" decoding="async">
         <p class="tk-steps__text">{{ _('Çelik rulolar düz plakalara dönüştürülür ve pres hatlarında aracın kaput, kapı, tavan gibi gövde panellerine şekillendirilir.')|safe }}</p>
       </div>
     </li>
@@ -158,9 +192,9 @@
         <span class="tk-steps__title">{{ _('Kaynak Fabrikası') }}</span>
       </button>
       <div class="tk-steps__detail" id="adim-4-2" hidden>
-        <div class="tk-steps__placeholder" aria-hidden="true">
-          <span>2</span>
-        </div>
+        <img class="tk-steps__image"
+             src="{{ url_for('static', filename='img/tmmt_img/kaynak.jpg') }}"
+             alt="" loading="lazy" decoding="async">
         <p class="tk-steps__text">{{ _('Preste şekillenen paneller, yüksek hassasiyetli robotlar ve deneyimli ekiplerle birleştirilerek aracın gövdesi oluşturulur.')|safe }}</p>
       </div>
     </li>
@@ -171,9 +205,9 @@
         <span class="tk-steps__title">{{ _('Boya Fabrikası') }}</span>
       </button>
       <div class="tk-steps__detail" id="adim-4-3" hidden>
-        <div class="tk-steps__placeholder" aria-hidden="true">
-          <span>3</span>
-        </div>
+        <img class="tk-steps__image"
+             src="{{ url_for('static', filename='img/tmmt_img/boya.jpg') }}"
+             alt="" loading="lazy" decoding="async">
         <p class="tk-steps__text">{{ _('Gövde yalnızca renklendirilmez; korozyona karşı korunur ve ses yalıtımı sağlanır. Çok katmanlı bir süreçtir.')|safe }}</p>
       </div>
     </li>
@@ -184,9 +218,9 @@
         <span class="tk-steps__title">{{ _('Montaj Fabrikası') }}</span>
       </button>
       <div class="tk-steps__detail" id="adim-4-4" hidden>
-        <div class="tk-steps__placeholder" aria-hidden="true">
-          <span>4</span>
-        </div>
+        <img class="tk-steps__image"
+             src="{{ url_for('static', filename='img/tmmt_img/montaj.jpg') }}"
+             alt="" loading="lazy" decoding="async">
         <p class="tk-steps__text">{{ _('Boyalı gövde hatta girer; motor, iç döşeme, cam ve elektronik parçalar "tam zamanında" prensibiyle istasyonlara ulaştırılarak monte edilir.')|safe }}</p>
       </div>
     </li>
@@ -197,9 +231,9 @@
         <span class="tk-steps__title">{{ _('Kalite') }}</span>
       </button>
       <div class="tk-steps__detail" id="adim-4-5" hidden>
-        <div class="tk-steps__placeholder" aria-hidden="true">
-          <span>5</span>
-        </div>
+        <img class="tk-steps__image"
+             src="{{ url_for('static', filename='img/tmmt_img/kalite.webp') }}"
+             alt="" loading="lazy" decoding="async">
         <p class="tk-steps__text">{{ _('Temel prensip "yerinde kalite": hata tespit edildiği anda çözülür, bir sonraki sürece asla geçmez.')|safe }}</p>
       </div>
     </li>
@@ -220,7 +254,7 @@
 </section>
 
 
-<section class="tk-block">
+<section class="tk-block" id="kilometre-taslari">
   <h2>{{ _('İhracat ve kilometre taşları') }}</h2>
   <p>{{ _('Üretimin büyük bölümü, ağırlıklı olarak Avrupa\'ya, ayrıca Orta Doğu ve Afrika\'ya ihraç ediliyor. Fabrika, 2021 yılında 3 milyonuncu aracını üretti ve Türkiye\'nin en büyük ihracatçı sanayi kuruluşlarından biri.')|safe }}</p>
   <ol class="tk-timeline">
@@ -229,11 +263,21 @@
         <span class="tk-timeline__year">1990</span>
         <span class="tk-timeline__title">{{ _('Şirketin "Toyotasa" adıyla kuruluşu') }}</span>
       </div>
+      <div class="tk-timeline__detail">
+        <img class="tk-timeline__image"
+             src="{{ url_for('static', filename='img/tmmt_img/1990.png') }}"
+             alt="" loading="lazy" decoding="async">
+      </div>
     </li>
     <li class="tk-timeline__stop">
       <div class="tk-timeline__button tk-timeline__button--sabit">
         <span class="tk-timeline__year">1994</span>
         <span class="tk-timeline__title">{{ _('Corolla Sedan ile üretimin başlaması') }}</span>
+      </div>
+      <div class="tk-timeline__detail">
+        <img class="tk-timeline__image"
+             src="{{ url_for('static', filename='img/tmmt_img/1994.jpg') }}"
+             alt="" loading="lazy" decoding="async">
       </div>
     </li>
     <li class="tk-timeline__stop">
@@ -241,11 +285,21 @@
         <span class="tk-timeline__year">2016</span>
         <span class="tk-timeline__title">{{ _('Toyota C-HR üretiminin başlaması') }}</span>
       </div>
+      <div class="tk-timeline__detail">
+        <img class="tk-timeline__image"
+             src="{{ url_for('static', filename='img/tmmt_img/2016.jpg') }}"
+             alt="" loading="lazy" decoding="async">
+      </div>
     </li>
     <li class="tk-timeline__stop">
       <div class="tk-timeline__button tk-timeline__button--sabit">
         <span class="tk-timeline__year">2021</span>
         <span class="tk-timeline__title">{{ _('3 milyonuncu aracın üretimi') }}</span>
+      </div>
+      <div class="tk-timeline__detail">
+        <img class="tk-timeline__image"
+             src="{{ url_for('static', filename='img/tmmt_img/2021.webp') }}"
+             alt="" loading="lazy" decoding="async">
       </div>
     </li>
     <li class="tk-timeline__stop">
@@ -253,18 +307,17 @@
         <span class="tk-timeline__year">2023</span>
         <span class="tk-timeline__title">{{ _('Yeni nesil C-HR ve Avrupa\'daki ilk PHEV batarya hattı') }}</span>
       </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <div class="tk-timeline__button tk-timeline__button--sabit">
-        <span class="tk-timeline__year">2024</span>
-        <span class="tk-timeline__title">{{ _('215.645 araç üretimi') }}</span>
+      <div class="tk-timeline__detail">
+        <img class="tk-timeline__image"
+             src="{{ url_for('static', filename='img/tmmt_img/2023.webp') }}"
+             alt="" loading="lazy" decoding="async">
       </div>
     </li>
   </ol>
 </section>
 
 
-<section class="tk-block">
+<section class="tk-block" id="pazarlar">
   <h2>{{ _('İhracat pazarları') }}</h2>
   <p>{{ _('Arifiye\'deki fabrikada üretilen araçların büyük bölümü yurt dışına gönderiliyor; başlıca pazarlar Avrupa ülkeleri ile Orta Doğu ve Kuzey Afrika. Haritada üretim tesisi ve başlıca ihracat pazarları işaretli — bir noktaya tıklayarak ülke adını ve kısa notu görebilirsin.')|safe }}</p>
   <div id="tmmt-ihracat-haritasi" class="tk-map__canvas"></div>
@@ -281,44 +334,56 @@
   <div class="tk-stat-grid--split">
     <div class="tk-stat-grid__column">
       <div class="tk-card">
-      <span class="tk-stat-grid__value">{{ _('308 milyon €') }}</span>
-      <h3>{{ _('Yeni nesil C-HR ve batarya hattı için yapılan ek yatırım') }}</h3>
-    </div>
+        <span class="tk-stat-grid__value">{{ _('308 milyon €') }}</span>
+        <h3>{{ _('Yeni nesil C-HR ve batarya hattı için yapılan ek yatırım') }}</h3>
+      </div>
       <div class="tk-card">
-      <span class="tk-stat-grid__value">{{ _('75.000') }}</span>
-      <h3>{{ _('Yıllık batarya üretim kapasitesi (adet)') }}</h3>
-    </div>
+        <span class="tk-stat-grid__value">{{ _('75.000') }}</span>
+        <h3>{{ _('Yıllık batarya üretim kapasitesi (adet)') }}</h3>
+      </div>
       <div class="tk-card">
-      <span class="tk-stat-grid__value">60</span>
-      <h3>{{ _('Hat için istihdam edilen ek uzman çalışan') }}</h3>
-    </div>
+        <span class="tk-stat-grid__value">60</span>
+        <h3>{{ _('Hat için istihdam edilen ek uzman çalışan') }}</h3>
+      </div>
     </div>
     <div class="tk-stat-grid__aside">
+      <img class="tk-stat-grid__image"
+           src="{{ url_for('static', filename='img/tmmt_img/PHEV.webp') }}"
+           alt="" loading="lazy" decoding="async">
       <p>{{ _('Kasım 2023\'ten bu yana TMMT, C-HR\'ın şarj edilebilir hibrit (PHEV) versiyonunun bataryasını da üretiyor. Bu, Toyota\'nın Avrupa\'daki tesisleri arasında bir ilk: Sakarya fabrikası hem şarj edilebilir otomobil hem de bataryasını üreten ilk Toyota Avrupa fabrikası. Üretim, Toyota\'nın TNGA-2 platformu üzerinde yapılıyor ve fabrika, Toyota\'nın Avrupa\'daki elektrifikasyon dönüşümünde merkezi bir rol üstleniyor.')|safe }}</p>
     </div>
   </div>
 </section>
 
 
-<section class="tk-block">
+<section class="tk-block" id="uretim-cevre">
   <h2>{{ _('Üretim yaklaşımı ve çevre') }}</h2>
   <p>{{ _('TMMT, kuruluşundan bu yana <strong>Toyota Production System (TPS)</strong> ilkeleriyle çalışıyor. Fabrika 1999\'dan beri ISO 14001 çevre yönetim sistemi sertifikasına sahip ve enerji/su verimliliği ile atık azaltımına yönelik sürekli iyileştirme (kaizen) projeleri yürütüyor.')|safe }}</p>
 </section>
 
 
-<section class="tk-block">
+<section class="tk-block" id="toplum">
   <h2>{{ _('Toplumla birlikte') }}</h2>
   <p>{{ _('TMMT\'nin Sakarya ve çevresinde yıllardır sürdürdüğü sosyal sorumluluk çalışmalarından dördü.')|safe }}</p>
   <section class="tk-grid tk-grid--4">
     <div class="tk-card">
+      <img class="tk-card__image"
+             src="{{ url_for('static', filename='img/tmmt_img/trafik güvenliği resim yarismasi.jpg') }}"
+             alt="" loading="lazy" decoding="async">
       <h3>{{ _('Trafik Güvenliği Resim Yarışması') }}</h3>
       <p>{{ _('Genç yeteneklerin trafik güvenliği bilincini görsel sanatlarla ifade ettiği yarışma.')|safe }}</p>
     </div>
     <div class="tk-card">
+      <img class="tk-card__image"
+             src="{{ url_for('static', filename='img/tmmt_img/Teknik proje yarışması.png') }}"
+             alt="" loading="lazy" decoding="async">
       <h3>{{ _('Teknik Proje Yarışması') }}</h3>
       <p>{{ _('Sakarya İl Millî Eğitim Müdürlüğü iş birliğiyle ilköğretim ve lise öğrencileri arasında düzenlenen proje yarışması.')|safe }}</p>
     </div>
     <div class="tk-card">
+      <img class="tk-card__image"
+             src="{{ url_for('static', filename='img/tmmt_img/fabrika turu .jpg') }}"
+             alt="" loading="lazy" decoding="async">
       <h3>{{ _('“Önce Bağış Sonra Fabrika Turu”') }}</h3>
       <p>{{ _('Bağış yapan ziyaretçilere fabrika turu imkânı sunan sosyal sorumluluk projesi.')|safe }}</p>
     </div>
@@ -330,7 +395,7 @@
 </section>
 
 
-<section class="tk-block">
+<section class="tk-block" id="kariyer">
   <h2>{{ _('Kariyer') }}</h2>
   <p>{{ _('TMMT, üretimden mühendisliğe, kalite kontrolden lojistiğe kadar çok farklı alanda binlerce kişiye istihdam sağlıyor. Gerçek anlamda küresel bir şirkette çalışma ve gelişme imkânı sunuyor.')|safe }}</p>
   <section class="tk-grid">
@@ -350,7 +415,7 @@
 </section>
 
 
-<section class="tk-block">
+<section class="tk-block" id="oduller">
   <h2>{{ _('Sertifikalar ve ödüller') }}</h2>
   {#- Dort esit kart: ikon ustte, altinda baslik. Kartlar ayni satirda
       ayni boyda durur; dar ekranda 2, telefonda 1 sutuna duser

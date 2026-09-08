@@ -144,6 +144,27 @@ ATILAN = {
     "hedef-liste": "hicbir sablonda kullanilmiyordu (olu kural)",
 }
 
+# Eski CSS'te vardi, HALA VAR, ama gorunumu BILEREK degistirildi.
+# Denklik kontrolu bunlari "farkli" diye isaretlemez -- kasitli bir
+# tasarim karari oldugunu bilir. Yeni bir madde eklerken SEBEBINI yaz;
+# aksi halde kazara yapilmis bir degisiklik burada saklanabilir.
+DEGISTIRILEN = {
+    # 2026-09-08: ust bar koyu zeminden acik zemine alindi.
+    # Bar beyaz, yazilar koyu; marka sitenin basligi oldugu icin
+    # buyutuldu ve markanin kirmizisina donduruldu (Ingilizce menude
+    # "Toyota" kelimesi uc kez gectigi icin ayni boyda kayboluyordu).
+    ".navbar": "ust bar acik zemine alindi",
+    ".brand": "marka buyutuldu, kirmiziya donduruldu",
+    ".nav-toggle": "acik zeminde koyu ikon",
+    ".nav-links a": "acik zeminde koyu yazi",
+    ".nav-links a:hover": "acik zeminde kirmizi vurgu",
+    ".nav-links a:focus-visible": "acik zeminde kirmizi vurgu",
+    ".nav-links a.active": "acik zeminde koyu yazi",
+    ".lang-switch": "acik zeminde acik gri kap",
+    ".lang-switch .lang-opt": "acik zeminde koyu yazi",
+    ".lang-switch .lang-opt:hover": "acik zeminde kirmizi vurgu",
+}
+
 # HTML'de kullanilan ama BILEREK stilsiz olan siniflar.
 # Bunlar gorsel degil islevsel: JS'in elemani bulmasi ya da bir durumu
 # isaretlemesi icin varlar. Eski CSS'te de stilleri yoktu.

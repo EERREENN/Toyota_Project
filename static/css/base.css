@@ -42,6 +42,18 @@ img, video, canvas, svg, iframe {
   height: auto;
 }
 
+/* ---------- Global guard: [hidden] GERCEKTEN gizlensin ----------
+   Tarayicinin kendi [hidden] kurali yazar stilinden ZAYIFTIR: bir
+   bilesene display: grid/flex vermek hidden'i sessizce etkisiz
+   birakiyor. Adim panellerinde tam olarak bu oldu -- alti panel de
+   ayni hucreye basiliyor, hangi adima basilirsa basilsin en sondaki
+   gorunuyordu. Kurali tek yerde ve kesin olarak kapatiyoruz;
+   akordeonlarin tamami (adim, zaman tuneli, sozluk, TPS evi, hibrit)
+   gorunurlugu bu oznitelikle yonetiyor. */
+[hidden] {
+  display: none !important;
+}
+
 pre {
   overflow-x: auto;
   max-width: 100%;

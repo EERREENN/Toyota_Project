@@ -67,11 +67,15 @@
 
 .tk-card .tk-note { margin-top: 14px; }
 
-/* Istege bagli kart gorseli (varsayilan: yok) */
+/* Istege bagli kart gorseli (varsayilan: yok).
+   Kaynak fotograflar farkli oranlarda geliyor (dikey de olabiliyor);
+   izgaradaki kartlar ayni boyda dursun diye hepsi ayni orana
+   kirpiliyor. */
 .tk-card__image {
   display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
   border-radius: 4px;
   margin-bottom: 14px;
 }

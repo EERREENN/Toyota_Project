@@ -54,3 +54,76 @@
   border-color: var(--accent);
   color: var(--accent);
 }
+
+
+/* ============================================================
+   GENIS EKRANDA: SOL KENARDA SABIT MENU
+
+   Ekran yeterince genisse menu, icerik kabinin SOLUNDAKI bos
+   seride tasinir ve sayfa kayarken orada kalir -- ziyaretci
+   merak ettigi bolume istedigi anda gecebilir.
+
+   Icerik kabi (--wrap) YERINDEN OYNAMAZ: menu `fixed`, yani
+   akistan cikar ve ortadaki 980px'lik sutunun genisligini ya da
+   konumunu degistirmez. Dar ekranda (asagidaki kirilimin altinda)
+   yukaridaki yatay serit davranisi aynen gecerlidir.
+
+   Kirilim 1360px: solda 160-210px'lik bir seride ancak bu
+   genislikten sonra yer kaliyor ((1360-980)/2 = 190px).
+   ============================================================ */
+@media (min-width: 1360px) {
+  .tk-section-nav {
+    position: fixed;
+    z-index: 5;
+    top: calc(var(--nav-h) + 32px);
+    /* Sag kenari, icerik kabinin sol kenarindan 24px solda biter. */
+    right: calc(50% + (var(--wrap) / 2) + 24px);
+    width: clamp(150px, calc(50vw - (var(--wrap) / 2) - 48px), 210px);
+    /* Uzun listelerde ekrandan tasmasin. */
+    max-height: calc(100vh - var(--nav-h) - 64px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    display: block;
+    margin-top: 0;
+    /* Seffaf: arka plan fotografi menunun arkasindan gorunur.
+       Kendi yuzeyi yok, o yuzden metnin okunakliligi asagidaki
+       text-shadow ile saglaniyor -- tema dosyalarinin baslik ve
+       paragraflar icin kullandigi yontemin aynisi. */
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .tk-section-nav__label {
+    display: block;
+    margin-bottom: 10px;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.75);
+  }
+
+  .tk-section-nav__list {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  /* Dikey listede hap bicimi yerine sade satirlar; zemin yok. */
+  .tk-section-nav__link {
+    display: block;
+    padding: 7px 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    color: var(--ink);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.75);
+  }
+
+  /* Uzerine gelince zemin degil YAZI degisir -- seffafligi bozmadan. */
+  .tk-section-nav__link:hover,
+  .tk-section-nav__link:focus-visible {
+    background: none;
+    color: var(--accent);
+  }
+}

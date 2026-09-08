@@ -122,3 +122,15 @@
   max-width: 68ch;
   color: var(--ink);
 }
+
+/* Yan sutundaki fotograf (varsayilan: yok). Metnin ustunde durur;
+   yaninda duran rakam kartlariyla ayni kose yuvarlakligi. */
+.tk-stat-grid__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: clamp(14px, 3vw, 18px);
+}

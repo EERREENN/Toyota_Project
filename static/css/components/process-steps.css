@@ -105,6 +105,9 @@
 }
 .tk-steps__image {
   display: block;
+  /* Yer tutucuyla ayni oran: gorselli ve gorselsiz adimlar ayni
+     yuksekligi kaplasin. */
+  aspect-ratio: 16 / 9;
   height: auto;
   object-fit: cover;
 }
@@ -163,6 +166,8 @@
   }
   .tk-steps__title { font-size: 0.85rem; }
 
+  /* Acilan adimin paneli sirenin ALTINDA, tam genislikte:
+     solda o adimin fotografi, sagda aciklamasi. */
   .tk-steps__detail {
     grid-row: 2;
     grid-column: 1 / -1;

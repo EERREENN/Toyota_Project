@@ -33,6 +33,7 @@ if str(ROOT) not in sys.path:
 
 from tools.css_rename_map import (          # noqa: E402
     ATILAN,
+    DEGISTIRILEN,
     EDITORE_BAGLI,
     STILSIZ_KABUL,
     ID_TO_CLASS,
@@ -192,12 +193,19 @@ def denklik() -> int:
 
     eksik = []
     farkli = []
+    bilerek = []
     for baglam, secici, bildirim in eski_donuk:
         adaylar = yeni_kume.get((baglam, secici))
         if adaylar is None:
             eksik.append((baglam, secici, bildirim))
         elif bildirim not in adaylar:
-            farkli.append((baglam, secici, bildirim, adaylar))
+            # Kasitli tasarim degisiklikleri hata degil (bkz.
+            # css_rename_map.DEGISTIRILEN). Kural HALA VAR, yalnizca
+            # bildirimleri farkli -- kaybolan bir sey yok.
+            if secici in DEGISTIRILEN:
+                bilerek.append((secici, DEGISTIRILEN[secici]))
+            else:
+                farkli.append((baglam, secici, bildirim, adaylar))
 
     print("1) DENKLIK  (eski kural -> yeni dosyalarda var mi)")
     print("-" * 62)
@@ -205,6 +213,7 @@ def denklik() -> int:
     print(f"  bilerek atilan        : {atlanan}")
     print(f"  yeni kural sayisi     : {len(yeni)}")
     print(f"  EKSIK (bulunamadi)    : {len(eksik)}")
+    print(f"  bilerek degistirilen  : {len(bilerek)}")
     print(f"  FARKLI (bildirim)     : {len(farkli)}")
     print()
 
@@ -218,6 +227,10 @@ def denklik() -> int:
         for a in adaylar:
             print(f"      yeni: {a[:110]}")
 
+    if bilerek:
+        print()
+        for secici, sebep in bilerek:
+            print(f"  [bilerek] {secici} -- {sebep}")
     if atlanan:
         print()
         for ad, sebep in ATILAN.items():
