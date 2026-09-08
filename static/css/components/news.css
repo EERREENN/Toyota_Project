@@ -7,6 +7,57 @@
    kenardan kenara oturuyor, o yuzden dolgu govdeye veriliyor.
    ============================================================ */
 
+/* ============================================================
+   KATEGORI FILTRESI  --  baslik ile izgara arasindaki cubuk
+
+   Dugme degil BAGLANTI listesi: sayfa JavaScript'siz calisiyor,
+   secim adreste duruyor. Gorunum sayfa cubugunun (.tk-pager__page)
+   ayni dili -- beyaz yuzey, ince cerceve, secili olan kirmizi
+   dolgu; yeni renk getirmiyor.
+
+   Dar ekranda cubuk yatay kaymiyor, SATIR KIRIYOR: kaydirilan bir
+   seritte kategorilerin bir kismi gizli kalirdi.
+   ============================================================ */
+.tk-news-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: clamp(18px, 4vw, 24px);
+}
+
+.tk-news-filter__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;                /* dokunma hedefi */
+  padding: 0 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.tk-news-filter__link:hover,
+.tk-news-filter__link:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Secili kategori: .tk-pager__page.is-current ile ayni isaret. */
+.tk-news-filter__link.is-current {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+
 /* ---------- Izgara: mobil 1, tablet ve ustu 2 sutun ---------- */
 .tk-news-grid {
   display: grid;

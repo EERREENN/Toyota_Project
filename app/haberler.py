@@ -18,6 +18,12 @@ etiket calismaz.
 
 Yalnizca YAYINDAKI haberler doner (`is_published = True`); taslaklar
 ne listede ne de kendi adresinde gorunur.
+
+KATEGORI FILTRESI
+-----------------
+Kategoriler sabit bir katalogdan geliyor (app/kategoriler.py). Adres
+cubugundaki `?kategori=<anahtar>` burada TR etikete cevrilip sorguya
+kosul olarak ekleniyor; veritabaninda anahtar degil o etiket duruyor.
 """
 
 from __future__ import annotations
@@ -26,6 +32,7 @@ from dataclasses import dataclass, field
 
 from sqlalchemy import and_, select
 
+from . import kategoriler
 from .extensions import db
 from .models import News
 
@@ -81,6 +88,11 @@ class Sayfalama:
     sayfa: int = 1
     toplam_sayfa: int = 1
     toplam: int = 0
+    # Yururlukteki kategori filtresinin ANAHTARI (filtre yoksa None).
+    # Dogrulanmis hali: bilinmeyen bir anahtar buraya None olarak
+    # duser. Sablon sayfa baglantilarini bununla kuruyor, yoksa
+    # 2. sayfaya gecen ziyaretci filtreyi kaybederdi.
+    kategori: str | None = None
 
     @property
     def gerekli(self) -> bool:
@@ -113,21 +125,44 @@ def _sayfa_no(deger) -> int:
     return no if no >= 1 else 1
 
 
+def _kosullar(kategori: kategoriler.Kategori | None) -> list:
+    """Listenin ve sayimin ORTAK where kosullari.
+
+    Ikisi ayni yerden gelmezse sayfa sayisi filtreyle uyusmaz:
+    sayim filtresiz kalirsa sayfa cubugu olmayan sayfalari gosterir
+    ve ziyaretci bos listelere tiklar.
+    """
+    kosul = [News.is_published.is_(True)]
+    if kategori is not None:
+        # Veritabaninda anahtar degil TR etiket duruyor
+        # (bkz. app/kategoriler.py).
+        kosul.append(News.category_tr == kategori.tr)
+    return kosul
+
+
 # ------------------------------------------------------------
 #  Genel API  --  disaridan kullanilan tek yuzey
 # ------------------------------------------------------------
 def sayfa_getir(locale: str = VARSAYILAN_DIL, sayfa=1,
+                kategori: str | None = None,
                 boyut: int = SAYFA_BOYUTU) -> Sayfalama | None:
     """Bir sayfalik haber, yeniden eskiye.
+
+    `kategori` bir katalog ANAHTARIDIR ("uretim" gibi). Bos ya da
+    katalogda olmayan bir deger geldiginde filtre UYGULANMAZ ve tam
+    liste doner -- _sayfa_no() ile ayni tutum: adres kurcalandiginda
+    hata degil makul olan gorunsun.
 
     Istenen sayfa yoksa None doner (rota 404 verir). Hic haber
     yoksa bos ama gecerli bir 1. sayfa doner -- liste sablonu bos
     durum mesajini gosterir.
     """
     no = _sayfa_no(sayfa)
+    secili = kategoriler.bul(kategori)
+    kosul = _kosullar(secili)
 
     toplam = db.session.scalar(
-        select(db.func.count(News.id)).where(News.is_published.is_(True))
+        select(db.func.count(News.id)).where(*kosul)
     ) or 0
     toplam_sayfa = max(1, -(-toplam // boyut))     # yukari yuvarlama
     if no > toplam_sayfa:
@@ -135,7 +170,7 @@ def sayfa_getir(locale: str = VARSAYILAN_DIL, sayfa=1,
 
     kayitlar = db.session.scalars(
         select(News)
-        .where(News.is_published.is_(True))
+        .where(*kosul)
         # Ayni gune dusen haberlerde sira sabit kalsin diye ikinci
         # olcut: sonra eklenen ustte.
         .order_by(News.date.desc(), News.id.desc())
@@ -148,7 +183,38 @@ def sayfa_getir(locale: str = VARSAYILAN_DIL, sayfa=1,
         sayfa=no,
         toplam_sayfa=toplam_sayfa,
         toplam=toplam,
+        kategori=secili.anahtar if secili else None,
     )
+
+
+def kategori_sayilari(locale: str = VARSAYILAN_DIL) -> list[dict]:
+    """Filtre cubugunun gosterecegi kategoriler, katalog sirasiyla.
+
+    Her oge: anahtar · etiket (istenen dilde) · sayi.
+
+    YAYINDAKI haberi olmayan kategori listeye HIC girmez: tiklaninca
+    bos liste veren bir dugme kotu bir deneyim. Sayim, filtrenin
+    kullandigi TAM eslemenin aynisini kullanir (`category_tr` degeri
+    katalogdaki TR etikete birebir esit olmali); boylece cubukta
+    gorunen sayi ile filtrenin dondurdugu haber sayisi ayrismaz.
+    """
+    satirlar = db.session.execute(
+        select(News.category_tr, db.func.count(News.id))
+        .where(News.is_published.is_(True))
+        .group_by(News.category_tr)
+    ).all()
+    sayim = {(ad or ""): adet for ad, adet in satirlar}
+
+    liste = []
+    for oge in kategoriler.hepsi():
+        adet = sayim.get(oge.tr, 0)
+        if adet:
+            liste.append({
+                "anahtar": oge.anahtar,
+                "etiket": kategoriler.etiket(oge.anahtar, locale),
+                "sayi": adet,
+            })
+    return liste
 
 
 def bul(slug: str, locale: str = VARSAYILAN_DIL) -> dict | None:

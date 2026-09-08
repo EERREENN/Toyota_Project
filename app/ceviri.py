@@ -1213,6 +1213,16 @@ EN: dict[str, str] = {
     "Haberi İncele": "Read the article",
     "Tüm Haberlere Dön": "Back to all news",
     "Henüz haber bulunmuyor.": "There are no news articles yet.",
+
+    # Kategori filtresi. Kategori ADLARI burada YOK: onlar
+    # app/kategoriler.py katalogundan geliyor -- ayni metin iki yerde
+    # tutulursa er gec ayrisir.
+    "Kategoriye göre filtrele": "Filter by category",
+    "Tümü": "All",
+    "Bu kategoride henüz haber yok.":
+        "There are no news articles in this category yet.",
+    "Kategori yok": "No category",
+
     "Sayfalar": "Pages",
     "Sayfa": "Page",
     "Önceki": "Previous",

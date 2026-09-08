@@ -8,7 +8,7 @@ from datetime import date, datetime
 from flask import flash, redirect, render_template, request, url_for
 from sqlalchemy import select
 
-from ... import haberler, security, yukleme
+from ... import haberler, kategoriler, security, yukleme
 from ...extensions import db
 from ...metin import benzersiz_slug, slugify, tarih_metni
 from ...models import News
@@ -21,8 +21,9 @@ def _form(kayit: News | None) -> dict:
             "title_tr": "",
             "title_en": "",
             "slug": "",
-            "category_tr": "",
-            "category_en": "",
+            # Kategori artik serbest metin degil, katalog anahtari
+            # (bkz. app/kategoriler.py). Bos = kategorisiz haber.
+            "kategori": "",
             "date": date.today().isoformat(),
             "summary_tr": "",
             "summary_en": "",
@@ -35,8 +36,11 @@ def _form(kayit: News | None) -> dict:
         "title_tr": kayit.title_tr,
         "title_en": kayit.title_en or "",
         "slug": kayit.slug,
-        "category_tr": kayit.category_tr or "",
-        "category_en": kayit.category_en or "",
+        # Veritabaninda anahtar degil TR etiket duruyor; secim kutusunu
+        # doldurmak icin ters cevirim. Katalogda olmayan eski bir deger
+        # "" doner -- form o zaman uyari basar, sessizce silmez
+        # (bkz. templates/admin/news_form.html).
+        "kategori": kategoriler.anahtar_bul(kayit.category_tr) or "",
         "date": kayit.date.isoformat() if kayit.date else date.today().isoformat(),
         "summary_tr": kayit.summary_tr or "",
         "summary_en": kayit.summary_en or "",
@@ -53,8 +57,7 @@ def _posta() -> dict:
         "title_tr": (form.get("title_tr") or "").strip(),
         "title_en": (form.get("title_en") or "").strip(),
         "slug": (form.get("slug") or "").strip(),
-        "category_tr": (form.get("category_tr") or "").strip(),
-        "category_en": (form.get("category_en") or "").strip(),
+        "kategori": (form.get("kategori") or "").strip(),
         "date": (form.get("date") or "").strip(),
         "summary_tr": (form.get("summary_tr") or "").strip(),
         "summary_en": (form.get("summary_en") or "").strip(),
@@ -80,6 +83,13 @@ def _kaydet(kayit: News | None, deger: dict) -> str | None:
     gun = _tarih_oku(deger["date"])
     if gun is None:
         return "Tarih geçersiz. Yıl-ay-gün biçiminde yaz (örnek: 2026-09-07)."
+
+    # Kategori istege bagli: bos deger gecerlidir (kategorisiz haber).
+    # Dolu ama katalogda yoksa kaydetme -- secim kutusu disindan
+    # gonderilmis bir degerdir.
+    kategori = kategoriler.bul(deger["kategori"])
+    if deger["kategori"] and kategori is None:
+        return "Geçersiz kategori."
 
     haric = kayit.id if kayit is not None else None
     if deger["slug"]:
@@ -113,8 +123,11 @@ def _kaydet(kayit: News | None, deger: dict) -> str | None:
     kayit.is_published = deger["is_published"] == "1"
     kayit.title_tr = deger["title_tr"]
     kayit.title_en = deger["title_en"]
-    kayit.category_tr = deger["category_tr"]
-    kayit.category_en = deger["category_en"]
+    # Katalogdaki karsiliklar sutunlara yazilir; secim bossa ikisi de
+    # bosalir. Sema degismedigi icin site tarafi bu iki sutunu
+    # okumaya devam ediyor.
+    kayit.category_tr = kategori.tr if kategori else ""
+    kayit.category_en = kategori.en if kategori else ""
     kayit.summary_tr = deger["summary_tr"]
     kayit.summary_en = deger["summary_en"]
     kayit.content_tr = deger["content_tr"]
@@ -157,6 +170,7 @@ def news_new():
         "admin/news_form.html",
         deger=deger,
         kayit=None,
+        kategoriler=kategoriler.hepsi(),
         aktif="haberler",
         oturum_acik=True,
         csrf=security.csrf_token(),
@@ -186,6 +200,7 @@ def news_edit(haber_id: int):
         "admin/news_form.html",
         deger=deger,
         kayit=kayit,
+        kategoriler=kategoriler.hepsi(),
         aktif="haberler",
         oturum_acik=True,
         csrf=security.csrf_token(),

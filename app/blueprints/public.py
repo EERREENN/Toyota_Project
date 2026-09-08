@@ -9,7 +9,8 @@ sorgusu ya da blok cozumleme yok:
     /global-toyota    -> pages/global.html
     /uretim-sistemi   -> pages/tps.html
     /cevre            -> pages/cevre.html
-    /news             -> pages/news.html          (haber listesi, ?page=N)
+    /news             -> pages/news.html          (haber listesi,
+                                                   ?page=N, ?kategori=K)
     /news/<slug>      -> pages/news_detail.html   (haber detayi)
 
 Sayfanin basligi, stil dosyalari ve icerigi sablonun kendi icinde
@@ -90,13 +91,23 @@ def news():
     dil = get_locale()
     # Olmayan bir sayfa numarasi istendiginde bos liste yerine 404:
     # /news?page=99 gecerli bir adres degil.
-    sayfalama = haberler.sayfa_getir(dil, request.args.get("page"))
+    #
+    # ?kategori=... icin ayni sertlik YOK: bilinmeyen anahtar 404
+    # degil filtresiz tam liste verir (bkz. haberler.sayfa_getir).
+    sayfalama = haberler.sayfa_getir(
+        dil, request.args.get("page"), request.args.get("kategori")
+    )
     if sayfalama is None:
         abort(404)
     return render_template(
         "pages/news.html",
         sayfalama=sayfalama,
         haberler=sayfalama.haberler,
+        # Filtre cubugu: yalnizca haberi olan kategoriler.
+        kategoriler=haberler.kategori_sayilari(dil),
+        # Dogrulanmis anahtar: bilinmeyen bir deger burada None'dir,
+        # cubukta "Tumu" isaretli kalir.
+        secili_kategori=sayfalama.kategori,
         tarih=lambda iso: tarih_metni(iso, dil),
     )
 

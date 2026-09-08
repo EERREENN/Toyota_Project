@@ -1,5 +1,9 @@
 {% extends "admin/base.html" %}
 {% set duzenleme = kayit is not none %}
+{#- Elle girilmis eski bir kategori mi? app/blueprints/admin/news.py ->
+    _form() katalogda olmayan degeri bos anahtar olarak dondurur; kayit
+    hala eski metni tasiyor. Sessizce silmeyelim, uyaralim. -#}
+{% set kategori_bilinmiyor = duzenleme and kayit.category_tr and not deger.kategori %}
 {% block title %}{{ 'Haberi düzenle' if duzenleme else 'Yeni haber' }}{% endblock %}
 
 {% block extra_head %}
@@ -42,17 +46,25 @@
       <small>Adres parçası: /news/<em>slug</em>. Boşsa başlıktan üretilir.</small>
     </div>
 
-    <div class="yn-ikili">
-      <div class="yn-alan">
-        <label for="category_tr">Kategori (Türkçe)</label>
-        <input type="text" id="category_tr" name="category_tr"
-               value="{{ deger.category_tr }}">
-      </div>
-      <div class="yn-alan">
-        <label for="category_en">Kategori (İngilizce)</label>
-        <input type="text" id="category_en" name="category_en"
-               value="{{ deger.category_en }}">
-      </div>
+    {#- Kategori serbest metin degil: liste app/kategoriler.py'den
+        geliyor, Ingilizcesi de oradan yazilir. Yeni kategori eklemek
+        o dosyaya bir satir eklemektir. -#}
+    <div class="yn-alan">
+      <label for="kategori">Kategori</label>
+      <select id="kategori" name="kategori">
+        <option value="">— Kategori yok —</option>
+        {%- for kategori in kategoriler %}
+        <option value="{{ kategori.anahtar }}"
+                {{ 'selected' if deger.kategori == kategori.anahtar }}>{{ kategori.tr }}</option>
+        {%- endfor %}
+      </select>
+      {%- if kategori_bilinmiyor %}
+      <small class="yn-alan__uyari">
+        Bu haberin kaydedilmiş kategorisi (“{{ kayit.category_tr }}”) listede yok.
+        Şimdi kaydedersen kategori temizlenir; korumak istiyorsan önce
+        <code>app/kategoriler.py</code> dosyasına ekle.
+      </small>
+      {%- endif %}
     </div>
 
     <div class="yn-alan">

@@ -102,3 +102,20 @@
 .yn-alan textarea.yn-alan__icerik {
   min-height: 220px;
 }
+
+/* Kategori secim kutusunun altindaki uyari: kaydedilmis kategori
+   katalogda yoksa (elle girilmis eski kayit) gorunur. Panelin
+   .yn-uyari kutusuyla ayni sari dili, ama alan ici oldugu icin
+   daha kucuk ve dar. */
+.yn-alan__uyari {
+  color: var(--yn-metin);
+  background: #fff8e6;
+  border-left: 3px solid #d9a441;
+  border-radius: 4px;
+  padding: 8px 10px;
+  line-height: 1.5;
+}
+
+.yn-alan__uyari code {
+  font-size: 0.95em;
+}

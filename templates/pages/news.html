@@ -4,7 +4,12 @@
   Haber listesi. Dort tanitim sayfasindan farkli olarak icerigi
   sablonda degil veritabaninda: liste degisken uzunlukta ve editorden
   geliyor. Sablon yalnizca rotanin verdigi `haberler` (bir sayfalik
-  haber) ve `sayfalama` degiskenlerine bakiyor.
+  haber), `sayfalama`, `kategoriler` (filtre cubugu) ve
+  `secili_kategori` degiskenlerine bakiyor.
+
+  FILTRE CUBUGU JavaScript'siz calisir: her kategori ayri bir adres
+  (/news?kategori=uretim). Sayfa baglantilari da bu anahtari tasir,
+  yoksa 2. sayfaya gecen ziyaretci filtreyi kaybederdi.
 
   Cevrilebilir SABIT metinler {{ _('...') }} icinde; karsiliklari
   app/ceviri.py dosyasinda. Haber metinlerinin cevirisi ise haberin
@@ -40,6 +45,23 @@
 <section class="tk-block">
   <h1>{{ _('Haberler') }}</h1>
   <p>{{ _('Toyota Otomotiv Sanayi Türkiye\'den güncel haberler, gelişmeler ve duyurular.') }}</p>
+
+  {#- Filtre cubugu, haberi olan kategori varsa. Bunlar dugme degil
+      BAGLANTI: sayfa betiksiz calisir, secim adreste durur.
+      `if haberler` blogunun DISINDA: filtre bos sonuc verdiginde de
+      gorunmeli ki ziyaretci "Tumu"ne donebilsin. -#}
+  {%- if kategoriler %}
+  <nav class="tk-news-filter" aria-label="{{ _('Kategoriye göre filtrele') }}">
+    <a class="tk-news-filter__link{{ ' is-current' if not secili_kategori }}"
+       href="{{ url_for('public.news') }}"
+       {%- if not secili_kategori %} aria-current="page"{% endif %}>{{ _('Tümü') }}</a>
+    {%- for kategori in kategoriler %}
+    <a class="tk-news-filter__link{{ ' is-current' if secili_kategori == kategori.anahtar }}"
+       href="{{ url_for('public.news', kategori=kategori.anahtar) }}"
+       {%- if secili_kategori == kategori.anahtar %} aria-current="page"{% endif %}>{{ kategori.etiket }}</a>
+    {%- endfor %}
+  </nav>
+  {%- endif %}
 </section>
 
 {%- if haberler %}
@@ -55,7 +77,7 @@
   <nav class="tk-pager" aria-label="{{ _('Sayfalar') }}">
     {%- if sayfalama.onceki %}
     <a class="tk-pager__step" rel="prev"
-       href="{{ url_for('public.news', page=sayfalama.onceki) if sayfalama.onceki > 1 else url_for('public.news') }}">&larr; {{ _('Önceki') }}</a>
+       href="{{ url_for('public.news', page=sayfalama.onceki, kategori=sayfalama.kategori) if sayfalama.onceki > 1 else url_for('public.news', kategori=sayfalama.kategori) }}">&larr; {{ _('Önceki') }}</a>
     {%- endif %}
 
     <span class="tk-pager__pages">
@@ -64,21 +86,26 @@
       <span class="tk-pager__page is-current" aria-current="page">{{ no }}</span>
       {%- else %}
       <a class="tk-pager__page" aria-label="{{ _('Sayfa') }} {{ no }}"
-         href="{{ url_for('public.news', page=no) if no > 1 else url_for('public.news') }}">{{ no }}</a>
+         href="{{ url_for('public.news', page=no, kategori=sayfalama.kategori) if no > 1 else url_for('public.news', kategori=sayfalama.kategori) }}">{{ no }}</a>
       {%- endif %}
       {%- endfor %}
     </span>
 
     {%- if sayfalama.sonraki %}
     <a class="tk-pager__step" rel="next"
-       href="{{ url_for('public.news', page=sayfalama.sonraki) }}">{{ _('Sonraki') }} &rarr;</a>
+       href="{{ url_for('public.news', page=sayfalama.sonraki, kategori=sayfalama.kategori) }}">{{ _('Sonraki') }} &rarr;</a>
     {%- endif %}
   </nav>
   {%- endif %}
 </section>
 {%- else %}
 <section class="tk-block">
+  {#- Filtre yuzunden mi bos, gercekten haber mi yok: ikisi ayri sey. -#}
+  {%- if secili_kategori %}
+  <p class="tk-note">{{ _('Bu kategoride henüz haber yok.') }}</p>
+  {%- else %}
   <p class="tk-note">{{ _('Henüz haber bulunmuyor.') }}</p>
+  {%- endif %}
 </section>
 {%- endif %}
 {% endblock %}
