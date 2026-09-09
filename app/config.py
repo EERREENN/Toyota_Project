@@ -99,4 +99,21 @@ class Config:
 
     # --- haber gorseli ---
     UPLOAD_MAX_MB = _int("UPLOAD_MAX_MB", 4)
-    MAX_CONTENT_LENGTH = _int("UPLOAD_MAX_MB", 4) * 1024 * 1024
+
+    # Bir haberde en fazla kac gorsel durabilir. LIMITIN TEK
+    # DOGRULUK KAYNAGI: panelin sayaci, tarayici tarafindaki
+    # dogrulama ve sunucu tarafindaki reddetme hep bunu okur
+    # (bkz. app/yukleme.py -> azami_gorsel).
+    MAX_NEWS_IMAGES = _int("MAX_NEWS_IMAGES", 5)
+
+    # Istek govdesinin tavani. Gorsel BASINA degil, istegin TAMAMI
+    # icin gecerli: azami sayida gorsel ayni formda gelebildigi icin
+    # carpim olarak hesaplaniyor, ustune metin alanlari ve form
+    # sinirlari icin 1 MB pay birakiliyor.
+    #
+    # Sabit 4 MB birakilsaydi 5 gorselli bir gonderim daha bizim
+    # kodumuza VARMADAN 413 ile duserdi; kullanici da limit
+    # mesajini degil bos bir hata sayfasini gorurdu.
+    MAX_CONTENT_LENGTH = (
+        _int("UPLOAD_MAX_MB", 4) * _int("MAX_NEWS_IMAGES", 5) + 1
+    ) * 1024 * 1024

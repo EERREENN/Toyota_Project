@@ -25,14 +25,31 @@ sayfada doldurur.
 
 Ingilizcesi bos birakilan alan sitede Turkcesine duser
 (bkz. app/haberler.py -> _metin); eksik ceviri sayfayi bozmaz.
+
+GORSELLER
+---------
+Bir haberde birden fazla gorsel olabilir; bunlar ayri bir
+`news_image` tablosunda durur (asagida). `News.image` sutunu
+KALDIRILMADI: artik KAPAK gorselini tasiyor ve galerideki
+gorsellerden birine esittir. Sebebi iki tarafli:
+
+  * kart ve panel listesi tek bir gorsel istiyor (galeriyi
+    dolasmalari gereksiz), o yuzden kapak dogrudan `news`
+    satirinda duruyor;
+  * elde duran instance/news.db bozulmasin diye `news` tablosuna
+    YENI SUTUN eklenmedi -- projede migration araci yok,
+    app/factory.py yalnizca db.create_all() cagiriyor ve o da var
+    olan bir tabloya sutun EKLEMEZ. Eksik TABLO ise olusturur;
+    `news_image` bu yuzden ayri bir tablo.
 """
 
 from __future__ import annotations
 
 from datetime import date, datetime, timezone
 
-from sqlalchemy import Boolean, Date, DateTime, Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import (Boolean, Date, DateTime, ForeignKey, Integer, String,
+                        Text)
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .extensions import db
 
@@ -57,8 +74,13 @@ class News(db.Model):
     # (created_at'e gore DEGIL: haber geriye donuk tarihlenebilir).
     date: Mapped[date] = mapped_column(Date, nullable=False, index=True)
 
-    # static/ klasorune gore gorsel yolu ("img/tmmt_img/corolla.jpg").
-    # Bos birakilabilir; kart ve detay sayfasi gorselsiz de calisir.
+    # KAPAK gorseli: static/ klasorune gore yol
+    # ("uploads/news/toyota-corolla-2026-1.jpg").
+    #
+    # Galerideki gorsellerden BIRINE esittir; panelde hangisinin
+    # kapak olacagi secilir (bkz. app/blueprints/admin/news.py ->
+    # _kapak_yaz). Bos birakilabilir; kart ve detay sayfasi
+    # gorselsiz de calisir.
     image: Mapped[str] = mapped_column(String(255), nullable=False, default="")
 
     # False -> taslak. Sitede hic gorunmez: ne listede ne de kendi
@@ -90,8 +112,67 @@ class News(db.Model):
         DateTime(timezone=True), default=utcnow, onupdate=utcnow, nullable=False
     )
 
+    # Galeri. `sira` sutununa gore siralanir; sira esitse id
+    # bozar (ekleme sirasi). delete-orphan: listeden cikarilan
+    # NewsImage satiri veritabanindan da silinir -- DOSYAYI silmek
+    # ayri is, onu app/yukleme.py -> sil_dosya yapiyor.
+    #
+    # lazy="selectin": haber listesi 6 haber basar ve her biri
+    # kapagini kendi satirindan okur, ama detay sayfasi galeriyi
+    # istiyor. selectin, N+1 sorgu yerine tek ek sorgu demek.
+    images: Mapped[list["NewsImage"]] = relationship(
+        back_populates="news",
+        cascade="all, delete-orphan",
+        order_by="NewsImage.position, NewsImage.id",
+        lazy="selectin",
+    )
+
     def __repr__(self) -> str:
         return f"<News {self.slug}>"
+
+
+# ============================================================
+#  Haber galerisi  --  haber basina en fazla MAX_NEWS_IMAGES gorsel
+# ============================================================
+class NewsImage(db.Model):
+    """Bir haberin tek gorseli.
+
+    SAYI SINIRI BURADA DEGIL: kac gorsel eklenebilecegi
+    Config.MAX_NEWS_IMAGES'te tanimli ve app/yukleme.py ->
+    azami_gorsel() uzerinden okunuyor. Veritabani seviyesinde
+    zorlanmiyor cunku SQLite'ta satir sayisi kisiti yazmak
+    trigger gerektirirdi; kontrol tek noktada, kaydetme yolunda.
+    """
+
+    __tablename__ = "news_image"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+    # ondelete CASCADE: haber silinince gorsel satirlari da gider.
+    # SQLite'ta yabanci anahtarlar varsayilan olarak KAPALI; onlari
+    # acan PRAGMA app/extensions.py icinde.
+    news_id: Mapped[int] = mapped_column(
+        ForeignKey("news.id", ondelete="CASCADE"),
+        nullable=False, index=True,
+    )
+
+    # static/ klasorune gore yol ("uploads/news/...jpg") --
+    # News.image ile AYNI bicim, ikisi karsilastirilabilsin diye
+    # (kapak esleme bunun uzerinden yapiliyor).
+    path: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    # Galeri sirasi. Panelde gorseller bu sirayla listelenir.
+    position: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+    # Alternatif metin. Bos birakilabilir: gorsel suslemeyse bos alt
+    # dogru olandir, ekran okuyucu atlar.
+    alt_tr: Mapped[str] = mapped_column(String(255), nullable=False, default="")
+    alt_en: Mapped[str] = mapped_column(String(255), nullable=False, default="")
+
+    news: Mapped["News"] = relationship(back_populates="images")
+
+    def __repr__(self) -> str:
+        return f"<NewsImage {self.path}>"
 
 
 # ============================================================

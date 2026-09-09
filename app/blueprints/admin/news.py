@@ -1,5 +1,21 @@
 # -*- coding: utf-8 -*-
-"""Haber ekleme, duzenleme, silme."""
+"""Haber ekleme, duzenleme, silme.
+
+GORSEL SAYISI
+-------------
+Bir haberde en fazla Config.MAX_NEWS_IMAGES gorsel olabilir ve bu
+sinir UC katmanda birden zorlanir:
+
+  1. tarayici  -- sayac + pasif "Ekle" dugmesi
+                  (templates/admin/news_form.html)
+  2. SUNUCU    -- _kaydet() asagida, yukleme.dogrula() uzerinden
+  3. istek     -- Config.MAX_CONTENT_LENGTH, govde tavani
+
+Ikinci katman belirleyici olandir: birincisi atlanabilir (curl,
+devtools). Ve kontrol "kac dosya yuklendi" degil, MEVCUT + YENI
+TOPLAMI uzerinden yapilir -- 4 gorselli habere 2 gorsel eklenmek
+istendiginde ikisi de tek basina limitin altindadir, toplam degil.
+"""
 
 from __future__ import annotations
 
@@ -11,7 +27,7 @@ from sqlalchemy import select
 from ... import haberler, kategoriler, security, yukleme
 from ...extensions import db
 from ...metin import benzersiz_slug, slugify, tarih_metni
-from ...models import News
+from ...models import News, NewsImage
 from . import bp
 
 
@@ -30,7 +46,10 @@ def _form(kayit: News | None) -> dict:
             "content_tr": "",
             "content_en": "",
             "is_published": "1",
-            "image": "",
+            # Kayitli galeri (yeni haberde bos). Sablon sayaci ve
+            # kapak secimini bunun uzerinden kuruyor.
+            "gorseller": [],
+            "kapak_id": None,
         }
     return {
         "title_tr": kayit.title_tr,
@@ -47,7 +66,16 @@ def _form(kayit: News | None) -> dict:
         "content_tr": kayit.content_tr or "",
         "content_en": kayit.content_en or "",
         "is_published": "1" if kayit.is_published else "0",
-        "image": kayit.image or "",
+        "gorseller": [
+            {"id": g.id, "path": g.path, "alt_tr": g.alt_tr, "alt_en": g.alt_en}
+            for g in kayit.images
+        ],
+        # Kapak, galerideki gorsellerden birinin YOLUNA esit
+        # (bkz. app/models.py -> News.image). Radyo dugmesini
+        # isaretlemek icin o gorselin id'sine cevriliyor.
+        "kapak_id": next(
+            (g.id for g in kayit.images if g.path == kayit.image), None
+        ),
     }
 
 
@@ -64,7 +92,13 @@ def _posta() -> dict:
         "content_tr": form.get("content_tr") or "",
         "content_en": form.get("content_en") or "",
         "is_published": "1" if form.get("is_published") == "1" else "0",
-        "image": (form.get("mevcut_gorsel") or "").strip(),
+        # Silinmesi istenen KAYITLI gorsellerin id'leri. Sayi
+        # olmayan degerler sessizce elenir: adres/istek kurcalansa
+        # bile eslesmeyen id kimseyi silmez.
+        "silinecek": {int(d) for d in form.getlist("sil_gorsel") if d.isdigit()},
+        # Kapak olarak isaretlenen kayitli gorselin id'si.
+        "kapak_id": int(form.get("kapak")) if (form.get("kapak") or "").isdigit()
+                    else None,
     }
 
 
@@ -73,6 +107,27 @@ def _tarih_oku(deger: str) -> date | None:
         return datetime.strptime(deger, "%Y-%m-%d").date()
     except (TypeError, ValueError):
         return None
+
+
+def _kapak_yaz(kayit: News, secilen_id: int | None) -> None:
+    """News.image sutununa kapak gorselinin yolunu yazar.
+
+    Kapak, galerideki gorsellerden BIRIDIR; ayri bir dosya degil
+    (bkz. app/models.py -> News.image). Secim gecersizse -- hic
+    isaretlenmemisse, ya da isaretli gorsel bu kaydetmede
+    silindiyse -- galerinin ilkine duser. Galeri bossa kapak da
+    bosalir ve kart yer tutucuyu gosterir.
+
+    Yeni yuklenen gorsellerin id'si bu asamada henuz yok (flush
+    olmadi), o yuzden secim yalnizca KAYITLI gorseller arasindan
+    yapilabiliyor: editor once yukluyor, sonra kapagi seciyor.
+    """
+    galeri = sorted(kayit.images, key=lambda g: (g.position, g.id or 0))
+    if not galeri:
+        kayit.image = ""
+        return
+    secilen = next((g for g in galeri if g.id == secilen_id), None)
+    kayit.image = (secilen or galeri[0]).path
 
 
 def _kaydet(kayit: News | None, deger: dict) -> str | None:
@@ -102,24 +157,38 @@ def _kaydet(kayit: News | None, deger: dict) -> str | None:
             lambda s: haberler.slug_var_mi(s, haric),
         )
 
+    # --- gorseller ---
+    # Once SAYI, sonra dosya. Kalan = kayitli olup silinmeyecekler;
+    # limit bunun uzerine yeni yuklenenler eklenerek olculuyor.
+    mevcut = list(kayit.images) if kayit is not None else []
+    kalan = [g for g in mevcut if g.id not in deger["silinecek"]]
+
     try:
-        yeni_gorsel = yukleme.kaydet(request.files.get("gorsel"))
+        # Diske YAZMADAN once dogrular; limit asilirsa uploads/
+        # klasorune tek dosya bile dusmez.
+        yeni_yollar = yukleme.kaydet_coklu(
+            request.files.getlist("gorseller"), slug, len(kalan)
+        )
     except yukleme.YuklemeHatasi as hata:
         return str(hata)
-
-    gorsel = deger["image"]
-    if yeni_gorsel:
-        if kayit is not None:
-            yukleme.sil_dosya(kayit.image or "")
-        gorsel = yeni_gorsel
 
     if kayit is None:
         kayit = News()
         db.session.add(kayit)
 
+    # Silinecekler: once diskten dosya, sonra listeden satir.
+    # Satirin kendisini delete-orphan siliyor (bkz. app/models.py).
+    for gorsel in mevcut:
+        if gorsel.id in deger["silinecek"]:
+            yukleme.sil_dosya(gorsel.path)
+            kayit.images.remove(gorsel)
+
+    sonraki = max((g.position for g in kalan), default=-1) + 1
+    for sira, yol in enumerate(yeni_yollar):
+        kayit.images.append(NewsImage(path=yol, position=sonraki + sira))
+
     kayit.slug = slug
     kayit.date = gun
-    kayit.image = gorsel
     kayit.is_published = deger["is_published"] == "1"
     kayit.title_tr = deger["title_tr"]
     kayit.title_en = deger["title_en"]
@@ -132,6 +201,7 @@ def _kaydet(kayit: News | None, deger: dict) -> str | None:
     kayit.summary_en = deger["summary_en"]
     kayit.content_tr = deger["content_tr"]
     kayit.content_en = deger["content_en"]
+    _kapak_yaz(kayit, deger["kapak_id"])
     db.session.commit()
     return None
 
@@ -171,6 +241,9 @@ def news_new():
         deger=deger,
         kayit=None,
         kategoriler=kategoriler.hepsi(),
+        # Sayac ve pasif "Ekle" dugmesi icin. Sablon limiti kendi
+        # bilmiyor, tek kaynaktan aliyor (app/yukleme.py).
+        azami_gorsel=yukleme.azami_gorsel(),
         aktif="haberler",
         oturum_acik=True,
         csrf=security.csrf_token(),
@@ -201,6 +274,9 @@ def news_edit(haber_id: int):
         deger=deger,
         kayit=kayit,
         kategoriler=kategoriler.hepsi(),
+        # Sayac ve pasif "Ekle" dugmesi icin. Sablon limiti kendi
+        # bilmiyor, tek kaynaktan aliyor (app/yukleme.py).
+        azami_gorsel=yukleme.azami_gorsel(),
         aktif="haberler",
         oturum_acik=True,
         csrf=security.csrf_token(),
@@ -217,7 +293,11 @@ def news_delete(haber_id: int):
         return redirect(url_for("admin.news_list"))
 
     ad = kayit.title_tr
-    yukleme.sil_dosya(kayit.image or "")
+    # Satirlari CASCADE siliyor; dosyalari kimse silmez, burada
+    # tek tek kaldiriliyor. Kapak galerinin bir uyesi oldugu icin
+    # ayrica silinmesine gerek yok.
+    for gorsel in list(kayit.images):
+        yukleme.sil_dosya(gorsel.path)
     db.session.delete(kayit)
     db.session.commit()
     flash(f"“{ad}” silindi.", "ok")

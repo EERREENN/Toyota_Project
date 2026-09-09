@@ -1275,6 +1275,7 @@ EN: dict[str, str] = {
         "News, developments and announcements from Toyota Motor Manufacturing Türkiye.",
     "Haberi İncele": "Read the article",
     "Tüm Haberlere Dön": "Back to all news",
+    "Haberden diğer görseller": "More images from this article",
     "Henüz haber bulunmuyor.": "There are no news articles yet.",
 
     # Kategori filtresi. Kategori ADLARI burada YOK: onlar

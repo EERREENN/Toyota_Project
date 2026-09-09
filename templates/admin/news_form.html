@@ -23,7 +23,6 @@
 
 <form method="post" enctype="multipart/form-data" class="yn-form">
   <input type="hidden" name="_csrf" value="{{ csrf }}">
-  <input type="hidden" name="mevcut_gorsel" value="{{ deger.image }}">
 
   <div class="yn-kart">
     <h2 class="yn-kart__baslik">Metin</h2>
@@ -104,18 +103,63 @@
         </select>
       </div>
     </div>
+  </div>
 
-    <div class="yn-alan">
-      <label for="gorsel">Görsel</label>
-      <input type="file" id="gorsel" name="gorsel" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
-      <small>jpg, jpeg, png veya webp. Yüklenmezse sitede varsayılan yer tutucu görünür.</small>
-      {%- if deger.image %}
-      <img id="gorsel-onizleme" class="yn-form__onizleme"
-           src="{{ url_for('static', filename=deger.image) }}" alt="">
-      {%- else %}
-      <img id="gorsel-onizleme" class="yn-form__onizleme" alt="" hidden>
-      {%- endif %}
+  {#- GORSELLER  --  haber basina en fazla `azami_gorsel` tane.
+      Sayi UC yerde birden zorlanıyor; buradaki sayac ve pasif dugme
+      yalnizca ilk katman, son sozu sunucu soyluyor
+      (bkz. app/blueprints/admin/news.py -> _kaydet). -#}
+  <div class="yn-kart" id="gorsel-kart"
+       data-azami="{{ azami_gorsel }}">
+    <h2 class="yn-kart__baslik">Görseller</h2>
+    <p class="yn-aciklama">
+      Bir haberde en fazla <strong>{{ azami_gorsel }}</strong> fotoğraf olabilir.
+      jpg, jpeg, png veya webp. Hiç fotoğraf yoksa sitede varsayılan yer
+      tutucu görünür. <strong>Kapak</strong>, listede ve haberin başında
+      görünen fotoğraftır.
+    </p>
+
+    {%- if deger.gorseller %}
+    <ul class="yn-galeri">
+      {%- for gorsel in deger.gorseller %}
+      <li class="yn-galeri__oge">
+        <img class="yn-galeri__gorsel"
+             src="{{ url_for('static', filename=gorsel.path) }}" alt="">
+        <div class="yn-galeri__secim">
+          <label class="yn-galeri__etiket">
+            <input type="radio" name="kapak" value="{{ gorsel.id }}"
+                   {{ 'checked' if deger.kapak_id == gorsel.id }}>
+            Kapak
+          </label>
+          <label class="yn-galeri__etiket yn-galeri__etiket--sil">
+            <input type="checkbox" name="sil_gorsel" value="{{ gorsel.id }}">
+            Sil
+          </label>
+        </div>
+      </li>
+      {%- endfor %}
+    </ul>
+    {%- else %}
+    <p class="yn-galeri__bos">Bu haberde henüz fotoğraf yok.</p>
+    {%- endif %}
+
+    {#- Dosya alani gizli: secim "Fotoğraf Ekle" dugmesinden geciyor,
+        cunku dugme limite gelince pasiflesiyor. Alan yine de formun
+        icinde ve adiyla gonderiliyor. -#}
+    <input type="file" id="gorseller" name="gorseller" multiple hidden
+           accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+
+    <div class="yn-galeri__araclar">
+      <button type="button" id="gorsel-ekle" class="yn-dugme">Fotoğraf Ekle</button>
+      <span id="gorsel-sayac" class="yn-galeri__sayac"
+            aria-live="polite">0/{{ azami_gorsel }}</span>
     </div>
+
+    <p id="gorsel-uyari" class="yn-alan__uyari" role="alert" hidden></p>
+
+    {#- Henuz KAYDEDILMEMIS secimler. Sunucuya gitmeden once burada
+        gorunur ve tek tek geri alinabilir. -#}
+    <ul id="gorsel-yeni" class="yn-galeri yn-galeri--yeni"></ul>
   </div>
 
   <div class="yn-eylemler">
@@ -127,16 +171,158 @@
 
 {% block scripts %}
 <script>
+  /* ------------------------------------------------------------
+     GORSEL SAYACI  --  limitin TARAYICI tarafi (ilk katman)
+
+     Buradaki kontrol kolayligi saglar, guvenligi DEGIL: devtools
+     ya da curl ile atlanabilir. Son sozu sunucu soyluyor
+     (app/blueprints/admin/news.py -> _kaydet).
+
+     Sayi "yeni secilen" degil TOPLAM uzerinden: kayitli olup
+     silinmeyecek gorseller + yeni secilenler. Silme kutusu
+     isaretlendiginde toplam duser ve dugme yeniden acilir.
+     ------------------------------------------------------------ */
   (function () {
-    var girdi = document.getElementById("gorsel");
-    var onizleme = document.getElementById("gorsel-onizleme");
-    if (!girdi || !onizleme) return;
+    var kart = document.getElementById("gorsel-kart");
+    if (!kart) return;
+
+    var AZAMI = parseInt(kart.getAttribute("data-azami"), 10) || 5;
+    var girdi = document.getElementById("gorseller");
+    var dugme = document.getElementById("gorsel-ekle");
+    var sayac = document.getElementById("gorsel-sayac");
+    var uyari = document.getElementById("gorsel-uyari");
+    var liste = document.getElementById("gorsel-yeni");
+    var silKutulari = kart.querySelectorAll("input[name='sil_gorsel']");
+    var form = kart.closest("form");
+
+    // Henuz gonderilmemis secimler. <input type=file> her secimde
+    // oncekini SILDIGI icin biriktirme burada tutuluyor; alanin
+    // kendi files listesi her degisiklikte buradan yeniden kuruluyor.
+    var secilen = [];
+
+    function kayitliKalan() {
+      var adet = 0;
+      Array.prototype.forEach.call(silKutulari, function (kutu) {
+        if (!kutu.checked) adet++;
+      });
+      return adet;
+    }
+
+    function toplam() { return kayitliKalan() + secilen.length; }
+
+    function uyar(metin) {
+      uyari.textContent = metin || "";
+      uyari.hidden = !metin;
+    }
+
+    function ciz() {
+      liste.textContent = "";
+      secilen.forEach(function (dosya, sira) {
+        var oge = document.createElement("li");
+        oge.className = "yn-galeri__oge";
+
+        var resim = document.createElement("img");
+        resim.className = "yn-galeri__gorsel";
+        resim.alt = "";
+        resim.src = URL.createObjectURL(dosya);
+        // Yuklendikten sonra nesne adresini birak: form uzun sure
+        // acik kalirsa bellekte birikmesin.
+        resim.addEventListener("load", function () {
+          URL.revokeObjectURL(resim.src);
+        });
+
+        var alt = document.createElement("div");
+        alt.className = "yn-galeri__secim";
+
+        var rozet = document.createElement("span");
+        rozet.className = "yn-galeri__rozet";
+        rozet.textContent = "Yeni";
+
+        var kaldir = document.createElement("button");
+        kaldir.type = "button";
+        kaldir.className = "yn-galeri__kaldir";
+        kaldir.textContent = "Kaldır";
+        kaldir.addEventListener("click", function () {
+          secilen.splice(sira, 1);
+          uyar("");
+          tazele();
+        });
+
+        alt.appendChild(rozet);
+        alt.appendChild(kaldir);
+        oge.appendChild(resim);
+        oge.appendChild(alt);
+        liste.appendChild(oge);
+      });
+    }
+
+    function tazele() {
+      var adet = toplam();
+      sayac.textContent = adet + "/" + AZAMI;
+      sayac.classList.toggle("yn-galeri__sayac--dolu", adet >= AZAMI);
+      dugme.disabled = adet >= AZAMI;
+
+      // Alanin files listesini secilenlerle esitle: forma yalnizca
+      // burada duran dosyalar gider.
+      var tasima = new DataTransfer();
+      secilen.forEach(function (dosya) { tasima.items.add(dosya); });
+      girdi.files = tasima.files;
+
+      ciz();
+    }
+
+    function ayniMi(a, b) {
+      return a.name === b.name && a.size === b.size &&
+             a.lastModified === b.lastModified;
+    }
+
+    dugme.addEventListener("click", function () { girdi.click(); });
+
     girdi.addEventListener("change", function () {
-      var dosya = girdi.files && girdi.files[0];
-      if (!dosya) return;
-      onizleme.src = URL.createObjectURL(dosya);
-      onizleme.hidden = false;
+      var gelen = Array.prototype.slice.call(girdi.files);
+      var bosluk = AZAMI - toplam();
+      var eklenen = 0;
+      var atlanan = 0;
+
+      gelen.forEach(function (dosya) {
+        var zatenVar = secilen.some(function (v) { return ayniMi(v, dosya); });
+        if (zatenVar) return;
+        if (eklenen >= bosluk) { atlanan++; return; }
+        secilen.push(dosya);
+        eklenen++;
+      });
+
+      uyar(atlanan
+        ? "En fazla " + AZAMI + " fotoğraf yükleyebilirsiniz. " +
+          atlanan + " fotoğraf eklenmedi."
+        : "");
+      tazele();
     });
+
+    Array.prototype.forEach.call(silKutulari, function (kutu) {
+      kutu.addEventListener("change", function () {
+        // Kapak silinmek uzere isaretlendiyse secimi baska bir
+        // gorsele tasi; sunucu da ayni dususe sahip ama editor
+        // ne olacagini burada gorsun.
+        var satir = kutu.closest(".yn-galeri__oge");
+        var kapak = satir && satir.querySelector("input[name='kapak']");
+        if (kutu.checked && kapak) kapak.checked = false;
+        uyar("");
+        tazele();
+      });
+    });
+
+    // Son savunma: bir sekilde limit asilmissa gonderme.
+    if (form) {
+      form.addEventListener("submit", function (olay) {
+        if (toplam() > AZAMI) {
+          olay.preventDefault();
+          uyar("En fazla " + AZAMI + " fotoğraf yükleyebilirsiniz.");
+        }
+      });
+    }
+
+    tazele();
   })();
 </script>
 {% endblock %}

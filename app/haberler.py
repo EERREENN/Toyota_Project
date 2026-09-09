@@ -8,7 +8,14 @@ yapmasi gerekmez.
 
 Sozlugun anahtarlari sablonlarin bekledigi adlardir:
 
-    id · slug · date · image · category · title · summary · content
+    id · slug · date · image · gallery · category · title · summary
+    · content
+
+`image` KAPAK gorselidir, `gallery` ise ayni haberin KAPAK DISINDAKI
+gorselleri (bkz. app/models.py -> NewsImage). Ikisi ayrilmis durumda
+cunku kart yalnizca kapagi basiyor, detay sayfasi ikisini iki ayri
+yerde gosteriyor: kapak basligin altinda buyuk, digerleri metnin
+altinda serit halinde.
 
 `content` bir PARAGRAF LISTESIDIR: veritabanindaki duz metin bos
 satirlardan bolunur. Paragraf icindeki tek satir sonlari korunur ve
@@ -70,6 +77,16 @@ def _coz(kayit: News, locale: str) -> dict:
         # veriyor; ikisi de ISO metin bekliyor.
         "date": kayit.date.isoformat() if kayit.date else "",
         "image": kayit.image or "",
+        # Kapak galeriden ELENIYOR: yoksa detay sayfasinda ayni
+        # fotograf hem basta buyuk hem seritte ikinci kez cikardi.
+        "gallery": [
+            {
+                "path": gorsel.path,
+                "alt": _metin(gorsel.alt_tr, gorsel.alt_en, locale),
+            }
+            for gorsel in kayit.images
+            if gorsel.path and gorsel.path != (kayit.image or "")
+        ],
         "category": _metin(kayit.category_tr, kayit.category_en, locale),
         "title": _metin(kayit.title_tr, kayit.title_en, locale),
         "summary": _metin(kayit.summary_tr, kayit.summary_en, locale),

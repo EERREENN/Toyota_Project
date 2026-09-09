@@ -87,6 +87,52 @@
   color: var(--ink);
 }
 
+/* ---------- Galeri: kapak disindaki gorseller ----------
+   Metnin ALTINDA. auto-fit + minmax: telefonda tek sutun, tablette
+   iki, genis ekranda uce cikar -- kirilma noktasi yazmadan. Sabit
+   sutun sayisi verilseydi 360px'lik bir ekranda gorseller pul
+   boyutuna inerdi. */
+.tk-news-gallery {
+  margin: clamp(28px, 6vw, 40px) 0 0;
+  padding-top: clamp(18px, 4vw, 24px);
+  border-top: 1px solid var(--border);
+}
+
+.tk-news-gallery__title {
+  margin: 0 0 clamp(12px, 3vw, 16px);
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tk-news-gallery__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: clamp(10px, 2.5vw, 16px);
+}
+
+.tk-news-gallery__item {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Sabit oran: farkli en/boy oranlarindaki basin gorselleri yan yana
+   gelince izgara tirtikli gorunmesin. */
+.tk-news-gallery__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
 /* ---------- Geri donus ---------- */
 .tk-news-article__back {
   margin: clamp(28px, 6vw, 40px) 0 0;

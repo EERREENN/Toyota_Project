@@ -44,6 +44,8 @@
 
   <h1 class="tk-news-article__title">{{ haber.title }}</h1>
 
+  {#- Kapak gorseli. Galerinin geri kalani metnin ALTINDA; boylece
+      okuyucu once metne varir, fotograflar okumayi bolmez. -#}
   {%- if haber.image %}
   <figure class="tk-news-article__figure">
     <img src="{{ url_for('static', filename=haber.image) }}" alt="">
@@ -58,6 +60,26 @@
     <p>{{ paragraf }}</p>
     {%- endfor %}
   </div>
+
+  {#- Kapak DISINDAKI gorseller (app/haberler.py -> _coz). Kapak
+      burada tekrar basilmaz. Galerisi olmayan haberde bolum hic
+      olusmaz -- bos bir baslik gorunmesin. -#}
+  {%- if haber.gallery %}
+  <section class="tk-news-gallery" aria-labelledby="galeri-basligi">
+    <h2 class="tk-news-gallery__title" id="galeri-basligi">
+      {{ _('Haberden diğer görseller') }}
+    </h2>
+    <ul class="tk-news-gallery__list">
+      {%- for gorsel in haber.gallery %}
+      <li class="tk-news-gallery__item">
+        <img class="tk-news-gallery__image"
+             src="{{ url_for('static', filename=gorsel.path) }}"
+             alt="{{ gorsel.alt }}" loading="lazy" decoding="async">
+      </li>
+      {%- endfor %}
+    </ul>
+  </section>
+  {%- endif %}
 
   <p class="tk-news-article__back">
     <a href="{{ url_for('public.news') }}">&larr; {{ _('Tüm Haberlere Dön') }}</a>

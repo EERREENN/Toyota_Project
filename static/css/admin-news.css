@@ -88,15 +88,107 @@
   background: #fafafa;
 }
 
-.yn-form__onizleme {
-  width: 180px;
+/* ============================================================
+   GORSEL GALERISI  --  haber formu
+
+   Sabit genislikli kolon degil auto-fill: dar ekranda tek sutuna
+   duser, genis ekranda satira sigdigi kadar kart dizilir. Panel
+   telefondan da aciliyor.
+   ============================================================ */
+.yn-galeri {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.yn-galeri--yeni:empty {
+  margin: 0;
+}
+
+.yn-galeri__oge {
+  border: 1px solid var(--yn-cizgi);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--yn-yuzey);
+}
+
+.yn-galeri__gorsel {
+  display: block;
+  width: 100%;
   height: 110px;
   object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid var(--yn-cizgi);
   background: #eceef1;
-  display: block;
-  margin-top: 8px;
+}
+
+.yn-galeri__secim {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--yn-cizgi);
+  font-size: 0.85rem;
+}
+
+.yn-galeri__etiket {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  color: var(--yn-metin);
+}
+
+.yn-galeri__etiket--sil {
+  color: var(--yn-hata);
+}
+
+.yn-galeri__rozet {
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--yn-ok);
+}
+
+.yn-galeri__kaldir {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--yn-hata);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.yn-galeri__bos {
+  margin: 0 0 14px;
+  color: var(--yn-soluk);
+}
+
+.yn-galeri__araclar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Sayac: limite gelince dugme pasiflesiyor, sayi da renk
+   degistiriyor -- pasif dugmenin sebebi gorunur olsun. */
+.yn-galeri__sayac {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--yn-soluk);
+}
+
+.yn-galeri__sayac--dolu {
+  color: var(--yn-hata);
+}
+
+.yn-galeri__araclar .yn-dugme[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .yn-alan textarea.yn-alan__icerik {
