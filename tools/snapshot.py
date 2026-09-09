@@ -36,11 +36,14 @@ PAGES = [
     ("uretim", "/uretim-sistemi"),
     ("cevre", "/cevre"),
     ("haberler", "/news"),
-    # Detay sablonu da kapsama girsin. Adres SU ANKI ornek habere bagli
-    # (tools/seed_news.py); ornekler gercek haberlerle degistirilirken
-    # burayi da guncelle -- yoksa anlik goruntu 404 sayfasini kaydeder,
-    # betik bunu "!! 404" diye yazar.
-    ("haber-detay", "/news/ornek-haber-basligi-uretim"),
+    # Detay sablonu da kapsama girsin. Adres tools/seed_news.py'nin
+    # yazdigi GERCEK bir habere bagli; o dosyadaki baslik degisirse
+    # slug da degisir ve burayi guncellemek gerekir -- yoksa anlik
+    # goruntu 404 sayfasini kaydeder, betik bunu "!! 404" diye yazar.
+    #
+    # Bilerek GALERISI OLAN bir haber secildi: kapak + galeri seridi
+    # birlikte kapsama girsin (bkz. templates/pages/news_detail.html).
+    ("haber-detay", "/news/yeni-nesil-toyota-c-hr-in-uretimi-sakarya-da-basladi"),
 ]
 LANGS = ["tr", "en"]
 
