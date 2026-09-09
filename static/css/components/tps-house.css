@@ -26,7 +26,14 @@
 @media (min-width: 720px) {
   .tk-house__diagram {
     display: block;
+    /* Sema 980px'lik blogun tamamini kaplamiyor: viewBox 800x640,
+       yani neredeyse kare. Tam genislikte basildiginda cok
+       yukseliyor ve tek ekrana sigmiyordu. Ust siniri daraltip
+       ortaladik; `width: 100%` durdugu icin dar ekranda hala
+       kucule biliyor (720px altinda zaten akordeona geciyor). */
     width: 100%;
+    max-width: 720px;
+    margin-inline: auto;
     height: auto;
     margin-top: clamp(20px, 5vw, 28px);
     overflow: visible;

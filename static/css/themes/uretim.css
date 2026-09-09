@@ -12,22 +12,41 @@
   background: #dfe3e8 url("../../img/tps-bg.jpg") center center / cover no-repeat;
 }
 .tk-bg--uretim::after {
-  /* fabrika gorseli acik oldugu icin pece daha ince: gorsel net gorunsun,
-     yazinin oldugu orta bant biraz daha yogun kalsin */
+  /* Fabrika fotografi ayrintili: catilar, boru hatlari, arac
+     siralari. Ince bir pecenin ardinda bu ayrinti yazinin altinda
+     desen olusturuyor ve metni okunmaz hale getiriyordu -- sorun
+     yazinin rengi degil, ARKASININ sakinlesmemesiydi.
+     Pece yogunlastirildi; gorsel hala secilir ama artik yazinin
+     arkasinda duz bir zemin var. Ust ve alt uclar daha seffaf
+     kaliyor ki fotograf tamamen kaybolmasin. */
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg,
-    rgba(245, 247, 250, 0.66) 0%,
-    rgba(245, 247, 250, 0.78) 30%,
-    rgba(245, 247, 250, 0.80) 70%,
-    rgba(245, 247, 250, 0.66) 100%);
+    rgba(245, 247, 250, 0.82) 0%,
+    rgba(245, 247, 250, 0.92) 30%,
+    rgba(245, 247, 250, 0.93) 70%,
+    rgba(245, 247, 250, 0.82) 100%);
+}
+
+/* Ikincil metin rengi SAYFA CAPINDA koyulastiriliyor.
+   Bilesenler zaten var(--muted) kullaniyor, o yuzden tek satir
+   hepsine islliyor: adim metinleri, sozluk aciklamalari, andon
+   satirlari, kart ozetleri... Degisken burada, govdenin uzerinde
+   yeniden tanimlandigi icin BASKA SAYFALAR ETKILENMIYOR --
+   tokens.css'teki #6a6d70 yerinde duruyor.
+   #6a6d70 -> #4a4e55: acik zeminde kontrast belirgin artiyor,
+   renk ailesi ayni kaliyor. */
+.page-uretim {
+  --muted: #4a4e55;
 }
 
 .page-uretim .tk-hero__lede,
-.page-uretim .tk-block > p {
-  color: #23262e;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+.page-uretim .tk-block > p,
+.page-uretim .tk-block > ul,
+.page-uretim .tk-block > ol {
+  color: #1b1e24;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85);
 }
 .page-uretim .tk-block h1,
 .page-uretim .tk-block h2,
@@ -36,6 +55,54 @@
   text-shadow: 0 1px 3px rgba(255, 255, 255, 0.85);
 }
 .page-uretim .tk-card-grid__station-title { color: #1c2430; }
+
+/* ---------- "TPS nasil dogdu" adimlari ----------
+   Bu liste (components/process-steps.css) kendi zeminini
+   TASIMIYOR: baslik, donem ve aciklama dogrudan fabrika
+   fotografinin uzerinde duruyordu. Peceyi yogunlastirmak tek
+   basina yetmiyor, cunku acilan aciklama uzun ve genis bir alani
+   kapliyor.
+
+   Bilesenin kendisine dokunulmadi: ayni liste TMMT sayfasinda da
+   kullaniliyor ve orasi duz zeminli, ihtiyaci yok. Bu yuzden
+   kural .page-uretim altina kapsandi.
+
+   Zemin tam opak DEGIL: fotograf hafifce sizsin, sayfanin
+   karakteri kaybolmasin. Bulaniklik destekleyen tarayicida
+   metnin arkasini iyice sakinlestiriyor; desteklemeyende
+   yalnizca blur uygulanmiyor, okunurluk yine yerinde.
+
+   DIKKAT -- bu kural yalnizca 860px ALTINDA is goruyor: bilesen
+   860px ustunde .tk-steps__item'i `display: contents` yapiyor,
+   yani ogenin kutusu hic olusmuyor ve zemin/kenarlik/blur
+   uygulanmiyor. Orasi asagida ayrica ele aliniyor. */
+.page-uretim .tk-steps__item {
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(28, 36, 48, 0.10);
+  border-radius: 6px;
+  backdrop-filter: blur(3px);
+}
+
+/* Adim metni pecenin degil kendi zemininin uzerinde: golgeye
+   gerek yok, golge burada bulanik gosterirdi. */
+.page-uretim .tk-steps__text {
+  color: #33373e;
+  text-shadow: none;
+}
+
+/* Genis ekran: yukaridaki kutu olusmadigi icin baslik ve donem
+   dogrudan fotografin uzerinde kaliyor. Acilan panelin kendi opak
+   zemini var (components/process-steps.css), sorun yalnizca sira
+   halindeki basliklarda -- onlara sayfanin geri kalaninda
+   kullanilan beyaz haleyi veriyoruz.
+   Kirilma noktasi bilesenin kendi 860px'iyle AYNI; ayrisirsa
+   basliklar iki duzende de halesiz kalabilir. */
+@media (min-width: 860px) {
+  .page-uretim .tk-steps__title,
+  .page-uretim .tk-steps__period {
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+  }
+}
 
 /* Kartlar: beyaz + celik gri golge */
 .page-uretim .tk-card {

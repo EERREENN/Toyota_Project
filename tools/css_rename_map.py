@@ -163,6 +163,15 @@ DEGISTIRILEN = {
     ".lang-switch": "acik zeminde acik gri kap",
     ".lang-switch .lang-opt": "acik zeminde koyu yazi",
     ".lang-switch .lang-opt:hover": "acik zeminde kirmizi vurgu",
+
+    # 2026-09-09: TPS sayfasinda yazi arka plandan okunmuyordu.
+    # Fabrika fotografi ayrintili; ince pecenin ardinda o ayrinti
+    # metnin altinda desen olusturuyordu. Pece yogunlastirildi ve
+    # govde metni koyulastirildi. Kural kayboldu degil, YALNIZCA
+    # degerleri degisti.
+    ".tk-bg--uretim::after": "pece yogunlastirildi (okunurluk)",
+    ".page-uretim .tk-hero__lede": "metin koyulastirildi (okunurluk)",
+    ".page-uretim .tk-block > p": "metin koyulastirildi (okunurluk)",
 }
 
 # HTML'de kullanilan ama BILEREK stilsiz olan siniflar.

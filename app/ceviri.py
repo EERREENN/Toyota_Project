@@ -698,6 +698,16 @@ EN: dict[str, str] = {
         "The system wasn't designed in a day; It consisted of the complementary ideas "
         "of three generations. By touching a step you can see its detail.",
     "Sakichi Toyoda ve dokuma tezgâhı": "Sakichi Toyoda and the loom",
+
+    # "TPS nasil dogdu" adimlarinin gorsel alt metinleri
+    # (templates/pages/tps.html).
+    "Arşiv fotoğrafı: Toyoda otomatik dokuma tezgâhı ve yanında dönemin bir portresi.":
+        "Archive photograph: the Toyoda automatic loom, next to a portrait "
+        "from the period.",
+    "Toyota'nın 1930'lardaki ilk seri üretim binek otomobili.":
+        "Toyota's first mass-produced passenger car, from the 1930s.",
+    "Toyota'nın erken dönem otomobil fabrikasının havadan çekilmiş arşiv fotoğrafı.":
+        "Aerial archive photograph of Toyota's early automobile plant.",
     "1920'ler": "1920s",
     "Sakichi Toyoda, ipliği koptuğunda kendi kendini durduran bir otomatik dokuma "
     "tezgâhı geliştirdi. Böylece bir işçinin tek bir tezgâhın başında beklemesi "

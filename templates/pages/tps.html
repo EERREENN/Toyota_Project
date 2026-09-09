@@ -208,9 +208,10 @@
         <span class="tk-steps__period">{{ _('1920\'ler') }}</span>
       </button>
       <div class="tk-steps__detail" id="adim-46-sakichi" hidden>
-        <div class="tk-steps__placeholder" aria-hidden="true">
-          <span>1</span>
-        </div>
+        <img class="tk-steps__image"
+             src="{{ url_for('static', filename='img/TPS/1.jpg') }}"
+             alt="{{ _('Arşiv fotoğrafı: Toyoda otomatik dokuma tezgâhı ve yanında dönemin bir portresi.') }}"
+             loading="lazy" decoding="async">
         <p class="tk-steps__text">{{ _('Sakichi Toyoda, ipliği koptuğunda kendi kendini durduran bir otomatik dokuma tezgâhı geliştirdi. Böylece bir işçinin tek bir tezgâhın başında beklemesi gerekmiyor, hatalı kumaş üretilmiyordu. Bu fikir, bugün jidoka olarak bilinen "insan dokunuşlu otomasyon" ilkesinin kökeni oldu.')|safe }}</p>
       </div>
     </li>
@@ -222,9 +223,13 @@
         <span class="tk-steps__period">{{ _('1930\'lar') }}</span>
       </button>
       <div class="tk-steps__detail" id="adim-46-kiichiro" hidden>
-        <div class="tk-steps__placeholder" aria-hidden="true">
-          <span>2</span>
-        </div>
+        {#- Saydam zeminli urun fotografi: kirpilmasin diye --contain.
+            Digerleri opak arsiv fotografi, onlar varsayilan kirpmayla
+            (cover) basiliyor. -#}
+        <img class="tk-steps__image tk-steps__image--contain"
+             src="{{ url_for('static', filename='img/TPS/3.png') }}"
+             alt="{{ _('Toyota\'nın 1930\'lardaki ilk seri üretim binek otomobili.') }}"
+             loading="lazy" decoding="async">
         <p class="tk-steps__text">{{ _('Sakichi\'nin oğlu Kiichiro Toyoda, otomobil üretimine geçerken her parçanın tam gerektiği anda ve tam gerektiği miktarda hatta ulaşması gerektiğini savundu. "Just-in-Time" kavramı bu yaklaşımdan doğdu.')|safe }}</p>
       </div>
     </li>
@@ -236,9 +241,10 @@
         <span class="tk-steps__period">{{ _('1945 sonrası') }}</span>
       </button>
       <div class="tk-steps__detail" id="adim-46-ohno" hidden>
-        <div class="tk-steps__placeholder" aria-hidden="true">
-          <span>3</span>
-        </div>
+        <img class="tk-steps__image"
+             src="{{ url_for('static', filename='img/TPS/2.jpg') }}"
+             alt="{{ _('Toyota\'nın erken dönem otomobil fabrikasının havadan çekilmiş arşiv fotoğrafı.') }}"
+             loading="lazy" decoding="async">
         <p class="tk-steps__text">{{ _('İkinci Dünya Savaşı sonrasında Taiichi Ohno, bu iki fikri tutarlı bir üretim sistemine dönüştürdü. Amerikan süpermarketlerinde rafın yalnızca satılan kadar doldurulmasından esinlenerek çekme sistemini ve kanban\'ı geliştirdi. Kaynakların kıt olduğu bir dönemde israfı ortadan kaldırmak zorunluluktu; bu zorunluluk bir yönetim felsefesine dönüştü.')|safe }}</p>
       </div>
     </li>

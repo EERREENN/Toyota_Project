@@ -111,6 +111,17 @@
   height: auto;
   object-fit: cover;
 }
+/* Arka plani kesilmis (saydam zeminli) urun fotograflari.
+   Varsayilan `cover` boyle bir gorseli kirpar ve saydam alandan
+   sayfanin arka plani sizar -- opak arsiv fotograflarinin yaninda
+   tutarsiz durur. Bu degistirici gorselin TAMAMINI gosterir ve
+   altina yer tutucuyla ayni notr zemini koyar. */
+.tk-steps__image--contain {
+  object-fit: contain;
+  background: linear-gradient(135deg, #ffffff, #eeede9);
+  padding: 8px;
+}
+
 .tk-steps__placeholder {
   aspect-ratio: 16 / 9;
   background: linear-gradient(135deg, #ffffff, #eeede9);
