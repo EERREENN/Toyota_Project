@@ -250,6 +250,11 @@ EN: dict[str, str] = {
     "Kaynaklar": "Resources",
     "global.toyota – resmi haber duyuruları": "global.toyota – official news announcements",
 
+    "Tanıtım videosu": "Introduction video",
+    "TMMT tanıtım videosu": "TMMT introduction video",
+    "Arifiye'deki fabrikayı ve üretim hattını videoda izleyin.":
+        "Watch the factory in Arifiye and its production line on video.",
+
     # ----------------------------------------------------------
     #  Global Toyota sayfasi
     # ----------------------------------------------------------
@@ -558,6 +563,39 @@ EN: dict[str, str] = {
     "Yönetim": "Management",
     "Yönetim Kurulu Başkanı": "Chairman of the Board",
     "Başkan ve CEO": "President and CEO",
+
+    "Toyota'nın elektrikli ve elektrifiye araç ailesi.": "Toyota's electric and electrified vehicle family.",
+    "Tam elektrikli satış": "Fully electric sales",
+    "2025 yılında satılan tam elektrikli araç sayısı.": "Number of fully electric vehicles sold in 2025.",
+    "Yıllık artış": "Year-on-year growth",
+    "Tam elektrikli satışların bir önceki yıla göre artışı.": "Growth in fully electric sales compared with the previous year.",
+    "Paralel teknoloji": "Parallel technologies",
+    "Hibrit, şarj edilebilir hibrit, tam elektrikli ve hidrojen yakıt hücresi aynı anda geliştiriliyor.":
+        "Hybrid, plug-in hybrid, fully electric and hydrogen fuel cell are all "
+        "developed at the same time.",
+    "Lüks segment markası": "Luxury segment brand",
+    "Kompakt ve küçük sınıf araçlar": "Compact and small class vehicles",
+    "Ticari araç ve kamyon": "Commercial vehicles and trucks",
+    "Çubuklar gerçek hisse oranını gösterir.": "Bars show the actual shareholding ratio.",
+    "TNGA platformu: ortak mimari, farklı segmentler.": "The TNGA platform: one shared architecture, different segments.",
+    "Avrupa yollarına ve mevzuatına uygun süspansiyon, emisyon ve güvenlik doğrulamaları burada yapılıyor.":
+        "Suspension, emissions and safety validation for European roads and "
+        "regulations is carried out here.",
+    "Konsept araçların ilk eskizinden kil modeline kadar tasarım dili burada belirleniyor.":
+        "The design language is set here, from a concept car's first sketch to "
+        "its clay model.",
+    "WRC ve Le Mans programlarının mühendisliği; yarıştan gelen bilgi seri üretim araçlarına aktarılıyor.":
+        "Engineering for the WRC and Le Mans programmes; what the track teaches "
+        "is carried back into production cars.",
+    "Otonom sürüş, sürücü destek yazılımı ve insanla iş birliği yapan robotlar üzerine çalışıyor.":
+        "Works on autonomous driving, driver assistance software and robots that "
+        "collaborate with people.",
+    "Arene işletim sistemi ve Woven City'nin dijital altyapısı bu iştirak tarafından geliştiriliyor.":
+        "The Arene operating system and Woven City's digital infrastructure are "
+        "developed by this subsidiary.",
+    "Hidrojen yakıt hücresi ve katı hal batarya çalışmaları.": "Hydrogen fuel cell and solid-state battery development work.",
+    "Woven City resmi sitesi ↗": "Woven City official site ↗",
+    "Toyota Gazoo Racing resmi sitesi ↗": "Toyota Gazoo Racing official site ↗",
 
     # ----------------------------------------------------------
     #  Toyota Production System sayfasi
@@ -1209,6 +1247,25 @@ EN: dict[str, str] = {
         "Access the full annual sustainability report from which the figures on this "
         "page come.",
     "Raporu görüntüle": "View report",
+
+    "Bugün": "Today",
+    "Su yönetimi": "Water management",
+    "Geri dönüşüm temelli sistemler": "Recycling-based systems",
+    "Doğayla uyum": "In harmony with nature",
+    "Hidrojen yakıt hücresi: enerjisini bataryadan değil, hidrojenden alır.":
+        "The hydrogen fuel cell: it draws its energy from hydrogen, not from a "
+        "battery.",
+    "Karbon nötrlüğe giden dört paralel yol.": "Four parallel roads to carbon neutrality.",
+    "Bir fabrikanın bugünkü emisyonunun büyük bölümü elektrikten geliyor. Bu yüzden ilk adım tüketimi düşürmek, kalan elektriği de yenilenebilir kaynaktan almak.":
+        "Most of a factory's emissions today come from electricity. So the first "
+        "step is to cut consumption, and to source what is left from renewables.",
+    "Verimlilik ve yeşil elektrik tek başına yetmiyor: boya fırınları ve döküm gibi yüksek ısı isteyen süreçler için yeni teknoloji gerekiyor.":
+        "Efficiency and green electricity are not enough on their own: processes "
+        "that need high heat, such as paint ovens and casting, call for new "
+        "technology.",
+    "Hedef, emisyonu başka yerde dengelemek değil üretimin kendisinden karbonu çıkarmak; geriye kalan küçük pay ancak o zaman nötrlenebilir.":
+        "The aim is not to offset emissions elsewhere but to take carbon out of "
+        "production itself; only then can the small remainder be neutralised.",
 
     # ----------------------------------------------------------
     #  Haberler sayfasi

@@ -9,6 +9,7 @@
 #}
 {% extends "base.html" %}
 {% import "components/macros.html" as c %}
+{% import "components/ikonlar.html" as i %}
 
 {#- Bu sayfanin yukledigi stil dosyalari, sirasiyla. Tema en sonda:
     ortak kurallari ezebilsin diye. -#}
@@ -29,6 +30,7 @@
   "components/cycle-steps.css",
   "components/mission.css",
   "components/source-list.css",
+  "components/ikon.css",
   "themes/cevre.css",
 ] %}
 {% set aktif = 'cevre' %}
@@ -113,21 +115,25 @@
       <span class="tk-stat-grid__progress-value"><span class="tk-stat-grid__count">2035</span></span>
       <p>{{ _('Üretimde net sıfır karbon için hedeflenen yıl.')|safe }}</p>
     </article>
+    <article class="tk-stat-grid__progress-card tk-stat-grid__progress-card--nitel">
+      <span class="tk-stat-grid__goal">{{ _('Hedef 4: Su Kullanımını En Aza İndirme') }}</span>
+      {{ i.ikon('damla', 'tk-ikon') }}
+      <h3>{{ _('Su yönetimi') }}</h3>
+      <p>{{ _('Üretimde su tüketimini azaltmak ve kullanılan suyu doğaya güvenli biçimde geri kazandırmak.')|safe }}</p>
+    </article>
+    <article class="tk-stat-grid__progress-card tk-stat-grid__progress-card--nitel">
+      <span class="tk-stat-grid__goal">{{ _('Hedef 5: Geri Dönüşüm Temelli Toplum ve Sistemler') }}</span>
+      {{ i.ikon('donusum', 'tk-ikon') }}
+      <h3>{{ _('Geri dönüşüm temelli sistemler') }}</h3>
+      <p>{{ _('Kaynakları döngüsel biçimde kullanmak; araçların ve bataryaların yeniden değerlendirilmesini sağlamak.')|safe }}</p>
+    </article>
+    <article class="tk-stat-grid__progress-card tk-stat-grid__progress-card--nitel">
+      <span class="tk-stat-grid__goal">{{ _('Hedef 6: Doğayla Uyum İçinde Bir Gelecek') }}</span>
+      {{ i.ikon('yaprak', 'tk-ikon') }}
+      <h3>{{ _('Doğayla uyum') }}</h3>
+      <p>{{ _('Biyoçeşitliliği korumak ve doğal yaşam alanlarını iyileştirmek.')|safe }}</p>
+    </article>
   </div>
-  <dl class="tk-stat-grid__goals-list">
-    <div class="tk-stat-grid__goal-row">
-      <dt>{{ _('Hedef 4: Su Kullanımını En Aza İndirme') }}</dt>
-      <dd>{{ _('Üretimde su tüketimini azaltmak ve kullanılan suyu doğaya güvenli biçimde geri kazandırmak.')|safe }}</dd>
-    </div>
-    <div class="tk-stat-grid__goal-row">
-      <dt>{{ _('Hedef 5: Geri Dönüşüm Temelli Toplum ve Sistemler') }}</dt>
-      <dd>{{ _('Kaynakları döngüsel biçimde kullanmak; araçların ve bataryaların yeniden değerlendirilmesini sağlamak.')|safe }}</dd>
-    </div>
-    <div class="tk-stat-grid__goal-row">
-      <dt>{{ _('Hedef 6: Doğayla Uyum İçinde Bir Gelecek') }}</dt>
-      <dd>{{ _('Biyoçeşitliliği korumak ve doğal yaşam alanlarını iyileştirmek.')|safe }}</dd>
-    </div>
-  </dl>
   <p class="tk-note">{{ _('Kaynak: Toyota Sustainability Data Book 2025') }}</p>
 </section>
 
@@ -135,53 +141,72 @@
 <section class="tk-block" id="yolculuk">
   <h2>{{ _('Çevre yolculuğu') }}</h2>
   <p>{{ _('Bir durağa dokunarak o yılın kısa özetini görebilirsiniz.')|safe }}</p>
-  <ol class="tk-timeline">
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1992">
-        <span class="tk-timeline__year">1992</span>
-        <span class="tk-timeline__title">Earth Charter</span>
-      </button>
-      <div class="tk-timeline__detail" id="zt-1992" hidden>
-        <p>{{ _('Toyota Earth Charter yayımlandı: şirketin çevre politikasının temelini oluşturan ilke metni (2000\'de güncellendi).')|safe }}</p>
-      </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1997">
-        <span class="tk-timeline__year">1997</span>
-        <span class="tk-timeline__title">{{ _('İlk hibrit: Prius') }}</span>
-      </button>
-      <div class="tk-timeline__detail" id="zt-1997" hidden>
-        <p>{{ _('Dünyanın ilk seri üretim hibrit otomobili Prius piyasaya sürüldü ve Toyota\'nın elektrikli aktarma organı deneyiminin başlangıcı oldu.')|safe }}</p>
-      </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2015">
-        <span class="tk-timeline__year">2015</span>
-        <span class="tk-timeline__title">Challenge 2050</span>
-      </button>
-      <div class="tk-timeline__detail" id="zt-2015" hidden>
-        <p>{{ _('Paris İklim Anlaşması ile aynı yıl açıklanan Toyota Environmental Challenge 2050, 2050\'ye kadar ulaşılacak altı uzun vadeli hedefi içeriyor.')|safe }}</p>
-      </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2022">
-        <span class="tk-timeline__year">2022</span>
-        <span class="tk-timeline__title">{{ _('SBTi doğrulaması') }}</span>
-      </button>
-      <div class="tk-timeline__detail" id="zt-2022" hidden>
-        <p>{{ _('Toyota\'nın sera gazı azaltım hedefleri, Science Based Targets initiative (SBTi) tarafından bilimsel temelli olarak onaylandı.')|safe }}</p>
-      </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2025">
-        <span class="tk-timeline__year">2025</span>
-        <span class="tk-timeline__title">{{ _('Güncel Data Book') }}</span>
-      </button>
-      <div class="tk-timeline__detail" id="zt-2025" hidden>
-        <p>{{ _('Yayımlanan güncel Sustainability Data Book\'a göre birçok ara hedefe planlanandan önce ulaşıldı.')|safe }}</p>
-      </div>
-    </li>
-  </ol>
+  <div class="tk-timeline-wrap">
+    <ol class="tk-timeline tk-timeline--secmeli">
+      <li class="tk-timeline__stop is-open">
+        <button type="button" class="tk-timeline__button" aria-expanded="true" aria-controls="zt-1992">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/toyota_cevre_img/1992.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">1992</span>
+          <span class="tk-timeline__title">Earth Charter</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1997">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/toyota_cevre_img/1997.jpeg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">1997</span>
+          <span class="tk-timeline__title">{{ _('İlk hibrit: Prius') }}</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2015">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/toyota_cevre_img/2015.webp') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">2015</span>
+          <span class="tk-timeline__title">Challenge 2050</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2022">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/toyota_cevre_img/2022.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">2022</span>
+          <span class="tk-timeline__title">{{ _('SBTi doğrulaması') }}</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2025">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/toyota_cevre_img/2025.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">2025</span>
+          <span class="tk-timeline__title">{{ _('Güncel Data Book') }}</span>
+        </button>
+      </li>
+    </ol>
+    <div class="tk-timeline__panel">
+        <div class="tk-timeline__detail" id="zt-1992">
+          <p>{{ _('Toyota Earth Charter yayımlandı: şirketin çevre politikasının temelini oluşturan ilke metni (2000\'de güncellendi).')|safe }}</p>
+        </div>
+        <div class="tk-timeline__detail" id="zt-1997" hidden>
+          <p>{{ _('Dünyanın ilk seri üretim hibrit otomobili Prius piyasaya sürüldü ve Toyota\'nın elektrikli aktarma organı deneyiminin başlangıcı oldu.')|safe }}</p>
+        </div>
+        <div class="tk-timeline__detail" id="zt-2015" hidden>
+          <p>{{ _('Paris İklim Anlaşması ile aynı yıl açıklanan Toyota Environmental Challenge 2050, 2050\'ye kadar ulaşılacak altı uzun vadeli hedefi içeriyor.')|safe }}</p>
+        </div>
+        <div class="tk-timeline__detail" id="zt-2022" hidden>
+          <p>{{ _('Toyota\'nın sera gazı azaltım hedefleri, Science Based Targets initiative (SBTi) tarafından bilimsel temelli olarak onaylandı.')|safe }}</p>
+        </div>
+        <div class="tk-timeline__detail" id="zt-2025" hidden>
+          <p>{{ _('Yayımlanan güncel Sustainability Data Book\'a göre birçok ara hedefe planlanandan önce ulaşıldı.')|safe }}</p>
+        </div>
+    </div>
+  </div>
   <p class="tk-note">{{ _('Kaynak: global.toyota sürdürülebilirlik sayfaları; thesustainableinnovation.com özeti') }}</p>
 </section>
 
@@ -197,15 +222,10 @@
       </ul>
     </div>
     <figure class="tk-media-split__figure">
-      <div class="tk-media-split__frame" role="img" aria-label="{{ _('Yakıt hücreli araç görseli') }}">
-        <svg viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M18 78 L40 78 L54 54 L128 54 L150 78 L182 78 L182 90 L18 90 Z" fill="currentColor" opacity="0.9"/>
-          <circle cx="58" cy="90" r="12" fill="#1b1d1f"/>
-          <circle cx="142" cy="90" r="12" fill="#1b1d1f"/>
-          <text x="100" y="40" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="20" fill="currentColor">H₂</text>
-        </svg>
-      </div>
-      <figcaption>{{ _('Görsel alanı — buraya yakıt hücreli araç fotoğrafı veya kısa video eklenebilir.') }}</figcaption>
+      <img class="tk-media-split__image"
+           src="{{ url_for('static', filename='img/toyota_cevre_img/hidrojen.jpg') }}"
+           alt="" loading="lazy" decoding="async">
+      <figcaption>{{ _('Hidrojen yakıt hücresi: enerjisini bataryadan değil, hidrojenden alır.') }}</figcaption>
     </figure>
   </div>
   <p class="tk-note">{{ _('Kaynak: pressroom.toyota.com — "2025 Toyota Year in Review"') }}</p>
@@ -271,7 +291,17 @@
 
 <section class="tk-block" id="coklu-yol">
   <h2>{{ _('Çoklu yol yaklaşımı') }}</h2>
-  <p>{{ _('Toyota, karbon nötrlüğe tek bir teknolojiyle değil, bölgeye ve müşteri ihtiyacına göre değişen birden fazla yolla ulaşmayı hedefliyor: hibrit (HEV), şarj edilebilir hibrit (PHEV), tam elektrikli (BEV) ve hidrojen yakıt hücreli (FCEV) araçlar bir arada geliştiriliyor. Bu yaklaşımın arkasındaki fikir, şarj altyapısının zayıf olduğu bir bölgede hibritin, altyapının güçlü olduğu bir bölgede ise elektrikli araçların daha gerçekçi bir çözüm olabileceği.')|safe }}</p>
+  <div class="tk-media-split">
+    <div class="tk-media-split__text">
+      <p>{{ _('Toyota, karbon nötrlüğe tek bir teknolojiyle değil, bölgeye ve müşteri ihtiyacına göre değişen birden fazla yolla ulaşmayı hedefliyor: hibrit (HEV), şarj edilebilir hibrit (PHEV), tam elektrikli (BEV) ve hidrojen yakıt hücreli (FCEV) araçlar bir arada geliştiriliyor. Bu yaklaşımın arkasındaki fikir, şarj altyapısının zayıf olduğu bir bölgede hibritin, altyapının güçlü olduğu bir bölgede ise elektrikli araçların daha gerçekçi bir çözüm olabileceği.')|safe }}</p>
+    </div>
+    <figure class="tk-media-split__figure">
+      <img class="tk-media-split__image"
+           src="{{ url_for('static', filename='img/toyota_cevre_img/coklu-yol.png') }}"
+           alt="" loading="lazy" decoding="async">
+      <figcaption>{{ _('Karbon nötrlüğe giden dört paralel yol.') }}</figcaption>
+    </figure>
+  </div>
 </section>
 
 
@@ -432,19 +462,23 @@
   <h2>{{ _('Döngüsel ekonomi: 4R') }}</h2>
   <p>{{ _('Bir aracın çevresel etkisi yalnızca yolda geçirdiği sürede değil, üretiminden ömrünün sonuna kadar tüm yaşam döngüsünde ortaya çıkar. Toyota\'nın döngüsel ekonomi yaklaşımı bu döngünün her aşamasını hedef alır.')|safe }}</p>
   <section class="tk-grid tk-grid--4">
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('tasarim', 'tk-ikon') }}
       <h3>Redesign</h3>{{- c.kart_alt_basligi('Redesign', _('Yeniden tasarla')) }}
       <p>{{ _('Araçlar, ömrünün sonunda kolay ayrıştırılabilecek ve geri kazanılabilecek şekilde tasarlanır; geri dönüştürülmüş malzeme kullanımı artırılır.')|safe }}</p>
     </div>
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('azalt', 'tk-ikon') }}
       <h3>Reduce</h3>{{- c.kart_alt_basligi('Reduce', _('Azalt')) }}
       <p>{{ _('Üretimde kullanılan malzeme, enerji ve su miktarı sürekli azaltılır.')|safe }}</p>
     </div>
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('donusum', 'tk-ikon') }}
       <h3>Reuse / Remanufacture</h3>{{- c.kart_alt_basligi('Reuse / Remanufacture', _('Yeniden kullan')) }}
       <p>{{ _('Kullanılabilir parçalar toplanır, yenilenir ve yeniden dolaşıma sokulur.')|safe }}</p>
     </div>
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('donusum', 'tk-ikon') }}
       <h3>Recycle</h3>{{- c.kart_alt_basligi('Recycle', _('Geri dönüştür')) }}
       <p>{{ _('Ömrünü tamamlayan araç ve bileşenler ayrıştırılarak malzemeler yeni üretim süreçlerine kazandırılır.')|safe }}</p>
     </div>
@@ -490,18 +524,19 @@
   <h2>{{ _('TMMT\'de çevre') }}</h2>
   <p>{{ _('Global hedefler, Sakarya\'daki fabrikada somut uygulamalara dönüşüyor. TMMT, 1999\'dan bu yana ISO 14001 çevre yönetim sistemi sertifikasına sahip ve enerji, su ve atık azaltımına yönelik sürekli iyileştirme (kaizen) projeleri yürütüyor.')|safe }}</p>
   <section class="tk-grid">
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('sertifika', 'tk-ikon') }}
       <span class="tk-stat-grid__value">1999</span>
       <h3>{{ _('ISO 14001 sertifikası') }}</h3>
       <p>{{ _('Sertifikasyonun başlangıç yılı. Fabrika, çevre yönetim sistemini bu tarihten bu yana uyguluyor.')|safe }}</p>
     </div>
-    <div class="tk-card">
-      <span class="tk-stat-grid__value">None</span>{# DOGRULANMAMIS: rakam girilmedigi icin ekranda "None" yaziyor. Fabrika verisiyle doldur; bos birakilacaksa bu satiri sil. #}
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('sarj', 'tk-ikon') }}
       <h3>{{ _('Enerji ve su verimliliği') }}</h3>
       <p>{{ _('Üretim süreçlerinde tüketimin azaltılmasına yönelik kaizen projeleri.')|safe }}</p>
     </div>
-    <div class="tk-card">
-      <span class="tk-stat-grid__value">None</span>{# DOGRULANMAMIS: rakam girilmedigi icin ekranda "None" yaziyor. Fabrika verisiyle doldur; bos birakilacaksa bu satiri sil. #}
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('atik', 'tk-ikon') }}
       <h3>{{ _('Atık azaltımı') }}</h3>
       <p>{{ _('Üretim atıklarının kaynağında azaltılması ve geri kazanım oranının artırılması.')|safe }}</p>
     </div>
@@ -512,35 +547,29 @@
 <section class="tk-block" id="karbon">
   <h2>{{ _('Karbon nötr fabrikaya giden yol') }}</h2>
   <p>{{ _('Fabrikalarda net sıfır karbon tek adımda değil, birbirini izleyen üç durakta hedefleniyor.')|safe }}</p>
-  <ol class="tk-timeline">
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-bugun">
-        <span class="tk-timeline__year">Bugün</span>
-        <span class="tk-timeline__title">{{ _('Enerji verimliliği ve yenilenebilir elektrik') }}</span>
-      </button>
-      <div class="tk-timeline__detail" id="zt-bugun" hidden>
-        <p>{{ _('Üretimde enerji verimliliği ve yenilenebilir elektrik kullanımının artırılması.')|safe }}</p>
-      </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2030">
-        <span class="tk-timeline__year">2030</span>
-        <span class="tk-timeline__title">{{ _('Kademeli azaltım') }}</span>
-      </button>
-      <div class="tk-timeline__detail" id="zt-2030" hidden>
-        <p>{{ _('Ara hedefler doğrultusunda fabrika CO2 emisyonlarının kademeli azaltımı.')|safe }}</p>
-      </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2035">
-        <span class="tk-timeline__year">2035</span>
-        <span class="tk-timeline__title">{{ _('Net sıfır karbon') }}</span>
-      </button>
-      <div class="tk-timeline__detail" id="zt-2035" hidden>
-        <p>{{ _('Toyota\'nın küresel üretim tesislerinde net sıfır karbon hedef yılı.')|safe }}</p>
-      </div>
-    </li>
-  </ol>
+  <section class="tk-grid">
+    <div class="tk-card tk-card--karbon">
+      {{ i.ikon('sarj', 'tk-ikon') }}
+      <span class="tk-stat-grid__value">{{ _('Bugün') }}</span>
+      <h3>{{ _('Enerji verimliliği ve yenilenebilir elektrik') }}</h3>
+      <p>{{ _('Üretimde enerji verimliliği ve yenilenebilir elektrik kullanımının artırılması.')|safe }}</p>
+      <p class="tk-card__detay">{{ _('Bir fabrikanın bugünkü emisyonunun büyük bölümü elektrikten geliyor. Bu yüzden ilk adım tüketimi düşürmek, kalan elektriği de yenilenebilir kaynaktan almak.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card--karbon">
+      {{ i.ikon('azalt', 'tk-ikon') }}
+      <span class="tk-stat-grid__value">2030</span>
+      <h3>{{ _('Kademeli azaltım') }}</h3>
+      <p>{{ _('Ara hedefler doğrultusunda fabrika CO2 emisyonlarının kademeli azaltımı.')|safe }}</p>
+      <p class="tk-card__detay">{{ _('Verimlilik ve yeşil elektrik tek başına yetmiyor: boya fırınları ve döküm gibi yüksek ısı isteyen süreçler için yeni teknoloji gerekiyor.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card--karbon tk-card--karbon-hedef">
+      {{ i.ikon('yaprak', 'tk-ikon') }}
+      <span class="tk-stat-grid__value">2035</span>
+      <h3>{{ _('Net sıfır karbon') }}</h3>
+      <p>{{ _('Toyota\'nın küresel üretim tesislerinde net sıfır karbon hedef yılı.')|safe }}</p>
+      <p class="tk-card__detay">{{ _('Hedef, emisyonu başka yerde dengelemek değil üretimin kendisinden karbonu çıkarmak; geriye kalan küçük pay ancak o zaman nötrlenebilir.')|safe }}</p>
+    </div>
+  </section>
 </section>
 
 

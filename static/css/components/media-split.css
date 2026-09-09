@@ -40,3 +40,21 @@
   font-size: 0.78rem;
   color: var(--muted);
 }
+
+/* Gercek fotograf (SVG cizim yerine). __frame bir cizimi ortalamak
+   icin; fotograf kendi oranini tasidigi icin ayri sinif. */
+.tk-media-split__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* Iki sutuna girmeyen, blok genisliginde tek gorsel. */
+.tk-figure--genis {
+  margin: clamp(18px, 4vw, 24px) 0 0;
+}
+.tk-figure--genis .tk-media-split__image { aspect-ratio: 21 / 9; }

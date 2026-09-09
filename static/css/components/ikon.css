@@ -1,0 +1,26 @@
+/* ============================================================
+   CIZGI SIMGELER  (templates/components/ikonlar.html)
+
+   Kart ve deger basliklarinin ustundeki simgeler. Boyut ve renk
+   BURADAN gelir; SVG'nin kendisi stroke="currentColor" kullandigi
+   icin rengi tasiyan sey yalnizca `color`.
+
+   Olculer .tk-badge-strip__ikon ile ayni tutuldu (30px): sitede
+   iki farkli simge boyu dolasmasin.
+   ============================================================ */
+.tk-ikon {
+  display: block;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 12px;
+  color: var(--accent);
+}
+
+/* Dar kartlarda (odul kartlari, Toyota Way hucreleri) daha kucuk:
+   30px simge o kutularda basligin onune geciyordu. */
+.tk-ikon--kucuk {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 8px;
+}

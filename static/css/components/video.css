@@ -1,0 +1,28 @@
+/* ============================================================
+   GOMULU VIDEO  (video)
+
+   YouTube gibi bir saglayicidan gelen iframe'i sarar.
+
+   Oran KAPTA tutuluyor (aspect-ratio: 16/9) ve iframe kabi
+   tamamen dolduruyor. Iframe'e sabit yukseklik verilseydi video
+   dar ekranda ya ezilir ya da altinda siyah bosluk birakirdi.
+
+   Zemin koyu: video yuklenene kadar beyaz bir dikdortgen yerine
+   oynaticinin kendi rengine yakin bir alan gorunuyor.
+   ============================================================ */
+.tk-video {
+  aspect-ratio: 16 / 9;
+  margin-top: clamp(18px, 4vw, 24px);
+  background: var(--graphite);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  /* Kose yuvarlamasi iframe'i de kessin. */
+  overflow: hidden;
+}
+
+.tk-video__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}

@@ -20,7 +20,7 @@
   "components/rich-text.css",
   "components/section-nav.css",
   "components/stat-grid.css",
-  "components/fact-table.css",
+  "components/video.css",
   "components/process-steps.css",
   "components/timeline.css",
   "components/map.css",
@@ -59,7 +59,7 @@
   <span class="tk-section-nav__label">{{ _('Bu sayfada') }}</span>
   <ul class="tk-section-nav__list">
     <li><a class="tk-section-nav__link" href="#vizyon">{{ _('Vizyon ve Misyon') }}</a></li>
-    <li><a class="tk-section-nav__link" href="#kurumsal">{{ _('Kurumsal bilgiler') }}</a></li>
+    <li><a class="tk-section-nav__link" href="#video">{{ _('Tanıtım videosu') }}</a></li>
     <li><a class="tk-section-nav__link" href="#modeller">{{ _('Üretilen modeller') }}</a></li>
     <li><a class="tk-section-nav__link" href="#yolculuk">{{ _('Fabrikada bir aracın yolculuğu') }}</a></li>
     <li><a class="tk-section-nav__link" href="#kilometre-taslari">{{ _('İhracat ve kilometre taşları') }}</a></li>
@@ -90,42 +90,20 @@
 </section>
 
 
-<section class="tk-block" id="kurumsal">
-  <h2>{{ _('Kurumsal bilgiler') }}</h2>
-  <dl class="tk-card tk-fact-table">
-    <div class="tk-fact-table__row">
-      <dt class="tk-fact-table__label">{{ _('Konum') }}</dt>
-      <dd class="tk-fact-table__value">Arifiye / Sakarya, Türkiye</dd>
-    </div>
-    <div class="tk-fact-table__row">
-      <dt class="tk-fact-table__label">{{ _('Kuruluş') }}</dt>
-      <dd class="tk-fact-table__value">1990</dd>
-    </div>
-    <div class="tk-fact-table__row">
-      <dt class="tk-fact-table__label">{{ _('Üretimin başlangıcı') }}</dt>
-      <dd class="tk-fact-table__value">1994</dd>
-    </div>
-    <div class="tk-fact-table__row">
-      <dt class="tk-fact-table__label">{{ _('Ortaklık yapısı') }}</dt>
-      <dd class="tk-fact-table__value">{{ _('Toyota Motor Europe NV/SA (%90), Mitsui &amp; Co. Ltd. (%10)')|safe }}</dd>
-    </div>
-    <div class="tk-fact-table__row">
-      <dt class="tk-fact-table__label">{{ _('Toplam yatırım') }}</dt>
-      <dd class="tk-fact-table__value">{{ _('yaklaşık 2,5 milyar €')|safe }}</dd>
-    </div>
-    <div class="tk-fact-table__row">
-      <dt class="tk-fact-table__label">{{ _('Yıllık üretim kapasitesi') }}</dt>
-      <dd class="tk-fact-table__value">{{ _('280.000 araç')|safe }}</dd>
-    </div>
-    <div class="tk-fact-table__row">
-      <dt class="tk-fact-table__label">{{ _('Çalışan sayısı') }}</dt>
-      <dd class="tk-fact-table__value">{{ _('yaklaşık 5.000–5.400')|safe }}</dd>
-    </div>
-    <div class="tk-fact-table__row">
-      <dt class="tk-fact-table__label">{{ _('Üretilen modeller') }}</dt>
-      <dd class="tk-fact-table__value">Toyota Corolla Sedan, Toyota C-HR (HEV / PHEV)</dd>
-    </div>
-  </dl>
+<section class="tk-block" id="video">
+  <h2>{{ _('Tanıtım videosu') }}</h2>
+  <p>{{ _('Arifiye\'deki fabrikayı ve üretim hattını videoda izleyin.')|safe }}</p>
+  {# Gizlilik dostu alan adi (youtube-nocookie): izleyici videoyu
+     baslatmadan once takip cerezi yazilmiyor. #}
+  <div class="tk-video">
+    <iframe class="tk-video__frame"
+            src="https://www.youtube-nocookie.com/embed/KekfuX0e_z0"
+            title="{{ _('TMMT tanıtım videosu') }}"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+  </div>
 </section>
 
 

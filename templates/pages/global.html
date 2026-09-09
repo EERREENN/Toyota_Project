@@ -9,6 +9,7 @@
 #}
 {% extends "base.html" %}
 {% import "components/macros.html" as c %}
+{% import "components/ikonlar.html" as i %}
 
 {#- Bu sayfanin yukledigi stil dosyalari, sirasiyla. Tema en sonda:
     ortak kurallari ezebilsin diye. -#}
@@ -27,7 +28,9 @@
   "components/rich-text.css",
   "components/map.css",
   "components/card-grid.css",
-  "components/chip-groups.css",
+  "components/media-split.css",
+  "components/ikon.css",
+  "components/brand-tree.css",
   "themes/global.css",
 ] %}
 {% set aktif = 'global-toyota' %}
@@ -62,7 +65,6 @@
     <li><a class="tk-section-nav__link" href="#toyota-way">{{ _('Toyota Way: iki sütun, beş değer') }}</a></li>
     <li><a class="tk-section-nav__link" href="#elektrikli">{{ _('Elektrikli Araç ve Rekabet Ortamı') }}</a></li>
     <li><a class="tk-section-nav__link" href="#harita">{{ _('Üretim Tesisleri Haritası') }}</a></li>
-    <li><a class="tk-section-nav__link" href="#avrupa">{{ _('Avrupa\'da Toyota') }}</a></li>
     <li><a class="tk-section-nav__link" href="#oduller">{{ _('Ödüller, Marka Değeri ve Kalite Sıralamaları') }}</a></li>
     <li><a class="tk-section-nav__link" href="#marka-ailesi">{{ _('Toyota Grubu Marka Ailesi') }}</a></li>
     <li><a class="tk-section-nav__link" href="#platform">{{ _('Platform ve teknoloji') }}</a></li>
@@ -90,17 +92,20 @@
 
 
 <section class="tk-grid reveal">
-  <div class="tk-card">
+  <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('insan', 'tk-ikon') }}
       <span class="tk-stat-grid__value" data-count-to="390000" data-count-prefix="~" data-count-group>~390.000</span>
       <h3>{{ _('Çalışan') }}</h3>
       <p>{{ _('Dünya genelinde, üretimden mühendisliğe pek çok farklı alanda.')|safe }}</p>
     </div>
-  <div class="tk-card">
+  <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('dunya', 'tk-ikon') }}
       <span class="tk-stat-grid__value" data-count-to="170" data-count-suffix="+">170+</span>
       <h3>{{ _('Ülke ve bölge') }}</h3>
       <p>{{ _('Toyota araçlarının satıldığı pazar sayısı.')|safe }}</p>
     </div>
-  <div class="tk-card">
+  <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('fabrika', 'tk-ikon') }}
       <span class="tk-stat-grid__value" data-count-to="70" data-count-suffix="+">70+</span>
       <h3>{{ _('Üretim şirketi') }}</h3>
       <p>{{ _('Japonya dışında da onlarca ülkede kurulu fabrika ve iştirak.')|safe }}</p>
@@ -111,89 +116,120 @@
 <section class="tk-block reveal" id="hikaye">
   <h2>{{ _('Toyota\'nın hikâyesi') }}</h2>
   <p>{{ _('Bir dokuma tezgâhından küresel bir hareketlilik şirketine: Toyota\'nın dönüm noktaları. Bir yıla dokunarak o adımın ayrıntısını görebilirsiniz.')|safe }}</p>
-  <ol class="tk-timeline">
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1924">
-        <span class="tk-timeline__year">1924</span>
-        <span class="tk-timeline__title">{{ _('Otomatik dokuma tezgâhı') }}</span>
-      </button>
-      <div class="tk-timeline__detail" id="zt-1924" hidden>
+  <div class="tk-timeline-wrap">
+    <ol class="tk-timeline tk-timeline--secmeli">
+      <li class="tk-timeline__stop is-open">
+        <button type="button" class="tk-timeline__button" aria-expanded="true" aria-controls="zt-1924">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/global_toyota_img/1924.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">1924</span>
+          <span class="tk-timeline__title">{{ _('Otomatik dokuma tezgâhı') }}</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1929">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/global_toyota_img/1929.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">1929</span>
+          <span class="tk-timeline__title">{{ _('Patentin Platt Brothers\'a satılması') }}</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1937">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/global_toyota_img/1937.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">1937</span>
+          <span class="tk-timeline__title">{{ _('Toyota Motor Co. Ltd.\'in kuruluşu') }}</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1957">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/global_toyota_img/1957.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">1957</span>
+          <span class="tk-timeline__title">{{ _('İlk denizaşırı adımlar') }}</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1966">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/global_toyota_img/1966.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">1966</span>
+          <span class="tk-timeline__title">{{ _('Corolla\'nın tanıtımı') }}</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1997">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/global_toyota_img/1997.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">1997</span>
+          <span class="tk-timeline__title">Prius</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2014">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/global_toyota_img/2014.avif') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">2014</span>
+          <span class="tk-timeline__title">Mirai</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2021">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/global_toyota_img/2021.webp') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">2021</span>
+          <span class="tk-timeline__title">{{ _('Woven City\'nin temelinin atılması') }}</span>
+        </button>
+      </li>
+      <li class="tk-timeline__stop">
+        <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2025">
+          <img class="tk-timeline__image"
+               src="{{ url_for('static', filename='img/global_toyota_img/2024.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          <span class="tk-timeline__year">2025</span>
+          <span class="tk-timeline__title">{{ _('Woven City\'nin açılışı') }}</span>
+        </button>
+      </li>
+    </ol>
+    <div class="tk-timeline__panel">
+      <div class="tk-timeline__detail" id="zt-1924">
         <p>{{ _('Sakichi Toyoda\'nın geliştirdiği tezgâh, iplik koptuğunda kendi kendini durduruyordu. Bugünkü jidoka ilkesinin kökeni bu makinedir.')|safe }}</p>
       </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1929">
-        <span class="tk-timeline__year">1929</span>
-        <span class="tk-timeline__title">{{ _('Patentin Platt Brothers\'a satılması') }}</span>
-      </button>
       <div class="tk-timeline__detail" id="zt-1929" hidden>
         <p>{{ _('Dokuma tezgâhının patenti İngiliz Platt Brothers\'a satıldı; elde edilen gelir otomobil çalışmalarının sermayesi oldu.')|safe }}</p>
       </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1937">
-        <span class="tk-timeline__year">1937</span>
-        <span class="tk-timeline__title">{{ _('Toyota Motor Co. Ltd.\'in kuruluşu') }}</span>
-      </button>
       <div class="tk-timeline__detail" id="zt-1937" hidden>
         <p>{{ _('Kiichiro Toyoda liderliğinde, dokuma tezgâhı işinden ayrılan otomobil bölümü bağımsız bir şirkete dönüştü.')|safe }}</p>
       </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1957">
-        <span class="tk-timeline__year">1957</span>
-        <span class="tk-timeline__title">{{ _('İlk denizaşırı adımlar') }}</span>
-      </button>
       <div class="tk-timeline__detail" id="zt-1957" hidden>
         <p>{{ _('Toyota\'nın ilk denizaşırı ihracat adımları atıldı ve ABD pazarına giriş yapıldı.')|safe }}</p>
       </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1966">
-        <span class="tk-timeline__year">1966</span>
-        <span class="tk-timeline__title">{{ _('Corolla\'nın tanıtımı') }}</span>
-      </button>
       <div class="tk-timeline__detail" id="zt-1966" hidden>
         <p>{{ _('Dünyanın en çok satan otomobil ailesinin başlangıcı.')|safe }}</p>
       </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-1997">
-        <span class="tk-timeline__year">1997</span>
-        <span class="tk-timeline__title">Prius</span>
-      </button>
       <div class="tk-timeline__detail" id="zt-1997" hidden>
         <p>{{ _('Dünyanın ilk seri üretim hibrit otomobili.')|safe }}</p>
       </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2014">
-        <span class="tk-timeline__year">2014</span>
-        <span class="tk-timeline__title">Mirai</span>
-      </button>
       <div class="tk-timeline__detail" id="zt-2014" hidden>
         <p>{{ _('Hidrojen yakıt hücreli seri üretim otomobil.')|safe }}</p>
       </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2021">
-        <span class="tk-timeline__year">2021</span>
-        <span class="tk-timeline__title">{{ _('Woven City\'nin temelinin atılması') }}</span>
-      </button>
       <div class="tk-timeline__detail" id="zt-2021" hidden>
         <p>{{ _('Fuji Dağı eteğinde inşa edilen deneysel “yaşayan laboratuvar” şehrin temeli atıldı.')|safe }}</p>
       </div>
-    </li>
-    <li class="tk-timeline__stop">
-      <button type="button" class="tk-timeline__button" aria-expanded="false" aria-controls="zt-2025">
-        <span class="tk-timeline__year">2025</span>
-        <span class="tk-timeline__title">{{ _('Woven City\'nin açılışı') }}</span>
-      </button>
       <div class="tk-timeline__detail" id="zt-2025" hidden>
         <p>{{ _('25 Eylül 2025\'te resmen açıldı; ilk “Weaver” sakinler taşınmaya başladı.')|safe }}</p>
       </div>
-    </li>
-  </ol>
+    </div>
+  </div>
 </section>
 
 <section class="tk-block reveal" id="toyota-way">
@@ -207,6 +243,7 @@
       </h3>
       <div class="tk-value-columns__list">
         <div class="tk-card tk-value-columns__value">
+          {{ i.ikon('hedef', 'tk-ikon tk-ikon--kucuk') }}
           <h4 class="tk-value-columns__value-title">
             <span>Challenge</span>
             {{- c.ozgun_terim('Challenge', _('Meydan okuma'), 'tk-value-columns__value-alt') }}
@@ -214,6 +251,7 @@
           <p>{{ _('Uzun vadeli bir vizyon kurmak ve hedeflere cesaret ve yaratıcılıkla ilerlemek.')|safe }}</p>
         </div>
         <div class="tk-card tk-value-columns__value">
+          {{ i.ikon('yukselen', 'tk-ikon tk-ikon--kucuk') }}
           <h4 class="tk-value-columns__value-title">
             <span>Kaizen</span>
             {{- c.ozgun_terim('Kaizen', _('Sürekli iyileştirme'), 'tk-value-columns__value-alt') }}
@@ -221,6 +259,7 @@
           <p>{{ _('Hiçbir sürecin mükemmel olmadığını kabul edip her gün küçük adımlarla ilerlemek.')|safe }}</p>
         </div>
         <div class="tk-card tk-value-columns__value">
+          {{ i.ikon('goz', 'tk-ikon tk-ikon--kucuk') }}
           <h4 class="tk-value-columns__value-title">
             <span>Genchi Genbutsu</span>
             {{- c.ozgun_terim('Genchi Genbutsu', _('Yerinde gör'), 'tk-value-columns__value-alt') }}
@@ -236,6 +275,7 @@
       </h3>
       <div class="tk-value-columns__list">
         <div class="tk-card tk-value-columns__value">
+          {{ i.ikon('saygi', 'tk-ikon tk-ikon--kucuk') }}
           <h4 class="tk-value-columns__value-title">
             <span>Respect</span>
             {{- c.ozgun_terim('Respect', _('Saygı'), 'tk-value-columns__value-alt') }}
@@ -243,6 +283,7 @@
           <p>{{ _('Paydaşlara saygı duymak, sorumluluk almak, karşılıklı güven inşa etmek.')|safe }}</p>
         </div>
         <div class="tk-card tk-value-columns__value">
+          {{ i.ikon('takim', 'tk-ikon tk-ikon--kucuk') }}
           <h4 class="tk-value-columns__value-title">
             <span>Teamwork</span>
             {{- c.ozgun_terim('Teamwork', _('Takım çalışması'), 'tk-value-columns__value-alt') }}
@@ -260,7 +301,37 @@
 
 <section class="tk-block reveal" id="elektrikli">
   <h2>{{ _('Elektrikli Araç ve Rekabet Ortamı') }}</h2>
-  <p>{{ _('2025\'te Toyota\'nın sattığı araçların yaklaşık 200 bini tam elektrikliydi — bir önceki yıla göre yüzde 42\'lik bir artış. Yine de şirket, elektrikli araçlara topyekûn geçmek yerine hibrit, şarj edilebilir hibrit, tam elektrikli ve hidrojen yakıt hücreli araçları bir arada geliştiren "çoklu yol" stratejisine bağlı kalıyor. Bu arada BYD, SAIC ve Geely gibi Çinli üreticilerin özellikle elektrikli araç segmentinde hızla büyümesi, Toyota\'nın önümüzdeki yıllarda karşılaşacağı en büyük rekabet baskılarından biri olarak görülüyor.')|safe }}</p>
+  <div class="tk-media-split">
+    <div class="tk-media-split__text">
+      <p>{{ _('2025\'te Toyota\'nın sattığı araçların yaklaşık 200 bini tam elektrikliydi — bir önceki yıla göre yüzde 42\'lik bir artış. Yine de şirket, elektrikli araçlara topyekûn geçmek yerine hibrit, şarj edilebilir hibrit, tam elektrikli ve hidrojen yakıt hücreli araçları bir arada geliştiren "çoklu yol" stratejisine bağlı kalıyor. Bu arada BYD, SAIC ve Geely gibi Çinli üreticilerin özellikle elektrikli araç segmentinde hızla büyümesi, Toyota\'nın önümüzdeki yıllarda karşılaşacağı en büyük rekabet baskılarından biri olarak görülüyor.')|safe }}</p>
+    </div>
+    <figure class="tk-media-split__figure">
+      <img class="tk-media-split__image"
+           src="{{ url_for('static', filename='img/global_toyota_img/elektrikli-rekabet.jpg') }}"
+           alt="" loading="lazy" decoding="async">
+      <figcaption>{{ _('Toyota\'nın elektrikli ve elektrifiye araç ailesi.') }}</figcaption>
+    </figure>
+  </div>
+  <section class="tk-grid">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('sarj', 'tk-ikon') }}
+      <span class="tk-stat-grid__value" data-count-to="200000" data-count-prefix="~" data-count-group>~200.000</span>
+      <h3>{{ _('Tam elektrikli satış') }}</h3>
+      <p>{{ _('2025 yılında satılan tam elektrikli araç sayısı.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('yukselen', 'tk-ikon') }}
+      <span class="tk-stat-grid__value" data-count-to="42" data-count-suffix="%">%42</span>
+      <h3>{{ _('Yıllık artış') }}</h3>
+      <p>{{ _('Tam elektrikli satışların bir önceki yıla göre artışı.')|safe }}</p>
+    </div>
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('yol', 'tk-ikon') }}
+      <span class="tk-stat-grid__value" data-count-to="4">4</span>
+      <h3>{{ _('Paralel teknoloji') }}</h3>
+      <p>{{ _('Hibrit, şarj edilebilir hibrit, tam elektrikli ve hidrojen yakıt hücresi aynı anda geliştiriliyor.')|safe }}</p>
+    </div>
+  </section>
 </section>
 
 
@@ -277,42 +348,37 @@
 </section>
 
 
-<section class="tk-block reveal" id="avrupa">
-  <h2>{{ _('Avrupa\'da Toyota') }}</h2>
-  <p>{{ _('Toyota\'nın Avrupa operasyonları, merkezi Brüksel\'de bulunan Toyota Motor Europe tarafından yürütülüyor. Şirketin Avrupa genelinde birden fazla üretim tesisi, Ar-Ge ve tasarım merkezi bulunuyor. Sakarya\'daki TMMT, bu yapının en yüksek hacimli üretim tesislerinden biri ve Toyota\'nın Avrupa\'daki elektrifikasyon dönüşümünde merkezi bir rol üstleniyor.')|safe }}</p>
-  <section class="tk-grid">
-  </section>
-  <p class="tk-more-link">
-    <a href="/tmmt">{{ _('Türkiye\'deki fabrikamız: TMMT →') }}</a>
-  </p>
-</section>
-
 
 <section class="tk-block reveal" id="oduller">
   <h2>{{ _('Ödüller, Marka Değeri ve Kalite Sıralamaları') }}</h2>
   <p>{{ _('Bağımsız kuruluşların 2025-2026 değerlendirmelerinde Toyota, hem marka değeri hem de güvenilirlik tarafında otomotiv sektörünün önünde yer aldı.')|safe }}</p>
   <div class="tk-card-grid--award">
     <article class="tk-card-grid__award-card">
+      {{ i.ikon('grafik', 'tk-ikon tk-ikon--kucuk') }}
       <span class="tk-card-grid__year">2025</span>
       <h3>Interbrand</h3>
       <p>{{ _('Otomotivde kesintisiz 1. sıra; marka değeri 74,2 milyar dolar.')|safe }}</p>
     </article>
     <article class="tk-card-grid__award-card">
+      {{ i.ikon('deger', 'tk-ikon tk-ikon--kucuk') }}
       <span class="tk-card-grid__year">2025–2026</span>
       <h3>Brand Finance</h3>
       <p>{{ _('Üst üste 2 yıl dünyanın en değerli ve en güçlü otomobil markası (AAA+).')|safe }}</p>
     </article>
     <article class="tk-card-grid__award-card">
+      {{ i.ikon('kalkan', 'tk-ikon tk-ikon--kucuk') }}
       <span class="tk-card-grid__year">2023–2026</span>
       <h3>{{ _('J.D. Power — Lexus') }}</h3>
       <p>{{ _('Lexus, 4 yıl üst üste en güvenilir marka seçildi.')|safe }}</p>
     </article>
     <article class="tk-card-grid__award-card">
+      {{ i.ikon('madalya', 'tk-ikon tk-ikon--kucuk') }}
       <span class="tk-card-grid__year">2023–2026</span>
       <h3>{{ _('J.D. Power — Toyota') }}</h3>
       <p>{{ _('En çok segment ödülünü alan üretici (6–9 model).')|safe }}</p>
     </article>
     <article class="tk-card-grid__award-card">
+      {{ c.kupa_ikonu('tk-ikon tk-ikon--kucuk') }}
       <span class="tk-card-grid__year">2025</span>
       <h3>{{ _('En Çok Satan Grup') }}</h3>
       <p>{{ _('11,3 milyon araçla üst üste 6. kez dünyanın 1.\'si.')|safe }}</p>
@@ -325,32 +391,152 @@
 <section class="tk-block reveal" id="marka-ailesi">
   <h2>{{ _('Toyota Grubu Marka Ailesi') }}</h2>
   <p>{{ _('Toyota yalnızca kendi markasından ibaret değil; tamamına sahip olduğu markaların yanında birkaç rakibinde de stratejik hisseler tutuyor.')|safe }}</p>
-  <div class="tk-chip-groups">
-    <div class="tk-chip-groups__group">
-      <h3>{{ _('Tamamı Toyota\'ya ait') }}</h3>
-      <ul class="tk-chip-groups__list"><li class="tk-chip-groups__chip">Lexus
-        </li><li class="tk-chip-groups__chip">Daihatsu
-        </li><li class="tk-chip-groups__chip">Hino Motors
-        </li>
-      </ul>
+  <div class="tk-brand-tree">
+    <div class="tk-brand-tree__root">
+      <span class="tk-brand-tree__root-mark" aria-hidden="true">TMC</span>
+      <span class="tk-brand-tree__root-name">Toyota Motor Corporation</span>
     </div>
-    <div class="tk-chip-groups__group">
-      <h3>{{ _('Stratejik hisseler') }}</h3>
-      <ul class="tk-chip-groups__list"><li class="tk-chip-groups__chip">Subaru <span>{{ _('yüzde 20 · oy hakkıyla') }}</span>
-        </li><li class="tk-chip-groups__chip">Suzuki <span>~%4,9</span>
-        </li><li class="tk-chip-groups__chip">Mazda <span>~%5,1</span>
+    <div class="tk-brand-tree__branches">
+      <section class="tk-brand-tree__branch tk-brand-tree__branch--sahip">
+        <h3 class="tk-brand-tree__branch-title">{{ _('Tamamı Toyota\'ya ait') }}</h3>
+        <ul class="tk-brand-tree__list">
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/lexus.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">Lexus</span>
+            <span class="tk-brand-tree__note">{{ _('Lüks segment markası') }}</span>
+          </span>
         </li>
-      </ul>
-    </div>
-    <div class="tk-chip-groups__group">
-      <h3>{{ _('Markalar ve hizmetler') }}</h3>
-      <ul class="tk-chip-groups__list"><li class="tk-chip-groups__chip">Toyota <span>{{ _('Ana marka; binek ve ticari araç ailesi') }}</span>
-        </li><li class="tk-chip-groups__chip">Toyota Professional <span>{{ _('Avrupa\'da ticari araç ve filo müşterilerine yönelik marka') }}</span>
-        </li><li class="tk-chip-groups__chip">Toyota Gazoo Racing <span>{{ _('Motorsporları ve performans araçları markası') }}</span>
-        </li><li class="tk-chip-groups__chip">KINTO <span>{{ _('Abonelik, kiralama ve paylaşımlı mobilite hizmetleri markası') }}</span>
-        </li><li class="tk-chip-groups__chip">Woven by Toyota <span>{{ _('Yazılım, otonom sürüş ve Woven City projesini yürüten iştirak') }}</span>
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/daihatsu.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">Daihatsu</span>
+            <span class="tk-brand-tree__note">{{ _('Kompakt ve küçük sınıf araçlar') }}</span>
+          </span>
         </li>
-      </ul>
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/hino-motors.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">Hino Motors</span>
+            <span class="tk-brand-tree__note">{{ _('Ticari araç ve kamyon') }}</span>
+          </span>
+        </li>
+        </ul>
+      </section>
+      <section class="tk-brand-tree__branch tk-brand-tree__branch--hisse">
+        <h3 class="tk-brand-tree__branch-title">{{ _('Stratejik hisseler') }}</h3>
+        <ul class="tk-brand-tree__list">
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/subaru.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">Subaru</span>
+            <span class="tk-brand-tree__note">{{ _('yüzde 20 · oy hakkıyla') }}</span>
+            <span class="tk-brand-tree__bar"><span class="tk-brand-tree__bar-fill" style="width:20%"></span></span>
+          </span>
+        </li>
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/suzuki.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">Suzuki</span>
+            <span class="tk-brand-tree__note">~%4,9</span>
+            <span class="tk-brand-tree__bar"><span class="tk-brand-tree__bar-fill" style="width:4.9%"></span></span>
+          </span>
+        </li>
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/mazda.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">Mazda</span>
+            <span class="tk-brand-tree__note">~%5,1</span>
+            <span class="tk-brand-tree__bar"><span class="tk-brand-tree__bar-fill" style="width:5.1%"></span></span>
+          </span>
+        </li>
+        </ul>
+        <p class="tk-brand-tree__olcek">{{ _('Çubuklar gerçek hisse oranını gösterir.') }}</p>
+      </section>
+      <section class="tk-brand-tree__branch tk-brand-tree__branch--hizmet">
+        <h3 class="tk-brand-tree__branch-title">{{ _('Markalar ve hizmetler') }}</h3>
+        <ul class="tk-brand-tree__list">
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/toyota.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">Toyota</span>
+            <span class="tk-brand-tree__note">{{ _('Ana marka; binek ve ticari araç ailesi') }}</span>
+          </span>
+        </li>
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/toyota.jpg') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">Toyota Professional</span>
+            <span class="tk-brand-tree__note">{{ _('Avrupa\'da ticari araç ve filo müşterilerine yönelik marka') }}</span>
+          </span>
+        </li>
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/toyota-gazoo-racing.png') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">Toyota Gazoo Racing</span>
+            <span class="tk-brand-tree__note">{{ _('Motorsporları ve performans araçları markası') }}</span>
+          </span>
+        </li>
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/kinto.png') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">KINTO</span>
+            <span class="tk-brand-tree__note">{{ _('Abonelik, kiralama ve paylaşımlı mobilite hizmetleri markası') }}</span>
+          </span>
+        </li>
+        <li class="tk-brand-tree__item">
+          <span class="tk-brand-tree__mark" aria-hidden="true">
+            <img class="tk-brand-tree__logo"
+               src="{{ url_for('static', filename='img/global_toyota_img/woven-by-toyota.png') }}"
+               alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="tk-brand-tree__text">
+            <span class="tk-brand-tree__name">Woven by Toyota</span>
+            <span class="tk-brand-tree__note">{{ _('Yazılım, otonom sürüş ve Woven City projesini yürüten iştirak') }}</span>
+          </span>
+        </li>
+        </ul>
+      </section>
     </div>
   </div>
   <p>{{ _('Mazda ortaklığı, ABD Alabama\'daki Mazda Toyota Manufacturing tesisinin temelini oluşturuyor.')|safe }}</p>
@@ -361,42 +547,55 @@
 
 <section class="tk-block reveal" id="platform">
   <h2>{{ _('Platform ve teknoloji') }}</h2>
-  <section class="tk-grid tk-grid--2">
-    <div class="tk-card">
+  <div class="tk-media-split">
+    <div class="tk-media-split__text">
       <h3>TNGA</h3>{{- c.kart_alt_basligi('TNGA', 'Toyota New Global Architecture') }}
-      <p>{{ _('Toyota\'nın küresel araç platformu. Ortak bir mimari üzerinden farklı segmentlerde araç geliştirmeyi mümkün kılıyor; daha düşük ağırlık merkezi, daha iyi sürüş dinamiği ve daha verimli üretim sağlıyor. TMMT\'de üretilen yeni nesil C-HR de bu platformun TNGA-2 versiyonu üzerinde üretiliyor.')|safe }}</p><a class="tk-card__link" href="/tmmt">{{ _('TMMT\'de TNGA-2 üretimi →') }}</a>
+      <p>{{ _('Toyota\'nın küresel araç platformu. Ortak bir mimari üzerinden farklı segmentlerde araç geliştirmeyi mümkün kılıyor; daha düşük ağırlık merkezi, daha iyi sürüş dinamiği ve daha verimli üretim sağlıyor. TMMT\'de üretilen yeni nesil C-HR de bu platformun TNGA-2 versiyonu üzerinde üretiliyor.')|safe }}</p>
+      <a class="tk-card__link" href="/tmmt">{{ _("TMMT'de TNGA-2 üretimi →") }}</a>
     </div>
-    <div class="tk-card">
-      <h3>Toyota Safety Sense</h3>
-      <p>{{ _('Toyota\'nın standart olarak sunduğu sürücü destek ve aktif güvenlik teknolojileri paketi. Şirketin uzun vadeli hedefi trafikte sıfır kaza; teknolojiler bu hedefe yönelik olarak sürekli geliştiriliyor.')|safe }}</p>
-    </div>
-  </section>
+    <figure class="tk-media-split__figure">
+      <img class="tk-media-split__image"
+           src="{{ url_for('static', filename='img/global_toyota_img/tnga.webp') }}"
+           alt="" loading="lazy" decoding="async">
+      <figcaption>{{ _('TNGA platformu: ortak mimari, farklı segmentler.') }}</figcaption>
+    </figure>
+  </div>
 </section>
 
 
 <section class="tk-block reveal" id="ar-ge">
   <h2>{{ _('Ar-Ge ve tasarım') }}</h2>
   <p>{{ _('Toyota\'nın araştırma ve tasarım faaliyetleri Japonya ile sınırlı değil; Avrupa, Kuzey Amerika ve Asya\'ya yayılmış merkezlerde yürütülüyor.')|safe }}</p>
-  <section class="tk-grid">
-    <div class="tk-card">
+  <section class="tk-grid tk-grid--5">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('disli', 'tk-ikon') }}
       <h3>{{ _('Toyota Motor Europe Ar-Ge Merkezi') }}</h3>{{- c.kart_alt_basligi(_('Toyota Motor Europe Ar-Ge Merkezi'), _('Zaventem, Belçika')) }}
       <p>{{ _('Avrupa pazarına yönelik araç geliştirme ve mühendislik.')|safe }}</p>
+      <p class="tk-card__detay">{{ _('Avrupa yollarına ve mevzuatına uygun süspansiyon, emisyon ve güvenlik doğrulamaları burada yapılıyor.')|safe }}</p>
     </div>
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('tasarim', 'tk-ikon') }}
       <h3>ED² (Toyota Europe Design Development)</h3>{{- c.kart_alt_basligi('ED² (Toyota Europe Design Development)', _('Nice, Fransa')) }}
       <p>{{ _('Avrupa\'ya yönelik ileri tasarım stüdyosu.')|safe }}</p>
+      <p class="tk-card__detay">{{ _('Konsept araçların ilk eskizinden kil modeline kadar tasarım dili burada belirleniyor.')|safe }}</p>
     </div>
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('bayrak', 'tk-ikon') }}
       <h3>Toyota Gazoo Racing Europe</h3>{{- c.kart_alt_basligi('Toyota Gazoo Racing Europe', _('Köln, Almanya')) }}
       <p>{{ _('Motorsporları geliştirme ve yüksek performans mühendisliği.')|safe }}</p>
+      <p class="tk-card__detay">{{ _('WRC ve Le Mans programlarının mühendisliği; yarıştan gelen bilgi seri üretim araçlarına aktarılıyor.')|safe }}</p>
     </div>
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('cip', 'tk-ikon') }}
       <h3>Toyota Research Institute</h3>{{- c.kart_alt_basligi('Toyota Research Institute', _('Kaliforniya, ABD')) }}
       <p>{{ _('Yapay zekâ, otonom sürüş ve robotik araştırmaları.')|safe }}</p>
+      <p class="tk-card__detay">{{ _('Otonom sürüş, sürücü destek yazılımı ve insanla iş birliği yapan robotlar üzerine çalışıyor.')|safe }}</p>
     </div>
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('kod', 'tk-ikon') }}
       <h3>Woven by Toyota</h3>{{- c.kart_alt_basligi('Woven by Toyota', _('Tokyo, Japonya')) }}
       <p>{{ _('Yazılım tanımlı araç ve Woven City projesi.')|safe }}</p>
+      <p class="tk-card__detay">{{ _('Arene işletim sistemi ve Woven City\'nin dijital altyapısı bu iştirak tarafından geliştiriliyor.')|safe }}</p>
     </div>
   </section>
 </section>
@@ -405,14 +604,22 @@
 <section class="tk-block reveal" id="hidrojen">
   <h2>{{ _('Hidrojen ve Katı Hal Batarya Teknolojisi') }}</h2>
   <p>{{ _('Toyota\'nın "çoklu yol" stratejisi bataryalı elektrikle sınırlı değil; hidrojen ve yeni nesil batarya kimyaları da paralel olarak geliştiriliyor.')|safe }}</p>
+  <figure class="tk-media-split__figure tk-figure--genis">
+    <img class="tk-media-split__image"
+         src="{{ url_for('static', filename='img/global_toyota_img/hidrojen-kati-hal.jpg') }}"
+         alt="" loading="lazy" decoding="async">
+    <figcaption>{{ _('Hidrojen yakıt hücresi ve katı hal batarya çalışmaları.') }}</figcaption>
+  </figure>
   <section class="tk-grid tk-grid--2">
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('sise', 'tk-ikon') }}
       <span class="tk-stat-grid__value" data-count-to="647" data-count-prefix="~" data-count-suffix=" km">~647 km</span>
       <h3>{{ _('Mirai — Hidrojen yakıt hücresi') }}</h3>
       <p>{{ _('182 beygir güç ve ABD EPA testine göre yaklaşık 647 km (402 mil) menzil. Egzozdan çıkan tek atık su.')|safe }}</p>
       <p class="tk-note">{{ _('Kaynak: pressroom.toyota.com') }}</p>
     </div>
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      {{ i.ikon('batarya', 'tk-ikon') }}
       <span class="tk-stat-grid__value" data-count-to="1200" data-count-prefix="~" data-count-suffix=" km" data-count-group>{{ _('~1.200 km') }}</span>
       <h3>{{ _('Katı hal bataryalar') }}</h3>
       <p>{{ _('Sumitomo Metal Mining ve Idemitsu ortaklığıyla geliştiriliyor; 2027-2028\'de araçlara girmesi hedefleniyor. Prototip paket yaklaşık 1.200 km menzil ve 10 dakikanın altında hızlı şarj vadediyor.')|safe }}</p>
@@ -425,7 +632,11 @@
 <section class="tk-block reveal" id="sosyal">
   <h2>{{ _('Toyota\'nın Sosyal Yüzü') }}</h2>
   <section class="tk-grid tk-grid--2">
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      <img class="tk-card__image"
+           src="{{ url_for('static', filename='img/global_toyota_img/woven-city.jpg') }}"
+           alt="" loading="lazy" decoding="async">
+      {{ i.ikon('sehir', 'tk-ikon') }}
       <h3>{{ _('Woven City') }}</h3>
       <ul>
         <li>{{ _('Fuji Dağı eteğinde inşa edilen deneysel "yaşayan laboratuvar" şehir.')|safe }}</li>
@@ -434,14 +645,20 @@
         <li>{{ _('Japonya\'nın ilk LEED for Communities Platin sertifikasını aldı.')|safe }}</li>
       </ul>
       <p class="tk-note">{{ _('Kaynaklar: global.toyota, pressroom.toyota.com') }}</p>
+      <a class="tk-card__link" href="https://www.woven-city.global/" target="_blank" rel="noopener">{{ _('Woven City resmi sitesi ↗') }}</a>
     </div>
-    <div class="tk-card">
+    <div class="tk-card tk-card--vurgu">
+      <img class="tk-card__image"
+           src="{{ url_for('static', filename='img/global_toyota_img/gazoo.webp') }}"
+           alt="" loading="lazy" decoding="async">
+      {{ i.ikon('bayrak', 'tk-ikon') }}
       <h3>{{ _('Motorsporları — Toyota Gazoo Racing') }}</h3>
       <ul>
         <li>{{ _('Haziran 2026: 94. Le Mans 24 Saat\'te 6. kez zafer; 3 yıllık kazanamama serisi sona erdi (350.105 seyirci).')|safe }}</li>
         <li>{{ _('Dünya Rallye Şampiyonası\'nda üst üste 4. üretici şampiyonluğu.')|safe }}</li>
       </ul>
       <p class="tk-note">{{ _('Kaynak: media.toyota.ca') }}</p>
+      <a class="tk-card__link" href="https://toyotagazooracing.com/" target="_blank" rel="noopener">{{ _('Toyota Gazoo Racing resmi sitesi ↗') }}</a>
     </div>
   </section>
 </section>

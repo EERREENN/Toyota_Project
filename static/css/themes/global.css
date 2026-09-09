@@ -46,3 +46,115 @@
 /* Milestone rozeti, harita: zeminden ayrilsin */
 .page-global .tk-stat-badge { box-shadow: 0 14px 34px rgba(40, 32, 8, 0.14); }
 .page-global .tk-map__canvas { box-shadow: 0 14px 36px rgba(40, 32, 8, 0.16); }
+
+
+/* ============================================================
+   RENK KATMANI  --  "site tamamen gri olmasin"
+
+   Palet bilerek dar: siyah (--graphite), beyaz (--surface) ve
+   Toyota kirmizisi (--accent). Marka disina yeni bir renk
+   sokmadan, gri metin yiginini kirmak icin kirmizi ve koyu
+   yuzeyler daha cesur kullaniliyor.
+
+   Sayfaya ozel tonlar (tint'ler) burada sabit kod olarak duruyor;
+   tokens.css yalnizca sitenin GENEL paletini tasir, bu dosya ise
+   bu sayfanin tonlarini -- dosyanin basindaki nota bak.
+   ============================================================ */
+
+/* Simgeli kartlar duz beyaz bir tarla gibi durmasin: cok hafif
+   sicak bir zemin ve hover'da kirmiziya donen ust serit. */
+.page-global .tk-card--vurgu {
+  background: linear-gradient(180deg, #fffdfd 0%, #ffffff 55%);
+}
+.page-global .tk-card--vurgu:hover {
+  border-top-color: #9c0c24;
+  box-shadow: 0 22px 46px rgba(160, 16, 40, 0.18);
+}
+
+/* Odul kartlarindaki yil grinin icinde kayboluyordu. */
+.page-global .tk-card-grid__year { color: var(--accent); }
+
+/* Zaman tuneli yillari da vurgulu okunsun. */
+.page-global .tk-timeline__year { color: var(--accent); }
+
+/* Ikinci paragrafin ayirici cizgisi kirmizinin soluk tonunda. */
+.page-global .tk-card__detay { border-top-color: #f0d9de; }
+
+/* ---------- Marka agaci: uc dal, uc farkli kimlik ---------- */
+
+/* Kutular gercek amblemleri tasidigi icin ZEMIN beyaz kaliyor
+   (renkli zemin logonun kendi zeminiyle catisirdi); dallari
+   birbirinden CERCEVE rengi ayiriyor. */
+
+/* Tamami Toyota'ya ait -> kirmizi cerceve */
+.page-global .tk-brand-tree__branch--sahip { border-top-color: var(--accent); }
+.page-global .tk-brand-tree__branch--sahip .tk-brand-tree__mark {
+  border-color: var(--accent);
+}
+
+/* Stratejik hisseler -> koyu cerceve (sahiplik degil, pay) */
+.page-global .tk-brand-tree__branch--hisse { border-top-color: var(--graphite); }
+.page-global .tk-brand-tree__branch--hisse .tk-brand-tree__mark {
+  border-color: var(--graphite);
+}
+
+/* Markalar ve hizmetler -> soluk kirmizi cerceve: ayni catinin
+   altinda ama ayri bir kategori oldugu bir bakista anlasilsin. */
+.page-global .tk-brand-tree__branch--hizmet { border-top-color: var(--accent); }
+.page-global .tk-brand-tree__branch--hizmet .tk-brand-tree__mark {
+  border-color: #f3c9d2;
+}
+
+/* Gorseller zeminden ayrilsin */
+.page-global .tk-media-split__image,
+.page-global .tk-timeline__image,
+.page-global .tk-card__image {
+  box-shadow: 0 10px 26px rgba(40, 32, 8, 0.14);
+}
+
+
+/* ============================================================
+   MISYON BANDI  --  arka plan gorunsun
+
+   Sorun: .tk-mission zemini `var(--bg)` (opak gri) oldugu icin
+   sayfanin arka plan gorselini tamamen kapatiyordu.
+
+   Cozum: band kendi arka plan gorselini tasiyor (sayfanin
+   gorselinin AYNISI) ve uzerine koyu bir perde geliyor. Perde
+   sayfanin genel acik pecesinden bagimsiz, o yuzden gorsel burada
+   gercekten gorunuyor -- sayfanin geri kalaninda pece 0.95
+   opaklikta ve gorseli neredeyse tamamen yutuyor.
+
+   Vurgu artik ZEMIN TONUYLA yapiliyor: acik sayfanin ortasinda
+   koyu bir band. Ustune kirmizi cizgiler geliyor. Boylece bolum
+   bir kart gibi degil, sayfayi kesen bir serit gibi one cikiyor.
+   ============================================================ */
+.page-global .tk-mission {
+  position: relative;
+  background-color: #14161a;
+  background-image: url("../../img/global-bg.jpg");
+  background-position: center center;
+  background-size: cover;
+  border-top: 3px solid var(--accent);
+  border-bottom: 3px solid var(--accent);
+  overflow: hidden;
+}
+
+/* Perde: gorseli birakiyor ama yazinin kontrastini garantiliyor. */
+.page-global .tk-mission::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(16, 19, 28, 0.86) 0%,
+    rgba(16, 19, 28, 0.74) 100%);
+}
+
+/* Icerik perdenin ustunde kalsin. */
+.page-global .tk-mission > * {
+  position: relative;
+  z-index: 1;
+}
+
+.page-global .tk-mission__statement { color: #ffffff; }
+.page-global .tk-mission__text { color: rgba(255, 255, 255, 0.84); }

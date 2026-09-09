@@ -70,3 +70,108 @@
 /* Kaynaklar bloku okunakli kalsin */
 .page-cevre .tk-source-list ul { color: #445247; }
 .page-cevre .tk-source-list a { color: #143620; }
+
+
+/* ============================================================
+   YESIL KATMAN
+
+   Sayfanin kendi pecesi acik yesil; kartlar duz beyaz oldugu icin
+   zeminden ayrisiyordu ama "yesil" hissini vermiyordu. Asagidaki
+   kurallar kartlara yesil TON katiyor, ayni zamanda kenarlik ve
+   golgeyi koruyarak zeminde kaybolmalarini engelliyor.
+
+   Renkler burada sabit kod: tokens.css sitenin GENEL paletini
+   (siyah/beyaz/kirmizi) tasir, yesil yalnizca bu sayfaya ait --
+   dosyanin basindaki nota bak.
+   ============================================================ */
+
+/* Simgeler bu sayfada yesil (varsayilan kirmizi degil). */
+.page-cevre .tk-ikon { color: #2f6b43; }
+
+/* ---------- Alti hedef: dokuz kart ---------- */
+.page-cevre .tk-stat-grid__progress-card {
+  background: linear-gradient(180deg, #f4faf5 0%, #ffffff 60%);
+  border-color: #cfe2d4;
+  border-top: 3px solid #2f6b43;
+}
+.page-cevre .tk-stat-grid__progress-value,
+.page-cevre .tk-stat-grid__count,
+.page-cevre .tk-stat-grid__count-suffix { color: #1d7a41; }
+.page-cevre .tk-stat-grid__goal { color: #4a7a58; }
+
+/* Sayisal karsiligi olmayan hedefler (4-5-6): sayi yerine simge.
+   Kart yuksekligi digerleriyle ayni hizada dursun diye simge biraz
+   daha buyuk ve ustten bosluklu. */
+.page-cevre .tk-stat-grid__progress-card--nitel .tk-ikon {
+  width: 38px;
+  height: 38px;
+  margin: 4px 0 10px;
+}
+
+/* ---------- Kartlar genel ---------- */
+.page-cevre .tk-card--vurgu {
+  background: linear-gradient(180deg, #f4faf5 0%, #ffffff 55%);
+  border-top-color: #2f6b43;
+}
+.page-cevre .tk-card--vurgu:hover { border-top-color: #1d7a41; }
+.page-cevre .tk-card__detay { border-top-color: #d7e6da; }
+
+/* ---------- Zaman cizelgesi ---------- */
+.page-cevre .tk-timeline__panel {
+  border-left-color: #2f6b43;
+  border-color: #cfe2d4;
+  background: #ffffff;
+}
+.page-cevre .tk-timeline__year { color: #1d7a41; }
+.page-cevre .tk-timeline--secmeli .tk-timeline__stop.is-open .tk-timeline__button {
+  border-top-color: #2f6b43;
+}
+.page-cevre .tk-timeline--secmeli .tk-timeline__stop.is-open .tk-timeline__image {
+  outline-color: #2f6b43;
+}
+
+/* ---------- Karsilastirma tablosu ---------- */
+/* Duz beyaz bir tabloydu; sutun basliklari ve satir etiketleri
+   artik renkli, satirlar donusumlu zeminli -> goz satirda kaymiyor. */
+.page-cevre .tk-compare__head {
+  background: #1f5c36;
+  border-bottom: 2px solid #123a22;
+}
+.page-cevre .tk-compare__tech { color: #ffffff; }
+.page-cevre .tk-compare__corner { background: #1f5c36; }
+
+.page-cevre .tk-compare__label {
+  background: #e6f1e8;
+  color: #143620;
+}
+.page-cevre .tk-compare__cell { color: #24352a; }
+.page-cevre .tk-compare__table tbody tr:nth-child(even) .tk-compare__cell {
+  background: #f5faf6;
+}
+.page-cevre .tk-compare__table tbody tr:nth-child(even) .tk-compare__label {
+  background: #dcecdf;
+}
+.page-cevre .tk-compare__note { color: #2f6b43; }
+.page-cevre .tk-compare__link { color: #1d7a41; }
+
+/* ---------- Karbon kartlari ---------- */
+/* "Karbon ne renk ise": karbon siyah. Bu uc kart, sayfanin acik
+   yesil dunyasindan bilerek ayrilip komurun rengini tasiyor.
+   Sonuncusu hedefe ulasildigi icin yesil cerceveli. */
+.page-cevre .tk-card--karbon {
+  background: linear-gradient(180deg, #23282b 0%, #171b1d 100%);
+  border-color: #3a4145;
+  border-top: 3px solid #556066;
+  color: #eef1f0;
+}
+.page-cevre .tk-card--karbon h3 { color: #ffffff; }
+.page-cevre .tk-card--karbon p { color: rgba(238, 241, 240, 0.78); }
+.page-cevre .tk-card--karbon .tk-ikon { color: #9fb0a6; }
+.page-cevre .tk-card--karbon .tk-stat-grid__value { color: #ffffff; }
+.page-cevre .tk-card--karbon .tk-card__detay { border-top-color: #3a4145; }
+.page-cevre .tk-card--karbon:hover { border-top-color: #7d8a90; }
+
+/* Net sifir: hedefe varildigi an yesile donuyor. */
+.page-cevre .tk-card--karbon-hedef { border-top-color: #3f9e5c; }
+.page-cevre .tk-card--karbon-hedef .tk-ikon { color: #6fd18e; }
+.page-cevre .tk-card--karbon-hedef:hover { border-top-color: #6fd18e; }
