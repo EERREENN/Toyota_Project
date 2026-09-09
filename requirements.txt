@@ -5,3 +5,8 @@ Flask-SQLAlchemy>=3.1
 SQLAlchemy>=2.0
 # Yayin icin (Windows'ta waitress, Linux'ta gunicorn):
 waitress>=3.0
+
+# tools/seed_news.py gorselleri web boyutuna indirirken Pillow kullanir.
+# Uygulamanin CALISMASI icin gerekli DEGIL, o yuzden listeye eklenmedi;
+# yoksa betik gorselleri oldugu boyutta kopyalar. Kurmak icin:
+#     pip install Pillow
